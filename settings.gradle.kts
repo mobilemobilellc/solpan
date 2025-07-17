@@ -48,10 +48,12 @@ plugins {
 
 develocity {
   buildScan {
+    termsOfUseUrl.set("https://gradle.com/terms-of-service")
+    termsOfUseAgree.set("yes")
     capture {
       fileFingerprints.set(true)
     }
-//    publishing.onlyIf { false }
+    publishing.onlyIf { false }
   }
 }
 

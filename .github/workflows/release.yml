@@ -1,0 +1,107 @@
+# .github/workflows/release.yml
+name: Create Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write # Needed to create releases and upload assets
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    outputs:
+      RELEASE_UPLOAD_URL: ${{ steps.create_release.outputs.upload_url }}
+      CHANGELOG: ${{ steps.generate_changelog.outputs.changelog }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for changelog generation
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Generate Changelog
+        id: generate_changelog
+        uses: mikepenz/release-changelog-builder-action@v4
+        with:
+          configurationJson: |
+            {
+              "categories": [
+                {
+                  "title": "## ✨ Features",
+                  "labels": ["feature", "feat"]
+                },
+                {
+                  "title": "## 🐛 Bug Fixes",
+                  "labels": ["fix", "bugfix", "bug"]
+                },
+                {
+                  "title": "## 🚀 Performance Improvements",
+                  "labels": ["enhancement", "perf"]
+                },
+                {
+                  "title": "## 📄 Documentation",
+                  "labels": ["docs", "documentation"]
+                },
+                {
+                  "title": "## ⚙️ Refactoring",
+                  "labels": ["refactor", "refactoring"]
+                },
+                {
+                  "title": "## 🧪 Chores & Maintenance",
+                  "labels": ["chore", "ci", "build", "test"]
+                }
+              ],
+              "ignore_labels": ["ignore"],
+              "template": "# What's New\n\n{{CHANGELOG}}\n\n**Full Changelog**: {{FROM_TAG}}...{{TO_TAG}}"
+            }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Decode Keystore
+        id: decode_keystore
+        run: |
+          echo "${{ secrets.SIGNING_KEYSTORE_BASE64 }}" | base64 --decode > ${{ github.workspace }}/release.keystore
+        # Ensure secrets are set in GitHub: SIGNING_KEYSTORE_BASE64
+
+      - name: Build Release AAB
+        run: ./gradlew bundleRelease
+        env:
+          ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release.keystore
+          ANDROID_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          ANDROID_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          # Ensure secrets are set in GitHub: SIGNING_KEY_ALIAS, SIGNING_STORE_PASSWORD, SIGNING_KEY_PASSWORD
+
+      - name: Build Release APK
+        run: ./gradlew assembleRelease
+        env:
+          ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release.keystore
+          ANDROID_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          ANDROID_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          # Ensure secrets are set in GitHub: SIGNING_KEY_ALIAS, SIGNING_STORE_PASSWORD, SIGNING_KEY_PASSWORD
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            app/build/outputs/bundle/release/app-release.aab
+            app/build/outputs/apk/release/app-release.apk
+          body: ${{ steps.generate_changelog.outputs.changelog }}
+          # The tag will be taken from the push event
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

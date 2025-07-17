@@ -5,7 +5,7 @@ on:
   workflow_dispatch: # Allows manual triggering
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+(-(alpha|beta).[0-9]+)?' # Matches vX.Y.Z, vX.Y.Z-alpha.N, vX.Y.Z-beta.N
+      - 'v[0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta|test)\.\w+)?' # Matches vX.Y.Z, vX.Y.Z-alpha.SUFFIX, vX.Y.Z-beta.SUFFIX, vX.Y.Z-test.SUFFIX
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -113,7 +113,7 @@ jobs:
           # Ensure secrets are set in GitHub: SIGNING_KEY_ALIAS, SIGNING_STORE_PASSWORD, SIGNING_KEY_PASSWORD
 
       - name: Upload AAB to Google Play
-        if: success()
+        if: success() && !contains(github.ref_name, '-test.')
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
@@ -132,6 +132,6 @@ jobs:
           files: |
             app/build/outputs/bundle/release/app-release.aab
             app/build/outputs/apk/release/app-release.apk
-          prerelease: ${{ contains(github.ref_name, '-alpha') || contains(github.ref_name, '-beta') }} # Mark as pre-release if tag contains -alpha or -beta
+          prerelease: ${{ contains(github.ref_name, '-alpha') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-test.') }} # Mark as pre-release if tag contains -alpha, -beta or -test.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

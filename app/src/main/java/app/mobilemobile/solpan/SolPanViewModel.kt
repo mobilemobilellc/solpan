@@ -23,6 +23,7 @@ import app.mobilemobile.solpan.data.OptimalPanelParameters
 import app.mobilemobile.solpan.data.TiltMode
 import app.mobilemobile.solpan.solar.SolarCalculator
 import app.mobilemobile.solpan.ui.SolPan
+import java.time.ZonedDateTime
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -34,7 +35,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import java.time.ZonedDateTime
 
 private const val EARTH_AXIAL_TILT = 23.5
 

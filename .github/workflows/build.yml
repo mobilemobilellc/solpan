@@ -7,6 +7,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,6 +24,8 @@ jobs:
         with:
           java-version: '21'
           distribution: 'jetbrains'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Decode google-services.json
         env:
@@ -44,7 +50,7 @@ jobs:
       - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest --scan
 
-      - name: Build Debug APK
+      - name: Build Debug APK for CI
         run: ./gradlew assembleDebug --scan
 
       - name: Upload Debug APK

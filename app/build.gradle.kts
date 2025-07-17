@@ -33,16 +33,33 @@ android {
     applicationId = "app.mobilemobile.solpan"
     minSdk = 26
     targetSdk = 36
-    versionCode = 1
-    versionName = "1.0"
+    versionCode = (findProperty("appVersionCode") as String? ?: "1").toInt()
+    versionName = findProperty("appVersionName") as String? ?: "1.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+  }
+
+  signingConfigs {
+    create("release") {
+      val keystoreFileFromEnv = System.getenv("ANDROID_KEYSTORE_PATH")
+      val keyAliasFromEnv = System.getenv("ANDROID_KEY_ALIAS")
+      val storePasswordFromEnv = System.getenv("ANDROID_STORE_PASSWORD")
+      val keyPasswordFromEnv = System.getenv("ANDROID_KEY_PASSWORD")
+
+      if (keystoreFileFromEnv != null && file(keystoreFileFromEnv).exists()) {
+        storeFile = file(keystoreFileFromEnv)
+        this.keyAlias = keyAliasFromEnv
+        this.storePassword = storePasswordFromEnv
+        this.keyPassword = keyPasswordFromEnv
+      }
+    }
   }
 
   buildTypes {
     release {
       isMinifyEnabled = true
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+      signingConfig = signingConfigs.getByName("release")
     }
   }
   buildFeatures {
@@ -51,7 +68,7 @@ android {
   }
 }
 
-kotlin { jvmToolchain(17) }
+kotlin { jvmToolchain(21) }
 
 dependencies {
   androidTestImplementation(platform(libs.androidx.compose.bom))

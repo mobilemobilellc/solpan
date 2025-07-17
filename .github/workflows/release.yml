@@ -2,10 +2,18 @@
 name: Create Release
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Allows manual triggering
+  push:
+    tags:
+      - 'v[0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta|test)\.\w+)?' # Matches vX.Y.Z, vX.Y.Z-alpha.SUFFIX, vX.Y.Z-beta.SUFFIX, vX.Y.Z-test.SUFFIX
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
-  contents: write # Needed to create releases and upload assets
+  contents: write
+  pull-requests: read
 
 jobs:
   release:
@@ -25,6 +33,14 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Decode google-services.json
+        env:
+          GOOGLE_SERVICES_JSON_BASE64: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
+        run: |
+          echo "$GOOGLE_SERVICES_JSON_BASE64" | base64 --decode > app/google-services.json
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -65,10 +81,15 @@ jobs:
                 }
               ],
               "ignore_labels": ["ignore"],
-              "template": "# What's New\n\n{{CHANGELOG}}\n\n**Full Changelog**: {{FROM_TAG}}...{{TO_TAG}}"
+              "template": "# What\'s New\n\n{{CHANGELOG}}\n\n**Full Changelog**: {{FROM_TAG}}...{{TO_TAG}}"
             }
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prepare Play Store Release Notes
+        run: |
+          mkdir -p play_store_release_notes/en-US
+          echo "${{ steps.generate_changelog.outputs.changelog }}" > play_store_release_notes/en-US/default.txt
 
       - name: Decode Keystore
         id: decode_keystore
@@ -76,8 +97,12 @@ jobs:
           echo "${{ secrets.SIGNING_KEYSTORE_BASE64 }}" | base64 --decode > ${{ github.workspace }}/release.keystore
         # Ensure secrets are set in GitHub: SIGNING_KEYSTORE_BASE64
 
+      - name: Determine Version Name from Tag
+        id: get_version
+        run: echo "APP_VERSION_NAME=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV # Removes 'v' prefix from tag for version name
+
       - name: Build Release AAB
-        run: ./gradlew bundleRelease
+        run: ./gradlew bundleRelease -PappVersionName=${{ env.APP_VERSION_NAME }} -PappVersionCode=${{ github.run_number }}
         env:
           ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release.keystore
           ANDROID_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
@@ -86,7 +111,7 @@ jobs:
           # Ensure secrets are set in GitHub: SIGNING_KEY_ALIAS, SIGNING_STORE_PASSWORD, SIGNING_KEY_PASSWORD
 
       - name: Build Release APK
-        run: ./gradlew assembleRelease
+        run: ./gradlew assembleRelease -PappVersionName=${{ env.APP_VERSION_NAME }} -PappVersionCode=${{ github.run_number }}
         env:
           ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release.keystore
           ANDROID_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
@@ -94,14 +119,26 @@ jobs:
           ANDROID_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
           # Ensure secrets are set in GitHub: SIGNING_KEY_ALIAS, SIGNING_STORE_PASSWORD, SIGNING_KEY_PASSWORD
 
+      - name: Upload AAB to Google Play
+        if: success() && github.ref_type == 'tag' && !contains(github.ref_name, '-test.')
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
+          packageName: app.mobilemobile.solpan
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          track: ${{ contains(github.ref_name, '-alpha') && 'alpha' || contains(github.ref_name, '-beta') && 'beta' || 'production' }}
+          whatsNewDirectory: ./play_store_release_notes/ # Use the generated release notes
+
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.ref_name }} # Use the tag that triggered the workflow
+          name: Release ${{ env.APP_VERSION_NAME }}
+          body: ${{ steps.generate_changelog.outputs.changelog }}
           files: |
             app/build/outputs/bundle/release/app-release.aab
             app/build/outputs/apk/release/app-release.apk
-          body: ${{ steps.generate_changelog.outputs.changelog }}
-          # The tag will be taken from the push event
+          prerelease: ${{ contains(github.ref_name, '-alpha') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-test.') }} # Mark as pre-release if tag contains -alpha, -beta or -test.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

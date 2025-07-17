@@ -14,42 +14,80 @@
  */
 package app.mobilemobile.solpan.ui
 
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
+import app.mobilemobile.solpan.SolPanViewModel
+import app.mobilemobile.solpan.data.TiltMode
 import app.mobilemobile.solpan.ui.aboutlibraries.AboutLibrariesScreen
 import app.mobilemobile.solpan.ui.screen.SolPanScreen
+import kotlinx.serialization.Serializable
 
-data object SolPan
+@Serializable data class SolPan(val mode: TiltMode) : NavKey
 
-data object AboutLibraries
+@Serializable data object AboutLibraries : NavKey
 
 @Composable
 fun SolPanApp() {
-  val backStack = remember { mutableStateListOf<Any>(SolPan) }
+  val backStack = rememberNavBackStack(SolPan(TiltMode.YEAR_ROUND))
 
-  NavDisplay(
-    backStack = backStack,
-    onBack = { backStack.removeLastOrNull() },
-    entryProvider = { key ->
-      when (key) {
-        is SolPan ->
-          NavEntry(key) {
-            SolPanScreen(
-              viewModel = viewModel(),
-              onNavigateToAboutLibraries = { backStack.add(AboutLibraries) },
-            )
-          }
-
-        is AboutLibraries ->
-          NavEntry(key) { AboutLibrariesScreen(onNavigateBack = { backStack.removeLastOrNull() }) }
-
-        else -> NavEntry(Unit) { Text(text = "Invalid Key: $it") }
+  NavigationSuiteScaffold(
+    navigationSuiteItems = {
+      TiltMode.entries.forEach { mode ->
+        val currentScreen = backStack.lastOrNull()
+        item(
+          selected = currentScreen is SolPan && currentScreen.mode == mode,
+          onClick = {
+            if (backStack.lastOrNull() != SolPan(mode)) {
+              backStack.clear()
+              backStack.add(SolPan(mode))
+            }
+          },
+          icon = {
+            Icon(imageVector = mode.icon, contentDescription = stringResource(id = mode.titleRes))
+          },
+          label = { Text(stringResource(id = mode.titleRes)) },
+        )
       }
-    },
-  )
+    }
+  ) {
+    NavDisplay(
+      entryDecorators =
+        listOf(
+          rememberSceneSetupNavEntryDecorator(),
+          rememberSavedStateNavEntryDecorator(),
+          rememberViewModelStoreNavEntryDecorator(),
+        ),
+      backStack = backStack,
+      onBack = { backStack.removeLastOrNull() },
+      entryProvider = { key ->
+        when (key) {
+          is SolPan ->
+            NavEntry(key) {
+              SolPanScreen(
+                viewModel = viewModel(factory = SolPanViewModel.Factory(key)),
+                onNavigateToAboutLibraries = { backStack.add(AboutLibraries) },
+              )
+            }
+
+          is AboutLibraries ->
+            NavEntry(key) {
+              AboutLibrariesScreen(onNavigateBack = { backStack.removeLastOrNull() })
+            }
+
+          else -> NavEntry(key) { error("Unknown key: $key") }
+        }
+      },
+    )
+  }
 }

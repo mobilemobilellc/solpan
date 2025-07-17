@@ -39,7 +39,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -60,7 +59,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import app.mobilemobile.solpan.BuildConfig
 import app.mobilemobile.solpan.R
 import app.mobilemobile.solpan.SolPanViewModel
-import app.mobilemobile.solpan.data.TiltMode
+import app.mobilemobile.solpan.data.LocationData
+import app.mobilemobile.solpan.data.OptimalPanelParameters
+import app.mobilemobile.solpan.data.OrientationData
 import app.mobilemobile.solpan.location.rememberDeviceLocationController
 import app.mobilemobile.solpan.orientation.rememberDeviceOrientationController
 import app.mobilemobile.solpan.ui.components.HelpGuidanceDialog
@@ -72,6 +73,7 @@ import app.mobilemobile.solpan.ui.screen.components.TargetParametersCard
 import app.mobilemobile.solpan.ui.theme.SolPanTheme
 import app.mobilemobile.solpan.util.displayName
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.logEvent
@@ -83,10 +85,7 @@ import com.google.firebase.ktx.Firebase
   ExperimentalMaterial3ExpressiveApi::class,
 )
 @Composable
-fun SolPanScreen(
-  viewModel: SolPanViewModel = viewModel(),
-  onNavigateToAboutLibraries: () -> Unit = {},
-) {
+fun SolPanScreen(viewModel: SolPanViewModel, onNavigateToAboutLibraries: () -> Unit = {}) {
   val context = LocalContext.current
   val preferences =
     context.getSharedPreferences(
@@ -140,134 +139,137 @@ fun SolPanScreen(
       viewModel.updateLocation(null)
     }
   }
-
-  NavigationSuiteScaffold(
-    navigationSuiteItems = {
-      TiltMode.entries.forEach { mode ->
-        item(
-          selected = mode == currentSelectedMode,
-          onClick = { viewModel.setTiltMode(mode) },
-          icon = {
-            Icon(imageVector = mode.icon, contentDescription = stringResource(id = mode.titleRes))
-          },
-          label = { Text(stringResource(id = mode.titleRes)) },
-        )
-      }
-    }
-  ) {
-    val scrollBehavior =
-      TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-    var showOverflowMenu by remember { mutableStateOf(false) }
-    Scaffold(
-      modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-      topBar = {
-        TopAppBar(
-          scrollBehavior = scrollBehavior,
-          title = { Text(stringResource(id = R.string.solar_app_screen_title)) },
-          subtitle = {
-            Text(
-              stringResource(
-                id = R.string.solar_app_screen_subtitle_tilt_mode,
-                currentSelectedMode.displayName(),
-              )
+  val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+  var showOverflowMenu by remember { mutableStateOf(false) }
+  Scaffold(
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    topBar = {
+      TopAppBar(
+        scrollBehavior = scrollBehavior,
+        title = { Text(stringResource(id = R.string.solar_app_screen_title)) },
+        subtitle = {
+          Text(
+            stringResource(
+              id = R.string.solar_app_screen_subtitle_tilt_mode,
+              currentSelectedMode.displayName(),
             )
-          },
-          colors =
-            TopAppBarDefaults.topAppBarColors(
-              containerColor = MaterialTheme.colorScheme.primaryContainer,
-              titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            ),
-          actions = {
-            IconButton(
-              onClick = {
-                showHelpDialog = true
-                analytics.logEvent("start_tutorial", null)
-              }
-            ) {
-              Icon(
-                imageVector = Icons.AutoMirrored.Filled.HelpOutline,
-                contentDescription = stringResource(id = R.string.help_dialog_title),
-              )
+          )
+        },
+        colors =
+          TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+          ),
+        actions = {
+          IconButton(
+            onClick = {
+              showHelpDialog = true
+              analytics.logEvent("start_tutorial", null)
             }
-            Box {
-              IconButton(onClick = { showOverflowMenu = !showOverflowMenu }) {
-                Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "More options")
-              }
-              DropdownMenu(
-                expanded = showOverflowMenu,
-                onDismissRequest = { showOverflowMenu = false },
-              ) {
-                if (BuildConfig.DEBUG) {
-                  DropdownMenuItem(
-                    text = { Text("Toggle Fake Alignment") },
-                    onClick = {
-                      viewModel.toggleDebugFakeAlignment()
-                      showOverflowMenu = false
-                    },
-                    leadingIcon = {
-                      Icon(
-                        imageVector = Icons.Filled.BugReport,
-                        contentDescription = "Toggle Fake Alignment",
-                        tint =
-                          if (debugFakeAlignmentActive) {
-                            MaterialTheme.colorScheme.error
-                          } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant
-                          },
-                      )
-                    },
-                  )
-                }
+          ) {
+            Icon(
+              imageVector = Icons.AutoMirrored.Filled.HelpOutline,
+              contentDescription = stringResource(id = R.string.help_dialog_title),
+            )
+          }
+          Box {
+            IconButton(onClick = { showOverflowMenu = !showOverflowMenu }) {
+              Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "More options")
+            }
+            DropdownMenu(
+              expanded = showOverflowMenu,
+              onDismissRequest = { showOverflowMenu = false },
+            ) {
+              if (BuildConfig.DEBUG) {
                 DropdownMenuItem(
-                  text = { Text(stringResource(id = R.string.about_libraries)) },
+                  text = { Text("Toggle Fake Alignment") },
                   onClick = {
-                    onNavigateToAboutLibraries()
+                    viewModel.toggleDebugFakeAlignment()
                     showOverflowMenu = false
+                  },
+                  leadingIcon = {
+                    Icon(
+                      imageVector = Icons.Filled.BugReport,
+                      contentDescription = "Toggle Fake Alignment",
+                      tint =
+                        if (debugFakeAlignmentActive) {
+                          MaterialTheme.colorScheme.error
+                        } else {
+                          MaterialTheme.colorScheme.onSurfaceVariant
+                        },
+                    )
                   },
                 )
               }
+              DropdownMenuItem(
+                text = { Text(stringResource(id = R.string.about_libraries)) },
+                onClick = {
+                  onNavigateToAboutLibraries()
+                  showOverflowMenu = false
+                },
+              )
             }
-          },
-        )
-      },
-    ) { contentPadding ->
-      LazyVerticalStaggeredGrid(
-        modifier = Modifier.fillMaxSize().padding(contentPadding),
-        columns = StaggeredGridCells.Adaptive(240.dp),
-        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
-        verticalItemSpacing = 8.dp,
-        horizontalArrangement = spacedBy(8.dp),
-      ) {
-        if (!locationPermissionsState.allPermissionsGranted) {
-          item { PermissionRequestCard(locationPermissionsState) }
-        }
+          }
+        },
+      )
+    },
+  ) { contentPadding ->
+    SolPanScreenContent(
+      contentPadding,
+      locationPermissionsState,
+      currentOrientation,
+      optimalParams,
+      debugFakeAlignmentActive,
+      vmLocation,
+    )
+  }
+}
 
-        item {
-          AzimuthVisualizerCard(
-            currentOrientation = currentOrientation,
-            targetParameters = optimalParams,
-            debugFakeAlignmentActive = debugFakeAlignmentActive,
-          )
-        }
+@Composable
+@OptIn(ExperimentalPermissionsApi::class)
+private fun SolPanScreenContent(
+  contentPadding: PaddingValues,
+  locationPermissionsState: MultiplePermissionsState,
+  currentOrientation: OrientationData,
+  optimalParams: OptimalPanelParameters?,
+  debugFakeAlignmentActive: Boolean,
+  vmLocation: LocationData?,
+) {
+  LazyVerticalStaggeredGrid(
+    modifier = Modifier.fillMaxSize().padding(contentPadding),
+    columns = StaggeredGridCells.Adaptive(240.dp),
+    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
+    verticalItemSpacing = 8.dp,
+    horizontalArrangement = spacedBy(8.dp),
+  ) {
+    if (!locationPermissionsState.allPermissionsGranted) {
+      item { PermissionRequestCard(locationPermissionsState) }
+    }
 
-        item {
-          GuidanceCard(
-            currentOrientation = currentOrientation,
-            targetParameters = optimalParams,
-            debugFakeAlignmentActive = debugFakeAlignmentActive,
-          )
-        }
+    item {
+      AzimuthVisualizerCard(
+        currentOrientation = currentOrientation,
+        targetParameters = optimalParams,
+        debugFakeAlignmentActive = debugFakeAlignmentActive,
+      )
+    }
 
-        item { CurrentOrientationCard(currentOrientation) }
+    item {
+      GuidanceCard(
+        currentOrientation = currentOrientation,
+        targetParameters = optimalParams,
+        debugFakeAlignmentActive = debugFakeAlignmentActive,
+      )
+    }
 
-        item {
-          TargetParametersCard(
-            optimalParams,
-            vmLocation,
-            locationPermissionsState.allPermissionsGranted,
-          )
-        }
-      }
+    item { CurrentOrientationCard(currentOrientation) }
+
+    item {
+      TargetParametersCard(
+        optimalParams,
+        vmLocation,
+        locationPermissionsState.allPermissionsGranted,
+      )
     }
   }
 }

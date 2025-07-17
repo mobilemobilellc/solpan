@@ -22,7 +22,9 @@ import androidx.compose.material.icons.filled.Cached
 import androidx.compose.material.icons.filled.Eco
 import androidx.compose.material.icons.filled.WbSunny
 import androidx.compose.ui.graphics.vector.ImageVector
+import kotlinx.serialization.Serializable
 
+@Serializable
 enum class TiltMode(@param:StringRes val titleRes: Int, val icon: ImageVector) {
   YEAR_ROUND(
     titleRes = app.mobilemobile.solpan.R.string.tilt_mode_year_round,

@@ -16,12 +16,13 @@ package app.mobilemobile.solpan
 
 import android.hardware.GeomagneticField
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import app.mobilemobile.solpan.data.LocationData
 import app.mobilemobile.solpan.data.OptimalPanelParameters
 import app.mobilemobile.solpan.data.TiltMode
 import app.mobilemobile.solpan.solar.SolarCalculator
-import java.time.ZonedDateTime
+import app.mobilemobile.solpan.ui.SolPan
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -33,15 +34,22 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import java.time.ZonedDateTime
 
 private const val EARTH_AXIAL_TILT = 23.5
 
 @OptIn(FlowPreview::class)
-class SolPanViewModel : ViewModel() {
+class SolPanViewModel(key: SolPan) : ViewModel() {
+  class Factory(private val key: SolPan) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+      return SolPanViewModel(key) as T
+    }
+  }
+
   private val _currentLocation = MutableStateFlow<LocationData?>(null)
   val currentLocation: StateFlow<LocationData?> = _currentLocation.asStateFlow()
 
-  private val _selectedTiltModeFlow = MutableStateFlow(TiltMode.YEAR_ROUND)
+  private val _selectedTiltModeFlow = MutableStateFlow(key.mode)
   val selectedTiltModeFlow: StateFlow<TiltMode> = _selectedTiltModeFlow.asStateFlow()
 
   private val _debugFakeAlignmentActive = MutableStateFlow(false)
@@ -145,9 +153,5 @@ class SolPanViewModel : ViewModel() {
       mode = mode,
       magneticDeclination = declination,
     )
-  }
-
-  fun setTiltMode(newMode: TiltMode) {
-    _selectedTiltModeFlow.value = newMode
   }
 }

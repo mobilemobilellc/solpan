@@ -120,7 +120,7 @@ jobs:
           # Ensure secrets are set in GitHub: SIGNING_KEY_ALIAS, SIGNING_STORE_PASSWORD, SIGNING_KEY_PASSWORD
 
       - name: Upload AAB to Google Play
-        if: success() && !contains(github.ref_name, '-test.')
+        if: success() && github.ref_type == 'tag' && !contains(github.ref_name, '-test.')
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}

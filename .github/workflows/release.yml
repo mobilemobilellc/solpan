@@ -116,5 +116,5 @@ jobs:
           packageName: app.mobilemobile.solpan
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
           track: ${{ (contains(github.ref_name, '-alpha') && 'alpha') || (contains(github.ref_name, '-beta') && 'beta') || (contains(github.ref_name, '-test.') && 'internal') || 'production' }}
-          status: ${{ contains(github.ref_name, '-test.') && 'draft' || 'completed' }}
+          status: 'draft'
           whatsNewDirectory: ./play_store_release_notes/ # Use the generated release notes

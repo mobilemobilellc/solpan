@@ -5,11 +5,11 @@
 </p>
 
 <p align="center">
-  <a href="https://play.google.com/store/apps/details?id=your.package.id">
+  <a href="https://play.google.com/store/apps/details?id=app.mobilemobile.solpan">
     <img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="80"/>
   </a>
   <a href="https://github.com/your-username/SolPan/releases">
-    <img alt="Download on GitHub" src="https://img.shields.io/github/v/release/your-username/SolPan?label=GitHub&logo=github&color=blue" height="55"/>
+    <img alt="Download on GitHub" src="https://img.shields.io/github/v/release/mobilemobilellc/solpan?label=GitHub&logo=github&color=blue" height="55"/>
   </a>
 </p>
 

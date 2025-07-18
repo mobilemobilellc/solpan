@@ -75,17 +75,8 @@ jobs:
         id: get_version
         run: echo "APP_VERSION_NAME=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV # Removes 'v' prefix from tag for version name
 
-      - name: Build Release AAB
-        run: ./gradlew bundleRelease -PappVersionName=${{ env.APP_VERSION_NAME }} -PappVersionCode=${{ github.run_number }}
-        env:
-          ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release.keystore
-          ANDROID_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-          ANDROID_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
-          ANDROID_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
-          # Ensure secrets are set in GitHub: SIGNING_KEY_ALIAS, SIGNING_STORE_PASSWORD, SIGNING_KEY_PASSWORD
-
-      - name: Build Release APK
-        run: ./gradlew assembleRelease -PappVersionName=${{ env.APP_VERSION_NAME }} -PappVersionCode=${{ github.run_number }}
+      - name: Build Release Artifacts (AAB and APK)
+        run: ./gradlew :app:bundleRelease :app:assembleRelease -PappVersionName=${{ env.APP_VERSION_NAME }} -PappVersionCode=${{ github.run_number }} --parallel --continue --scan
         env:
           ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release.keystore
           ANDROID_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}

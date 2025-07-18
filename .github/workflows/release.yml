@@ -54,7 +54,7 @@ jobs:
         with:
           configuration: ".github/changelog-config.json"
           owner: mobilemobilellc
-          repository: solpan
+          repo: solpan
           ignorePreReleases: false
           failOnError: true
           fetchViaCommits: true

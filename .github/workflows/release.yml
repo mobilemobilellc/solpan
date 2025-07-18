@@ -81,7 +81,7 @@ jobs:
                 }
               ],
               "ignore_labels": ["ignore"],
-              "template": "# What\'s New\n\n{{CHANGELOG}}\n\n**Full Changelog**: {{FROM_TAG}}...{{TO_TAG}}"
+              "template": "# What's New\n\n{{CHANGELOG}}\n\n**Full Changelog**: {{FROM_TAG}}...{{TO_TAG}}"
             }
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -134,11 +134,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload AAB to Google Play
-        if: success() && github.ref_type == 'tag' && !contains(github.ref_name, '-test.')
+        if: success() && github.ref_type == 'tag'
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
           packageName: app.mobilemobile.solpan
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
-          track: ${{ contains(github.ref_name, '-alpha') && 'alpha' || contains(github.ref_name, '-beta') && 'beta' || 'production' }}
+          track: ${{ (contains(github.ref_name, '-alpha') && 'alpha') || (contains(github.ref_name, '-beta') && 'beta') || (contains(github.ref_name, '-test.') && 'internal') || 'production' }}
+          status: ${{ contains(github.ref_name, '-test.') && 'draft' || 'completed' }}
           whatsNewDirectory: ./play_store_release_notes/ # Use the generated release notes

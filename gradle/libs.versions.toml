@@ -1,5 +1,5 @@
 [versions]
-aboutLibraries = "13.0.0-a01"
+aboutLibraries = "13.0.0-pre-a02"
 accompanistPermissions = "0.37.3"
 activityCompose = "1.10.1"
 agp = "8.11.1"

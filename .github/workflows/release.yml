@@ -52,37 +52,12 @@ jobs:
         id: generate_changelog
         uses: mikepenz/release-changelog-builder-action@v4
         with:
-          configurationJson: |
-            {
-              "categories": [
-                {
-                  "title": "## ✨ Features",
-                  "labels": ["feature", "feat"]
-                },
-                {
-                  "title": "## 🐛 Bug Fixes",
-                  "labels": ["fix", "bugfix", "bug"]
-                },
-                {
-                  "title": "## 🚀 Performance Improvements",
-                  "labels": ["enhancement", "perf"]
-                },
-                {
-                  "title": "## 📄 Documentation",
-                  "labels": ["docs", "documentation"]
-                },
-                {
-                  "title": "## ⚙️ Refactoring",
-                  "labels": ["refactor", "refactoring"]
-                },
-                {
-                  "title": "## 🧪 Chores & Maintenance",
-                  "labels": ["chore", "ci", "build", "test"]
-                }
-              ],
-              "ignore_labels": ["ignore"],
-              "template": "# What's New\n\n{{CHANGELOG}}\n\n**Full Changelog**: {{FROM_TAG}}...{{TO_TAG}}"
-            }
+          configuration: ".github/changelog-config.json"
+          owner: mobilemobilellc
+          repository: solpan
+          ignorePreReleases: false
+          failOnError: true
+          fetchViaCommits: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

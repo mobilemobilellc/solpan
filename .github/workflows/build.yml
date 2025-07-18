@@ -44,14 +44,8 @@ jobs:
       # - name: Run Detekt
       #   run: ./gradlew detekt
 
-      - name: Run Spotless Check
-        run: ./gradlew spotlessCheck --scan
-
-      - name: Run Unit Tests
-        run: ./gradlew testDebugUnitTest --scan
-
-      - name: Build Debug APK for CI
-        run: ./gradlew assembleDebug --scan
+      - name: Run checks and build debug APK
+        run: ./gradlew spotlessCheck :app:testDebugUnitTest :app:assembleDebug --parallel --continue --scan
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4

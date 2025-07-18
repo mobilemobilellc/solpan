@@ -38,8 +38,5 @@ jobs:
         with:
           cache-read-only: false # Allow merge queue runs to write to cache
 
-      - name: Run Unit Tests
-        run: ./gradlew :app:testDebugUnitTest --scan
-
-      - name: Build Debug APK for CI
-        run: ./gradlew :app:assembleDebug --scan
+      - name: Run checks and build debug APK
+        run: ./gradlew :app:testDebugUnitTest :app:assembleDebug --parallel --continue --scan

@@ -40,3 +40,7 @@ jobs:
 
       - name: Run checks and build debug APK
         run: ./gradlew :app:testDebugUnitTest :app:assembleDebug --parallel --continue --scan
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v5
+        if: success() || failure()

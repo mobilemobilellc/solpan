@@ -119,16 +119,6 @@ jobs:
           ANDROID_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
           # Ensure secrets are set in GitHub: SIGNING_KEY_ALIAS, SIGNING_STORE_PASSWORD, SIGNING_KEY_PASSWORD
 
-      - name: Upload AAB to Google Play
-        if: success() && github.ref_type == 'tag' && !contains(github.ref_name, '-test.')
-        uses: r0adkll/upload-google-play@v1
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
-          packageName: app.mobilemobile.solpan
-          releaseFiles: app/build/outputs/bundle/release/app-release.aab
-          track: ${{ contains(github.ref_name, '-alpha') && 'alpha' || contains(github.ref_name, '-beta') && 'beta' || 'production' }}
-          whatsNewDirectory: ./play_store_release_notes/ # Use the generated release notes
-
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v2
@@ -142,3 +132,13 @@ jobs:
           prerelease: ${{ contains(github.ref_name, '-alpha') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-test.') }} # Mark as pre-release if tag contains -alpha, -beta or -test.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload AAB to Google Play
+        if: success() && github.ref_type == 'tag' && !contains(github.ref_name, '-test.')
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
+          packageName: app.mobilemobile.solpan
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          track: ${{ contains(github.ref_name, '-alpha') && 'alpha' || contains(github.ref_name, '-beta') && 'beta' || 'production' }}
+          whatsNewDirectory: ./play_store_release_notes/ # Use the generated release notes

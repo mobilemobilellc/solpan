@@ -57,7 +57,7 @@ jobs:
               "categories": [
                 {
                   "title": "## ✨ Features",
-                  "labels": ["feature", "feat"]
+                  "labels": ["feature", "feat", "enhancement", "new"]
                 },
                 {
                   "title": "## 🐛 Bug Fixes",

@@ -26,7 +26,7 @@ material3AdaptiveNavigationSuite = "1.3.2"
 materialIconsCore = "1.7.8"
 nav3Core = "1.0.0-SNAPSHOT"
 playServicesLocation = "21.3.0"
-spotless = "7.1.0"
+spotless = "7.2.1"
 
 [libraries]
 aboutlibraries-compose-m3 = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref = "aboutLibraries" }

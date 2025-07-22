@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2025 MobileMobile LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under
+  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  ~ OF ANY KIND, either express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<resources>
+      
+  <string name="app_name">SolPan</string>
+      
+  <string name="permission_card_icon_desc">Cần có sự cho phép của vị trí</string>
+      
+  <string name="permission_card_rationale_text">Tính toán năng lượng mặt trời chính xác đòi hỏi phải có vị trí của bạn. Xin hãy cấp quyền.</string>
+      
+  <string name="permission_card_essential_text">Quyền truy cập vị trí là điều cần thiết để ứng dụng này hoạt động chính xác.</string>
+      
+  <string name="permission_card_button_text">Yêu cầu quyền</string>
+      
+  <string name="current_orientation_card_title">Định hướng thiết bị hiện tại</string>
+      
+  <string name="current_orientation_azimuth_label">Phương vị (Từ tính):</string>
+      
+  <string name="current_orientation_pitch_label">Độ nghiêng (Độ nghiêng):</string>
+      
+  <string name="current_orientation_roll_label">Cuộn:</string>
+      
+  <string name="current_orientation_accuracy_label">Độ chính xác của cảm biến:</string>
+      
+  <string name="target_param_card_title">Thiết lập bảng điều khiển mục tiêu</string>
+      
+  <string name="target_param_mode_label">Cách thức:</string>
+      
+  <string name="target_param_true_azimuth_label">Mục tiêu phương vị thực:</string>
+      
+  <string name="target_param_magnetic_azimuth_label">Phương vị từ mục tiêu:</string>
+      
+  <string name="target_param_magnetic_azimuth_calculating_label">Phương vị từ:</string>
+      
+  <string name="calculating_text">Đang tính toán…</string>
+      
+  <string name="target_param_tilt_label">Độ nghiêng của tấm mục tiêu:</string>
+      
+  <string name="target_param_declination_label">Độ từ thiên:</string>
+      
+  <string name="target_param_waiting_location_text">Đang tính toán… Đang chờ vị trí…</string>
+      
+  <string name="target_param_grant_permission_text">Cấp quyền vị trí để xem các thông số mục tiêu.</string>
+      
+  <string name="target_param_current_location_label">Vị trí hiện tại</string>
+      
+  <string name="target_param_latitude_label">Vĩ độ:</string>
+      
+  <string name="target_param_longitude_label">Kinh độ:</string>
+      
+  <string name="target_param_accuracy_label">Sự chính xác:</string>
+      
+  <string name="target_param_value_degree_unit">%1$.1f°</string>
+      
+  <string name="target_param_value_degree_aim_unit">%1$.1f° (Mục tiêu)</string>
+      
+  <string name="target_param_value_degree_horizontal_unit">%1$.1f° (so với phương ngang)</string>
+      
+  <string name="target_param_value_meter_unit">%1$.1f phút</string>
+      
+  <string name="guidance_card_title">Hướng dẫn căn chỉnh bảng điều khiển</string>
+   
+  <!-- Modified -->
+      
+  <string name="azimuth_visualizer_card_title">Công cụ trực quan hóa căn chỉnh thiết bị</string>
+   
+  <!-- Added -->
+      
+  <string name="guidance_waiting_for_target">Đang chờ các thông số mục tiêu để cung cấp hướng dẫn…</string>
+      
+  <string name="guidance_azimuth_aligned">Phương vị đã được căn chỉnh!</string>
+      
+  <string name="guidance_azimuth_rotate_right">Xoay thiết bị sang PHẢI (Theo chiều kim đồng hồ đến %1$s°)</string>
+      
+  <string name="guidance_azimuth_rotate_left">Xoay thiết bị sang TRÁI (Ngược chiều kim đồng hồ đến %1$s°)</string>
+      
+  <string name="guidance_tilt_optimal">Độ nghiêng là tối ưu!</string>
+      
+  <string name="guidance_tilt_up">Nghiêng thiết bị LÊN (Mục tiêu: %1$s°)</string>
+      
+  <string name="guidance_tilt_down">Nghiêng thiết bị XUỐNG (Mục tiêu: %1$s°)</string>
+      
+  <string name="guidance_roll_level">Thiết bị đã cân bằng!</string>
+      
+  <string name="guidance_roll_tilt_right_down">Mức độ: Nghiêng PHẢI XUỐNG (Mục tiêu: %1$s°)</string>
+      
+  <string name="guidance_roll_tilt_left_down">Mức độ: Nghiêng TRÁI XUỐNG (Mục tiêu: %1$s°)</string>
+      
+  <string name="guidance_roll_adjust_level">Điều chỉnh độ lăn cho cân bằng</string>
+      
+  <string name="guidance_level_device_title">Thiết bị cân bằng (Pitch &amp; Roll)</string>
+      
+  <string name="guidance_perfectly_aligned">Thiết bị được căn chỉnh hoàn hảo!</string>
+      
+  <string name="guidance_level_adjust_azimuth">Thiết bị ở trạng thái cân bằng, điều chỉnh phương vị.</string>
+      
+  <string name="guidance_adjust_bubble_azimuth">Điều chỉnh thiết bị để căn giữa bong bóng và căn chỉnh phương vị.</string>
+      
+  <string name="guidance_label_device_azimuth">Góc phương vị của thiết bị:</string>
+      
+  <string name="guidance_label_device_tilt">Độ nghiêng của thiết bị (Độ cao):</string>
+      
+  <string name="guidance_label_device_roll">Cuộn thiết bị (Cấp độ):</string>
+      
+  <string name="guidance_footer_instruction">Đặt điện thoại nằm phẳng trên tấm ốp, màn hình hướng lên trên. Căn chỉnh cạnh trên của điện thoại bằng cách sử dụng hướng dẫn phương vị ở trên. Bảng điều khiển khớp nghiêng.</string>
+      
+  <string name="guidance_footer_true_north_declination">Hướng dẫn phương vị dành cho hướng Bắc thực. (Độ nghiêng: %1$.1f°)</string>
+      
+  <string name="guidance_footer_magnetic_north">Hướng dẫn phương vị dành cho Bắc từ (la bàn).</string>
+      
+  <string name="guidance_row_current_value">Hiện tại: %s</string>
+      
+  <string name="guidance_row_target_value">Mục tiêu: %s</string>
+      
+  <string name="solar_app_screen_title">Bộ tối ưu hóa tấm pin mặt trời</string>
+      
+  <string name="solar_app_screen_subtitle_tilt_mode">Chế độ nghiêng: %s</string>
+      
+  <string name="help_dialog_title">Trợ giúp căn chỉnh bảng điều khiển</string>
+      
+  <string name="help_dialog_graphic_description">Đồ họa cho thấy điện thoại được đặt phẳng trên tấm pin mặt trời, cả hai đều hướng về phía mặt trời.</string>
+      
+  <string name="help_dialog_text_line1">1. Đặt điện thoại nằm phẳng trên tấm pin mặt trời, mặt màn hình hướng lên trên.</string>
+      
+  <string name="help_dialog_text_line2">2. Đặt cạnh trên của điện thoại thẳng hàng với cạnh trên (hoặc cao hơn) của tấm pin mặt trời.</string>
+      
+  <string name="help_dialog_text_line3">3. Sử dụng hướng dẫn phương vị trong ứng dụng để xoay toàn bộ bảng điều khiển cho đến khi căn chỉnh.</string>
+      
+  <string name="help_dialog_text_line4">4. Sử dụng thanh dẫn hướng nghiêng để điều chỉnh góc của tấm ốp cho đến khi đạt được độ tối ưu.</string>
+      
+  <string name="help_dialog_title_default">Trợ giúp &amp; Hướng dẫn</string>
+      
+  <string name="help_dialog_button_dismiss">Hiểu rồi!</string>
+      
+  <string name="sensor_accuracy_high">Cao</string>
+      
+  <string name="sensor_accuracy_medium">Trung bình</string>
+      
+  <string name="sensor_accuracy_low">Thấp</string>
+      
+  <string name="sensor_accuracy_unreliable">Không đáng tin cậy</string>
+      
+  <string name="sensor_accuracy_unknown">Không rõ</string>
+      
+  <string name="tilt_mode_year_round">quanh năm</string>
+      
+  <string name="tilt_mode_summer">Mùa hè</string>
+      
+  <string name="tilt_mode_winter">Mùa đông</string>
+      
+  <string name="tilt_mode_spring_autumn">Mùa xuân/Mùa thu</string>
+      
+  <string name="tilt_mode_realtime">Thời gian thực</string>
+      
+  <string name="about_libraries">Giới thiệu về Thư viện</string>
+      
+  <string name="back">Mặt sau</string>
+      
+  <string name="buy_me_a_coffee">Mua cho tôi một tách cà phê ☕️</string>
+  
+</resources>

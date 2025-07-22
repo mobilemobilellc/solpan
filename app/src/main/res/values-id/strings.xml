@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2025 MobileMobile LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under
+  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  ~ OF ANY KIND, either express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<resources>
+      
+  <string name="app_name">SolPan</string>
+      
+  <string name="permission_card_icon_desc">Diperlukan Izin Lokasi</string>
+      
+  <string name="permission_card_rationale_text">Perhitungan surya yang akurat memerlukan lokasi Anda. Mohon berikan izin.</string>
+      
+  <string name="permission_card_essential_text">Izin lokasi penting agar aplikasi ini berfungsi dengan benar.</string>
+      
+  <string name="permission_card_button_text">Minta Izin</string>
+      
+  <string name="current_orientation_card_title">Orientasi Perangkat Saat Ini</string>
+      
+  <string name="current_orientation_azimuth_label">Azimuth (Magnetik):</string>
+      
+  <string name="current_orientation_pitch_label">Pitch (Kemiringan):</string>
+      
+  <string name="current_orientation_roll_label">Gulungan:</string>
+      
+  <string name="current_orientation_accuracy_label">Akurasi Sensor:</string>
+      
+  <string name="target_param_card_title">Pengaturan Panel Target</string>
+      
+  <string name="target_param_mode_label">Mode:</string>
+      
+  <string name="target_param_true_azimuth_label">Target Azimuth Sejati:</string>
+      
+  <string name="target_param_magnetic_azimuth_label">Target Azimuth Magnetik:</string>
+      
+  <string name="target_param_magnetic_azimuth_calculating_label">Azimuth Magnetik:</string>
+      
+  <string name="calculating_text">Menghitung…</string>
+      
+  <string name="target_param_tilt_label">Kemiringan Panel Target:</string>
+      
+  <string name="target_param_declination_label">Deklinasi Magnetik:</string>
+      
+  <string name="target_param_waiting_location_text">Menghitung… Menunggu lokasi…</string>
+      
+  <string name="target_param_grant_permission_text">Berikan izin lokasi untuk melihat parameter target.</string>
+      
+  <string name="target_param_current_location_label">Lokasi Saat Ini</string>
+      
+  <string name="target_param_latitude_label">Lintang:</string>
+      
+  <string name="target_param_longitude_label">Garis bujur:</string>
+      
+  <string name="target_param_accuracy_label">Ketepatan:</string>
+      
+  <string name="target_param_value_degree_unit">%1$.1f°</string>
+      
+  <string name="target_param_value_degree_aim_unit">%1$.1f° (Bidik)</string>
+      
+  <string name="target_param_value_degree_horizontal_unit">%1$.1f° (dari horizontal)</string>
+      
+  <string name="target_param_value_meter_unit">%1$.1fM</string>
+      
+  <string name="guidance_card_title">Petunjuk Penyelarasan Panel</string>
+   
+  <!-- Modified -->
+      
+  <string name="azimuth_visualizer_card_title">Visualizer Penyelarasan Perangkat</string>
+   
+  <!-- Added -->
+      
+  <string name="guidance_waiting_for_target">Menunggu parameter target untuk memberikan panduan…</string>
+      
+  <string name="guidance_azimuth_aligned">Azimuth sejajar!</string>
+      
+  <string name="guidance_azimuth_rotate_right">Putar perangkat ke KANAN (Searah jarum jam hingga %1$s°)</string>
+      
+  <string name="guidance_azimuth_rotate_left">Putar perangkat ke KIRI (Berlawanan Arah Jarum Jam hingga %1$s°)</string>
+      
+  <string name="guidance_tilt_optimal">Kemiringannya optimal!</string>
+      
+  <string name="guidance_tilt_up">Miringkan perangkat ke ATAS (Tujuan: %1$s°)</string>
+      
+  <string name="guidance_tilt_down">Miringkan perangkat KE BAWAH (Bidik: %1$s°)</string>
+      
+  <string name="guidance_roll_level">Perangkatnya rata!</string>
+      
+  <string name="guidance_roll_tilt_right_down">Level: Miringkan sisi KANAN KE BAWAH (Bidik: %1$s°)</string>
+      
+  <string name="guidance_roll_tilt_left_down">Level: Miringkan sisi KIRI KE BAWAH (Bidik: %1$s°)</string>
+      
+  <string name="guidance_roll_adjust_level">Sesuaikan gulungan agar rata</string>
+      
+  <string name="guidance_level_device_title">Alat Level (Pitch &amp; Roll)</string>
+      
+  <string name="guidance_perfectly_aligned">Perangkat telah sejajar dengan sempurna!</string>
+      
+  <string name="guidance_level_adjust_azimuth">Perangkat sudah rata, sesuaikan Azimuth.</string>
+      
+  <string name="guidance_adjust_bubble_azimuth">Sesuaikan perangkat untuk memusatkan gelembung dan menyelaraskan Azimuth.</string>
+      
+  <string name="guidance_label_device_azimuth">Azimuth Perangkat:</string>
+      
+  <string name="guidance_label_device_tilt">Kemiringan Perangkat (Pitch):</string>
+      
+  <string name="guidance_label_device_roll">Gulungan Perangkat (Level):</string>
+      
+  <string name="guidance_footer_instruction">Letakkan ponsel datar di panel, layar menghadap ke atas. Sejajarkan tepi atas telepon menggunakan panduan Azimuth di atas. Panel Pertandingan Miring.</string>
+      
+  <string name="guidance_footer_true_north_declination">Panduan azimuth ditujukan untuk Utara Sejati. (Deklinasi: %1$.1f°)</string>
+      
+  <string name="guidance_footer_magnetic_north">Panduan azimuth ditujukan untuk Kutub Utara Magnetik (kompas).</string>
+      
+  <string name="guidance_row_current_value">Saat ini: %s</string>
+      
+  <string name="guidance_row_target_value">Sasaran: %s</string>
+      
+  <string name="solar_app_screen_title">Pengoptimal Panel Surya</string>
+      
+  <string name="solar_app_screen_subtitle_tilt_mode">Mode Kemiringan: %s</string>
+      
+  <string name="help_dialog_title">Bantuan Penyelarasan Panel</string>
+      
+  <string name="help_dialog_graphic_description">Grafik yang menunjukkan ponsel diletakkan datar pada panel surya, keduanya menghadap matahari.</string>
+      
+  <string name="help_dialog_text_line1">1. Letakkan ponsel Anda rata pada panel surya, layar menghadap ke atas.</string>
+      
+  <string name="help_dialog_text_line2">2. Sejajarkan tepi atas ponsel Anda dengan tepi atas (atau lebih tinggi) panel surya.</string>
+      
+  <string name="help_dialog_text_line3">3. Gunakan panduan Azimuth di aplikasi untuk memutar seluruh panel hingga sejajar.</string>
+      
+  <string name="help_dialog_text_line4">4. Gunakan panduan Kemiringan untuk menyesuaikan sudut panel hingga optimal.</string>
+      
+  <string name="help_dialog_title_default">Bantuan &amp; Panduan</string>
+      
+  <string name="help_dialog_button_dismiss">Mengerti!</string>
+      
+  <string name="sensor_accuracy_high">Tinggi</string>
+      
+  <string name="sensor_accuracy_medium">Sedang</string>
+      
+  <string name="sensor_accuracy_low">Rendah</string>
+      
+  <string name="sensor_accuracy_unreliable">Tidak bisa diandalkan</string>
+      
+  <string name="sensor_accuracy_unknown">Tidak dikenal</string>
+      
+  <string name="tilt_mode_year_round">Sepanjang Tahun</string>
+      
+  <string name="tilt_mode_summer">Musim panas</string>
+      
+  <string name="tilt_mode_winter">Musim dingin</string>
+      
+  <string name="tilt_mode_spring_autumn">Musim Semi/Musim Gugur</string>
+      
+  <string name="tilt_mode_realtime">Waktu nyata</string>
+      
+  <string name="about_libraries">Tentang Perpustakaan</string>
+      
+  <string name="back">Kembali</string>
+      
+  <string name="buy_me_a_coffee">Belikan Aku Kopi ☕️</string>
+  
+</resources>

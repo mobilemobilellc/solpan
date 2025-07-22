@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2025 MobileMobile LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under
+  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  ~ OF ANY KIND, either express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<resources>
+      
+  <string name="app_name">ซอลแพน</string>
+      
+  <string name="permission_card_icon_desc">ต้องได้รับอนุญาตสถานที่</string>
+      
+  <string name="permission_card_rationale_text">การคำนวณพลังงานแสงอาทิตย์ที่แม่นยำต้องใช้ตำแหน่งของคุณ กรุณาอนุญาติด้วยครับ.</string>
+      
+  <string name="permission_card_essential_text">การอนุญาตตำแหน่งมีความจำเป็นเพื่อให้แอปนี้ทำงานได้อย่างถูกต้อง</string>
+      
+  <string name="permission_card_button_text">ขออนุญาต</string>
+      
+  <string name="current_orientation_card_title">การวางแนวอุปกรณ์ปัจจุบัน</string>
+      
+  <string name="current_orientation_azimuth_label">ทิศอะซิมุท (แม่เหล็ก):</string>
+      
+  <string name="current_orientation_pitch_label">ระดับเสียง (เอียง):</string>
+      
+  <string name="current_orientation_roll_label">ม้วน:</string>
+      
+  <string name="current_orientation_accuracy_label">ความแม่นยำของเซ็นเซอร์:</string>
+      
+  <string name="target_param_card_title">การตั้งค่าแผงเป้าหมาย</string>
+      
+  <string name="target_param_mode_label">โหมด:</string>
+      
+  <string name="target_param_true_azimuth_label">เป้าหมายทิศทางที่แท้จริง:</string>
+      
+  <string name="target_param_magnetic_azimuth_label">เป้าหมายแม่เหล็กอะซิมุท:</string>
+      
+  <string name="target_param_magnetic_azimuth_calculating_label">ทิศทางแม่เหล็ก:</string>
+      
+  <string name="calculating_text">กำลังคำนวณ…</string>
+      
+  <string name="target_param_tilt_label">การเอียงแผงเป้าหมาย:</string>
+      
+  <string name="target_param_declination_label">การปฏิเสธสนามแม่เหล็ก:</string>
+      
+  <string name="target_param_waiting_location_text">กำลังคำนวณ… รอตำแหน่ง…</string>
+      
+  <string name="target_param_grant_permission_text">ให้สิทธิ์ในการกำหนดตำแหน่งเพื่อดูพารามิเตอร์เป้าหมาย</string>
+      
+  <string name="target_param_current_location_label">ตำแหน่งปัจจุบัน</string>
+      
+  <string name="target_param_latitude_label">ละติจูด:</string>
+      
+  <string name="target_param_longitude_label">ลองจิจูด:</string>
+      
+  <string name="target_param_accuracy_label">ความแม่นยำ:</string>
+      
+  <string name="target_param_value_degree_unit">%1$.1f°</string>
+      
+  <string name="target_param_value_degree_aim_unit">%1$.1f° (เล็ง)</string>
+      
+  <string name="target_param_value_degree_horizontal_unit">%1$.1f° (จากแนวนอน)</string>
+      
+  <string name="target_param_value_meter_unit">%1$.1fม.</string>
+      
+  <string name="guidance_card_title">คำแนะนำการจัดตำแหน่งแผง</string>
+   
+  <!-- Modified -->
+      
+  <string name="azimuth_visualizer_card_title">เครื่องมือแสดงภาพการจัดตำแหน่งอุปกรณ์</string>
+   
+  <!-- Added -->
+      
+  <string name="guidance_waiting_for_target">กำลังรอพารามิเตอร์เป้าหมายเพื่อให้คำแนะนำ…</string>
+      
+  <string name="guidance_azimuth_aligned">ทิศทางถูกจัดวางแล้ว!</string>
+      
+  <string name="guidance_azimuth_rotate_right">หมุนอุปกรณ์ไปทางขวา (ตามเข็มนาฬิกาไปที่ %1$s°)</string>
+      
+  <string name="guidance_azimuth_rotate_left">หมุนอุปกรณ์ไปทางซ้าย (ทวนเข็มนาฬิกาไปที่ %1$s°)</string>
+      
+  <string name="guidance_tilt_optimal">เอียงได้พอดี!</string>
+      
+  <string name="guidance_tilt_up">เอียงอุปกรณ์ขึ้น (เล็ง: %1$s°)</string>
+      
+  <string name="guidance_tilt_down">เอียงอุปกรณ์ลง (เล็ง: %1$s°)</string>
+      
+  <string name="guidance_roll_level">อุปกรณ์อยู่ในระดับ!</string>
+      
+  <string name="guidance_roll_tilt_right_down">ระดับ: เอียงด้านขวาลง (เล็ง: %1$s°)</string>
+      
+  <string name="guidance_roll_tilt_left_down">ระดับ: เอียงด้านซ้ายลง (เล็ง: %1$s°)</string>
+      
+  <string name="guidance_roll_adjust_level">ปรับม้วนให้อยู่ในระดับ</string>
+      
+  <string name="guidance_level_device_title">อุปกรณ์ปรับระดับ (พิทช์ &amp; โรล)</string>
+      
+  <string name="guidance_perfectly_aligned">อุปกรณ์ได้รับการจัดวางอย่างสมบูรณ์แบบ!</string>
+      
+  <string name="guidance_level_adjust_azimuth">อุปกรณ์อยู่ในระดับเดียวกัน ปรับมุมเอียงได้</string>
+      
+  <string name="guidance_adjust_bubble_azimuth">ปรับอุปกรณ์เพื่อให้ฟองอากาศอยู่ตรงกลางและจัดแนวมุมราบ</string>
+      
+  <string name="guidance_label_device_azimuth">ทิศทางของอุปกรณ์:</string>
+      
+  <string name="guidance_label_device_tilt">ความเอียงของอุปกรณ์ (พิทช์):</string>
+      
+  <string name="guidance_label_device_roll">ม้วนอุปกรณ์ (ระดับ):</string>
+      
+  <string name="guidance_footer_instruction">วางโทรศัพท์ราบไปกับแผงโดยให้หน้าจอหงายขึ้น จัดแนวขอบด้านบนของโทรศัพท์โดยใช้แนวทางมุมราบด้านบน แผงแมทช์เอียง</string>
+      
+  <string name="guidance_footer_true_north_declination">การนำทางทิศเหนือคือทิศเหนือจริง (ค่าความคลาดเคลื่อน: %1$.1f°)</string>
+      
+  <string name="guidance_footer_magnetic_north">ระบบนำทางทิศเหนือจะใช้ทิศเหนือแม่เหล็ก (เข็มทิศ)</string>
+      
+  <string name="guidance_row_current_value">ปัจจุบัน: %s</string>
+      
+  <string name="guidance_row_target_value">เป้าหมาย: %s</string>
+      
+  <string name="solar_app_screen_title">ตัวเพิ่มประสิทธิภาพแผงโซล่าเซลล์</string>
+      
+  <string name="solar_app_screen_subtitle_tilt_mode">โหมดเอียง: %s</string>
+      
+  <string name="help_dialog_title">ความช่วยเหลือในการจัดตำแหน่งแผง</string>
+      
+  <string name="help_dialog_graphic_description">กราฟิกแสดงโทรศัพท์ที่วางราบอยู่บนแผงโซลาร์เซลล์ โดยทั้งสองหันเข้าหาดวงอาทิตย์</string>
+      
+  <string name="help_dialog_text_line1">1. วางโทรศัพท์ของคุณลงบนแผงโซลาร์เซลล์โดยให้หน้าจอหงายขึ้น</string>
+      
+  <string name="help_dialog_text_line2">2. จัดแนวขอบด้านบนของโทรศัพท์ของคุณให้ตรงกับขอบด้านบน (หรือสูงกว่า) ของแผงโซลาร์เซลล์</string>
+      
+  <string name="help_dialog_text_line3">3. ใช้เส้นนำทาง Azimuth ในแอปเพื่อหมุนแผงทั้งหมดจนกว่าจะจัดตำแหน่งตรงกัน</string>
+      
+  <string name="help_dialog_text_line4">4. ใช้ตัวนำเอียงเพื่อปรับมุมแผงจนได้มุมที่เหมาะสมที่สุด</string>
+      
+  <string name="help_dialog_title_default">ความช่วยเหลือและคำแนะนำ</string>
+      
+  <string name="help_dialog_button_dismiss">เข้าใจแล้ว!</string>
+      
+  <string name="sensor_accuracy_high">สูง</string>
+      
+  <string name="sensor_accuracy_medium">ปานกลาง</string>
+      
+  <string name="sensor_accuracy_low">ต่ำ</string>
+      
+  <string name="sensor_accuracy_unreliable">ไม่น่าเชื่อถือ</string>
+      
+  <string name="sensor_accuracy_unknown">ไม่ทราบ</string>
+      
+  <string name="tilt_mode_year_round">ตลอดทั้งปี</string>
+      
+  <string name="tilt_mode_summer">ฤดูร้อน</string>
+      
+  <string name="tilt_mode_winter">ฤดูหนาว</string>
+      
+  <string name="tilt_mode_spring_autumn">ฤดูใบไม้ผลิ/ฤดูใบไม้ร่วง</string>
+      
+  <string name="tilt_mode_realtime">เรียลไทม์</string>
+      
+  <string name="about_libraries">เกี่ยวกับห้องสมุด</string>
+      
+  <string name="back">กลับ</string>
+      
+  <string name="buy_me_a_coffee">ซื้อกาแฟให้ฉันหน่อย ☕️</string>
+  
+</resources>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2025 MobileMobile LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under
+  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  ~ OF ANY KIND, either express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<resources>
+      
+  <string name="app_name">SolPan</string>
+      
+  <string name="permission_card_icon_desc">Helymeghatározási engedély szükséges</string>
+      
+  <string name="permission_card_rationale_text">A pontos napelemes számításokhoz szükség van a tartózkodási helyedre. Kérem, adja meg az engedélyt.</string>
+      
+  <string name="permission_card_essential_text">A helymeghatározási engedély elengedhetetlen az alkalmazás megfelelő működéséhez.</string>
+      
+  <string name="permission_card_button_text">Engedélyek kérése</string>
+      
+  <string name="current_orientation_card_title">Jelenlegi eszköz tájolása</string>
+      
+  <string name="current_orientation_azimuth_label">Azimut (mágneses):</string>
+      
+  <string name="current_orientation_pitch_label">Dőlésszög (Pitch):</string>
+      
+  <string name="current_orientation_roll_label">Tekercs:</string>
+      
+  <string name="current_orientation_accuracy_label">Érzékelő pontossága:</string>
+      
+  <string name="target_param_card_title">Célpanel beállítása</string>
+      
+  <string name="target_param_mode_label">Mód:</string>
+      
+  <string name="target_param_true_azimuth_label">Célpont valódi azimutja:</string>
+      
+  <string name="target_param_magnetic_azimuth_label">Cél mágneses azimutja:</string>
+      
+  <string name="target_param_magnetic_azimuth_calculating_label">Mágneses azimut:</string>
+      
+  <string name="calculating_text">Számító…</string>
+      
+  <string name="target_param_tilt_label">Céltábla dőlésszöge:</string>
+      
+  <string name="target_param_declination_label">Mágneses elhajlás:</string>
+      
+  <string name="target_param_waiting_location_text">Számítás… Várakozás a helyszínre…</string>
+      
+  <string name="target_param_grant_permission_text">Adjon helymeghatározási engedélyt a célparaméterek megtekintéséhez.</string>
+      
+  <string name="target_param_current_location_label">Jelenlegi tartózkodási hely</string>
+      
+  <string name="target_param_latitude_label">Szélesség:</string>
+      
+  <string name="target_param_longitude_label">Hosszúság:</string>
+      
+  <string name="target_param_accuracy_label">Pontosság:</string>
+      
+  <string name="target_param_value_degree_unit">%1$.1f°</string>
+      
+  <string name="target_param_value_degree_aim_unit">%1$.1f° (Cél)</string>
+      
+  <string name="target_param_value_degree_horizontal_unit">%1$.1f° (vízszintestől)</string>
+      
+  <string name="target_param_value_meter_unit">%1$.1fm</string>
+      
+  <string name="guidance_card_title">Panelbeállítási utasítások</string>
+   
+  <!-- Modified -->
+      
+  <string name="azimuth_visualizer_card_title">Eszközigazítási vizualizátor</string>
+   
+  <!-- Added -->
+      
+  <string name="guidance_waiting_for_target">Várakozás a célparaméterek útmutatására…</string>
+      
+  <string name="guidance_azimuth_aligned">Azimut igazítva!</string>
+      
+  <string name="guidance_azimuth_rotate_right">Forgassa el az eszközt JOBBRA (az óramutató járásával megegyezően)%1$s °)</string>
+      
+  <string name="guidance_azimuth_rotate_left">Forgassa el az eszközt BALRA (az óramutató járásával ellentétes irányba)%1$s °)</string>
+      
+  <string name="guidance_tilt_optimal">A dőlésszög optimális!</string>
+      
+  <string name="guidance_tilt_up">Döntse a készüléket FEL (Cél: %1$s °)</string>
+      
+  <string name="guidance_tilt_down">Billentse a készüléket LE (Cél: %1$s °)</string>
+      
+  <string name="guidance_roll_level">A készülék vízszintes!</string>
+      
+  <string name="guidance_roll_tilt_right_down">Szint: Döntés JOBBRA LE (Cél: %1$s °)</string>
+      
+  <string name="guidance_roll_tilt_left_down">Szint: Döntsd BALRA LE (Cél: %1$s °)</string>
+      
+  <string name="guidance_roll_adjust_level">Állítsa be a tekercset vízszintesre</string>
+      
+  <string name="guidance_level_device_title">Szintező eszköz (dőlés és dőlés)</string>
+      
+  <string name="guidance_perfectly_aligned">A készülék tökéletesen illeszkedik!</string>
+      
+  <string name="guidance_level_adjust_azimuth">A készülék vízszintes, állítsa be az azimutot.</string>
+      
+  <string name="guidance_adjust_bubble_azimuth">Állítsa be az eszközt a buborék középre helyezéséhez és az azimut beállításához.</string>
+      
+  <string name="guidance_label_device_azimuth">Eszköz azimutja:</string>
+      
+  <string name="guidance_label_device_tilt">Eszköz dőlésszöge (szög):</string>
+      
+  <string name="guidance_label_device_roll">Eszközdobás (Szint):</string>
+      
+  <string name="guidance_footer_instruction">Fektesd a telefont a kijelzőre, képernyővel felfelé. Igazítsa a telefon felső szélét a fenti azimutális vezető segítségével. Mérkőzés panel döntése.</string>
+      
+  <string name="guidance_footer_true_north_declination">Az azimutális navigáció a valódi északra vonatkozik. (Deklináció: %1$.1f °)</string>
+      
+  <string name="guidance_footer_magnetic_north">Az azimutális irányítás a mágneses északhoz (iránytűhöz) tartozik.</string>
+      
+  <string name="guidance_row_current_value">Jelenlegi: %s</string>
+      
+  <string name="guidance_row_target_value">Cél: %s</string>
+      
+  <string name="solar_app_screen_title">Napelem optimalizáló</string>
+      
+  <string name="solar_app_screen_subtitle_tilt_mode">Döntési mód: %s</string>
+      
+  <string name="help_dialog_title">Paneligazítási segítség</string>
+      
+  <string name="help_dialog_graphic_description">Napelemre helyezett telefont ábrázoló grafika, mindkét panel a nap felé néz.</string>
+      
+  <string name="help_dialog_text_line1">1. Helyezze a telefont laposan a napelemre, képernyővel felfelé.</string>
+      
+  <string name="help_dialog_text_line2">2. Igazítsd a telefonod felső szélét a napelem felső (vagy magasabb) széléhez.</string>
+      
+  <string name="help_dialog_text_line3">3. Az alkalmazásban található azimutális vezető segítségével forgathatja el a teljes panelt, amíg az igazodás meg nem történik.</string>
+      
+  <string name="help_dialog_text_line4">4. A dőlésszög beállításához használja a dőlésszög-szabályozót, amíg az optimális értéket nem kapja.</string>
+      
+  <string name="help_dialog_title_default">Segítség és útmutatás</string>
+      
+  <string name="help_dialog_button_dismiss">Megvan!</string>
+      
+  <string name="sensor_accuracy_high">Magas</string>
+      
+  <string name="sensor_accuracy_medium">Közepes</string>
+      
+  <string name="sensor_accuracy_low">Alacsony</string>
+      
+  <string name="sensor_accuracy_unreliable">Megbízhatatlan</string>
+      
+  <string name="sensor_accuracy_unknown">Ismeretlen</string>
+      
+  <string name="tilt_mode_year_round">Egész évben</string>
+      
+  <string name="tilt_mode_summer">Nyári</string>
+      
+  <string name="tilt_mode_winter">Téli</string>
+      
+  <string name="tilt_mode_spring_autumn">Tavasz/Ősz</string>
+      
+  <string name="tilt_mode_realtime">Valós idejű</string>
+      
+  <string name="about_libraries">A könyvtárakról</string>
+      
+  <string name="back">Vissza</string>
+      
+  <string name="buy_me_a_coffee">Vegyél nekem egy kávét ☕️</string>
+  
+</resources>

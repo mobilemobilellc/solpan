@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2025 MobileMobile LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under
+  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  ~ OF ANY KIND, either express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<resources>
+      
+  <string name="app_name">SolPan</string>
+      
+  <string name="permission_card_icon_desc">Autorisation de localisation requise</string>
+      
+  <string name="permission_card_rationale_text">Des calculs solaires précis nécessitent votre emplacement. Veuillez accorder la permission.</string>
+      
+  <string name="permission_card_essential_text">L\'autorisation de localisation est essentielle pour que cette application fonctionne correctement.</string>
+      
+  <string name="permission_card_button_text">Demander des autorisations</string>
+      
+  <string name="current_orientation_card_title">Orientation actuelle de l\'appareil</string>
+      
+  <string name="current_orientation_azimuth_label">Azimut (magnétique) :</string>
+      
+  <string name="current_orientation_pitch_label">Inclinaison (Pitch) :</string>
+      
+  <string name="current_orientation_roll_label">Rouler:</string>
+      
+  <string name="current_orientation_accuracy_label">Précision du capteur :</string>
+      
+  <string name="target_param_card_title">Configuration du panneau cible</string>
+      
+  <string name="target_param_mode_label">Mode:</string>
+      
+  <string name="target_param_true_azimuth_label">Azimut réel de la cible :</string>
+      
+  <string name="target_param_magnetic_azimuth_label">Azimut magnétique de la cible :</string>
+      
+  <string name="target_param_magnetic_azimuth_calculating_label">Azimut magnétique :</string>
+      
+  <string name="calculating_text">Calculateur…</string>
+      
+  <string name="target_param_tilt_label">Inclinaison du panneau cible :</string>
+      
+  <string name="target_param_declination_label">Déclinaison magnétique :</string>
+      
+  <string name="target_param_waiting_location_text">Calcul… En attente de localisation…</string>
+      
+  <string name="target_param_grant_permission_text">Accordez l’autorisation de localisation pour voir les paramètres cibles.</string>
+      
+  <string name="target_param_current_location_label">Emplacement actuel</string>
+      
+  <string name="target_param_latitude_label">Latitude:</string>
+      
+  <string name="target_param_longitude_label">Longitude:</string>
+      
+  <string name="target_param_accuracy_label">Précision:</string>
+      
+  <string name="target_param_value_degree_unit">%1$.1f°</string>
+      
+  <string name="target_param_value_degree_aim_unit">%1$.1f° (Visée)</string>
+      
+  <string name="target_param_value_degree_horizontal_unit">%1$.1f° (par rapport à l\'horizontale)</string>
+      
+  <string name="target_param_value_meter_unit">%1$.1fm</string>
+      
+  <string name="guidance_card_title">Instructions d\'alignement des panneaux</string>
+   
+  <!-- Modified -->
+      
+  <string name="azimuth_visualizer_card_title">Visualiseur d\'alignement des appareils</string>
+   
+  <!-- Added -->
+      
+  <string name="guidance_waiting_for_target">En attente des paramètres cibles pour fournir des indications…</string>
+      
+  <string name="guidance_azimuth_aligned">L\'azimut est aligné !</string>
+      
+  <string name="guidance_azimuth_rotate_right">Faites pivoter l\'appareil vers la DROITE (dans le sens des aiguilles d\'une montre jusqu\'à %1$s°)</string>
+      
+  <string name="guidance_azimuth_rotate_left">Faites pivoter l\'appareil vers la GAUCHE (dans le sens inverse des aiguilles d\'une montre jusqu\'à %1$s°)</string>
+      
+  <string name="guidance_tilt_optimal">L\'inclinaison est optimale !</string>
+      
+  <string name="guidance_tilt_up">Inclinez l\'appareil vers le HAUT (Visée : %1$s°)</string>
+      
+  <string name="guidance_tilt_down">Inclinez l\'appareil vers le BAS (Visée : %1$s°)</string>
+      
+  <string name="guidance_roll_level">L\'appareil est de niveau !</string>
+      
+  <string name="guidance_roll_tilt_right_down">Niveau : inclinez le côté DROIT VERS LE BAS (Visée : %1$s°)</string>
+      
+  <string name="guidance_roll_tilt_left_down">Niveau : inclinez le côté GAUCHE vers le BAS (Visée : %1$s°)</string>
+      
+  <string name="guidance_roll_adjust_level">Ajustez le rouleau pour qu\'il soit de niveau</string>
+      
+  <string name="guidance_level_device_title">Dispositif de niveau (tangage et roulis)</string>
+      
+  <string name="guidance_perfectly_aligned">L\'appareil est parfaitement aligné !</string>
+      
+  <string name="guidance_level_adjust_azimuth">L\'appareil est de niveau, ajustez l\'azimut.</string>
+      
+  <string name="guidance_adjust_bubble_azimuth">Ajustez l\'appareil pour centrer la bulle et aligner l\'azimut.</string>
+      
+  <string name="guidance_label_device_azimuth">Azimut de l\'appareil :</string>
+      
+  <string name="guidance_label_device_tilt">Inclinaison de l\'appareil (pas) :</string>
+      
+  <string name="guidance_label_device_roll">Lancer de périphérique (niveau) :</string>
+      
+  <string name="guidance_footer_instruction">Posez le téléphone à plat sur le panneau, écran vers le haut. Alignez le bord supérieur du téléphone à l’aide du guide azimut ci-dessus. Panneau de correspondance Inclinaison.</string>
+      
+  <string name="guidance_footer_true_north_declination">Le guidage azimutal concerne le nord géographique. (Déclinaison : %1$.1f°)</string>
+      
+  <string name="guidance_footer_magnetic_north">Le guidage en azimut est pour le Nord magnétique (boussole).</string>
+      
+  <string name="guidance_row_current_value">Actuel : %s</string>
+      
+  <string name="guidance_row_target_value">Cible : %s</string>
+      
+  <string name="solar_app_screen_title">Optimiseur de panneaux solaires</string>
+      
+  <string name="solar_app_screen_subtitle_tilt_mode">Mode d\'inclinaison : %s</string>
+      
+  <string name="help_dialog_title">Aide à l\'alignement des panneaux</string>
+      
+  <string name="help_dialog_graphic_description">Graphique montrant un téléphone à plat sur un panneau solaire, tous deux face au soleil.</string>
+      
+  <string name="help_dialog_text_line1">1. Placez votre téléphone à plat sur le panneau solaire, écran vers le haut.</string>
+      
+  <string name="help_dialog_text_line2">2. Alignez le bord supérieur de votre téléphone avec le bord supérieur (ou supérieur) du panneau solaire.</string>
+      
+  <string name="help_dialog_text_line3">3. Utilisez le guide Azimut dans l\'application pour faire pivoter l\'ensemble du panneau jusqu\'à ce qu\'il soit aligné.</string>
+      
+  <string name="help_dialog_text_line4">4. Utilisez le guide d\'inclinaison pour ajuster l\'angle du panneau jusqu\'à ce qu\'il soit optimal.</string>
+      
+  <string name="help_dialog_title_default">Aide et conseils</string>
+      
+  <string name="help_dialog_button_dismiss">J\'ai compris!</string>
+      
+  <string name="sensor_accuracy_high">Haut</string>
+      
+  <string name="sensor_accuracy_medium">Moyen</string>
+      
+  <string name="sensor_accuracy_low">Faible</string>
+      
+  <string name="sensor_accuracy_unreliable">Peu fiable</string>
+      
+  <string name="sensor_accuracy_unknown">Inconnu</string>
+      
+  <string name="tilt_mode_year_round">Toute l\'année</string>
+      
+  <string name="tilt_mode_summer">Été</string>
+      
+  <string name="tilt_mode_winter">Hiver</string>
+      
+  <string name="tilt_mode_spring_autumn">Printemps/Automne</string>
+      
+  <string name="tilt_mode_realtime">En temps réel</string>
+      
+  <string name="about_libraries">À propos des bibliothèques</string>
+      
+  <string name="back">Dos</string>
+      
+  <string name="buy_me_a_coffee">Offrez-moi un café ☕️</string>
+  
+</resources>

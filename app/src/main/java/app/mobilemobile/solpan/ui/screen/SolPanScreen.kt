@@ -75,9 +75,9 @@ import app.mobilemobile.solpan.util.displayName
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.Firebase
+import com.google.firebase.analytics.analytics
 import com.google.firebase.analytics.logEvent
-import com.google.firebase.ktx.Firebase
 
 @OptIn(
   ExperimentalPermissionsApi::class,

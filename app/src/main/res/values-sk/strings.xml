@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2025 MobileMobile LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under
+  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  ~ OF ANY KIND, either express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<resources>
+      
+  <string name="app_name">SolPan</string>
+      
+  <string name="permission_card_icon_desc">Vyžaduje sa povolenie na prístup k polohe</string>
+      
+  <string name="permission_card_rationale_text">Presné výpočty slnečnej energie vyžadujú vašu polohu. Prosím, udeľte povolenie.</string>
+      
+  <string name="permission_card_essential_text">Povolenie na prístup k polohe je nevyhnutné pre správne fungovanie tejto aplikácie.</string>
+      
+  <string name="permission_card_button_text">Žiadosť o povolenia</string>
+      
+  <string name="current_orientation_card_title">Aktuálna orientácia zariadenia</string>
+      
+  <string name="current_orientation_azimuth_label">Azimut (magnetický):</string>
+      
+  <string name="current_orientation_pitch_label">Sklon (náklon):</string>
+      
+  <string name="current_orientation_roll_label">Rolka:</string>
+      
+  <string name="current_orientation_accuracy_label">Presnosť senzora:</string>
+      
+  <string name="target_param_card_title">Nastavenie cieľového panela</string>
+      
+  <string name="target_param_mode_label">Režim:</string>
+      
+  <string name="target_param_true_azimuth_label">Cieľový skutočný azimut:</string>
+      
+  <string name="target_param_magnetic_azimuth_label">Cieľový magnetický azimut:</string>
+      
+  <string name="target_param_magnetic_azimuth_calculating_label">Magnetický azimut:</string>
+      
+  <string name="calculating_text">Výpočet…</string>
+      
+  <string name="target_param_tilt_label">Sklon cieľového panela:</string>
+      
+  <string name="target_param_declination_label">Magnetická deklinácia:</string>
+      
+  <string name="target_param_waiting_location_text">Výpočet… Čakanie na polohu…</string>
+      
+  <string name="target_param_grant_permission_text">Udeľte povolenie na zobrazenie cieľových parametrov.</string>
+      
+  <string name="target_param_current_location_label">Aktuálna poloha</string>
+      
+  <string name="target_param_latitude_label">Zemepisná šírka:</string>
+      
+  <string name="target_param_longitude_label">Zemepisná dĺžka:</string>
+      
+  <string name="target_param_accuracy_label">Presnosť:</string>
+      
+  <string name="target_param_value_degree_unit">%1$.1f°</string>
+      
+  <string name="target_param_value_degree_aim_unit">%1$.1f° (Cieľ)</string>
+      
+  <string name="target_param_value_degree_horizontal_unit">%1$.1f° (od horizontálnej roviny)</string>
+      
+  <string name="target_param_value_meter_unit">%1$.1fm</string>
+      
+  <string name="guidance_card_title">Pokyny na zarovnanie panelov</string>
+   
+  <!-- Modified -->
+      
+  <string name="azimuth_visualizer_card_title">Vizualizér zarovnania zariadení</string>
+   
+  <!-- Added -->
+      
+  <string name="guidance_waiting_for_target">Čaká sa na cieľové parametre, ktoré poskytnú usmernenie…</string>
+      
+  <string name="guidance_azimuth_aligned">Azimut je zarovnaný!</string>
+      
+  <string name="guidance_azimuth_rotate_right">Otočte zariadenie DOPRAVA (v smere hodinových ručičiek)%1$s °)</string>
+      
+  <string name="guidance_azimuth_rotate_left">Otočte zariadenie DOĽAVA (proti smeru hodinových ručičiek)%1$s °)</string>
+      
+  <string name="guidance_tilt_optimal">Sklon je optimálny!</string>
+      
+  <string name="guidance_tilt_up">Nakloňte zariadenie NAHOR (Zamerajte sa: %1$s °)</string>
+      
+  <string name="guidance_tilt_down">Nakloňte zariadenie NADOL (Zamerajte sa: %1$s °)</string>
+      
+  <string name="guidance_roll_level">Zariadenie je vodorovné!</string>
+      
+  <string name="guidance_roll_tilt_right_down">Úroveň: Nakloňte DOPRAVA NADOL (Zamerajte sa: %1$s °)</string>
+      
+  <string name="guidance_roll_tilt_left_down">Úroveň: Nakloňte DOĽAVA NADOL (Zamerajte sa: %1$s °)</string>
+      
+  <string name="guidance_roll_adjust_level">Nastavte rolovanie do vodorovnej polohy</string>
+      
+  <string name="guidance_level_device_title">Zariadenie na vyrovnávanie výšky hladiny (náklon a klopenie)</string>
+      
+  <string name="guidance_perfectly_aligned">Zariadenie je perfektne zarovnané!</string>
+      
+  <string name="guidance_level_adjust_azimuth">Zariadenie je vo vodorovnej polohe, nastavte azimut.</string>
+      
+  <string name="guidance_adjust_bubble_azimuth">Upravte zariadenie tak, aby ste vycentrovali bublinu a zarovnali azimut.</string>
+      
+  <string name="guidance_label_device_azimuth">Azimut zariadenia:</string>
+      
+  <string name="guidance_label_device_tilt">Sklon zariadenia (rozstup):</string>
+      
+  <string name="guidance_label_device_roll">Úroveň zariadenia (Role):</string>
+      
+  <string name="guidance_footer_instruction">Položte telefón vodorovne na panel, obrazovkou nahor. Zarovnajte horný okraj telefónu pomocou vyššie uvedeného azimutálneho vodítka. Zhoda naklonenia panela.</string>
+      
+  <string name="guidance_footer_true_north_declination">Azimutálne navádzanie je pre skutočný sever. (Deklinácia: %1$.1f °)</string>
+      
+  <string name="guidance_footer_magnetic_north">Azimutálne navádzanie je pre magnetický sever (kompas).</string>
+      
+  <string name="guidance_row_current_value">Aktuálne: %s</string>
+      
+  <string name="guidance_row_target_value">Cieľ: %s</string>
+      
+  <string name="solar_app_screen_title">Optimalizátor solárnych panelov</string>
+      
+  <string name="solar_app_screen_subtitle_tilt_mode">Režim nakláňania: %s</string>
+      
+  <string name="help_dialog_title">Pomocník so zarovnaním panelov</string>
+      
+  <string name="help_dialog_graphic_description">Obrázok zobrazujúci telefón položený naplocho na solárnom paneli, oba otočené k slnku.</string>
+      
+  <string name="help_dialog_text_line1">1. Položte telefón naplocho na solárny panel, obrazovkou nahor.</string>
+      
+  <string name="help_dialog_text_line2">2. Zarovnajte horný okraj telefónu s horným (alebo vyšším) okrajom solárneho panela.</string>
+      
+  <string name="help_dialog_text_line3">3. Pomocou azimutového sprievodcu v aplikácii otočte celý panel, kým nebude zarovnaný.</string>
+      
+  <string name="help_dialog_text_line4">4. Pomocou vodiacej lišty naklonenia nastavte uhol panela, kým nedosiahnete optimálny uhol.</string>
+      
+  <string name="help_dialog_title_default">Pomoc a poradenstvo</string>
+      
+  <string name="help_dialog_button_dismiss">Rozumiem!</string>
+      
+  <string name="sensor_accuracy_high">Vysoká</string>
+      
+  <string name="sensor_accuracy_medium">Stredné</string>
+      
+  <string name="sensor_accuracy_low">Nízka</string>
+      
+  <string name="sensor_accuracy_unreliable">Nespoľahlivý</string>
+      
+  <string name="sensor_accuracy_unknown">Neznámy</string>
+      
+  <string name="tilt_mode_year_round">Celoročne</string>
+      
+  <string name="tilt_mode_summer">Leto</string>
+      
+  <string name="tilt_mode_winter">Zima</string>
+      
+  <string name="tilt_mode_spring_autumn">Jar/jeseň</string>
+      
+  <string name="tilt_mode_realtime">V reálnom čase</string>
+      
+  <string name="about_libraries">O knižniciach</string>
+      
+  <string name="back">Späť</string>
+      
+  <string name="buy_me_a_coffee">Kúp mi kávu ☕️</string>
+  
+</resources>

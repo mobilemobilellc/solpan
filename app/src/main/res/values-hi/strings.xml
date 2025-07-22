@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2025 MobileMobile LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under
+  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  ~ OF ANY KIND, either express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<resources>
+      
+  <string name="app_name">सोलपैन</string>
+      
+  <string name="permission_card_icon_desc">स्थान की अनुमति आवश्यक</string>
+      
+  <string name="permission_card_rationale_text">सटीक सौर गणना के लिए आपके स्थान की आवश्यकता होती है. कृपया अनुमति प्रदान करें.</string>
+      
+  <string name="permission_card_essential_text">इस ऐप के सही ढंग से काम करने के लिए स्थान की अनुमति आवश्यक है.</string>
+      
+  <string name="permission_card_button_text">अनुमतियों का अनुरोध करें</string>
+      
+  <string name="current_orientation_card_title">वर्तमान डिवाइस अभिविन्यास</string>
+      
+  <string name="current_orientation_azimuth_label">अज़ीमुथ (चुंबकीय):</string>
+      
+  <string name="current_orientation_pitch_label">पिच (झुकाव):</string>
+      
+  <string name="current_orientation_roll_label">रोल:</string>
+      
+  <string name="current_orientation_accuracy_label">सेंसर सटीकता:</string>
+      
+  <string name="target_param_card_title">लक्ष्य पैनल सेटअप</string>
+      
+  <string name="target_param_mode_label">तरीका:</string>
+      
+  <string name="target_param_true_azimuth_label">लक्ष्य सत्य अज़ीमुथ:</string>
+      
+  <string name="target_param_magnetic_azimuth_label">लक्ष्य चुंबकीय दिगंश:</string>
+      
+  <string name="target_param_magnetic_azimuth_calculating_label">चुंबकीय दिगंश:</string>
+      
+  <string name="calculating_text">गणना…</string>
+      
+  <string name="target_param_tilt_label">लक्ष्य पैनल झुकाव:</string>
+      
+  <string name="target_param_declination_label">चुंबकीय अवनति:</string>
+      
+  <string name="target_param_waiting_location_text">गणना हो रही है... स्थान की प्रतीक्षा हो रही है...</string>
+      
+  <string name="target_param_grant_permission_text">लक्ष्य पैरामीटर देखने के लिए स्थान अनुमति प्रदान करें.</string>
+      
+  <string name="target_param_current_location_label">वर्तमान स्थान</string>
+      
+  <string name="target_param_latitude_label">अक्षांश:</string>
+      
+  <string name="target_param_longitude_label">देशांतर:</string>
+      
+  <string name="target_param_accuracy_label">शुद्धता:</string>
+      
+  <string name="target_param_value_degree_unit">%1$.1f°</string>
+      
+  <string name="target_param_value_degree_aim_unit">%1$.1f° (लक्ष्य)</string>
+      
+  <string name="target_param_value_degree_horizontal_unit">%1$.1f° (क्षैतिज से)</string>
+      
+  <string name="target_param_value_meter_unit">%1$.1fमी</string>
+      
+  <string name="guidance_card_title">पैनल संरेखण निर्देश</string>
+   
+  <!-- Modified -->
+      
+  <string name="azimuth_visualizer_card_title">डिवाइस संरेखण विज़ुअलाइज़र</string>
+   
+  <!-- Added -->
+      
+  <string name="guidance_waiting_for_target">मार्गदर्शन प्रदान करने के लिए लक्ष्य मापदंडों की प्रतीक्षा की जा रही है...</string>
+      
+  <string name="guidance_azimuth_aligned">अजीमुथ संरेखित है!</string>
+      
+  <string name="guidance_azimuth_rotate_right">डिवाइस को दाईं ओर घुमाएँ (दक्षिणावर्त %1$s° पर)</string>
+      
+  <string name="guidance_azimuth_rotate_left">डिवाइस को बाईं ओर घुमाएँ (वामावर्त दिशा में %1$s° पर)</string>
+      
+  <string name="guidance_tilt_optimal">झुकाव इष्टतम है!</string>
+      
+  <string name="guidance_tilt_up">डिवाइस को ऊपर की ओर झुकाएँ (लक्ष्य: %1$s°)</string>
+      
+  <string name="guidance_tilt_down">डिवाइस को नीचे झुकाएँ (लक्ष्य: %1$s°)</string>
+      
+  <string name="guidance_roll_level">डिवाइस स्तर है!</string>
+      
+  <string name="guidance_roll_tilt_right_down">लेवल: दाएँ तरफ़ नीचे झुकाएँ (लक्ष्य: %1$s°)</string>
+      
+  <string name="guidance_roll_tilt_left_down">स्तर: बाईं ओर नीचे की ओर झुकें (लक्ष्य: %1$s°)</string>
+      
+  <string name="guidance_roll_adjust_level">रोल को समतल करने के लिए समायोजित करें</string>
+      
+  <string name="guidance_level_device_title">लेवल डिवाइस (पिच और रोल)</string>
+      
+  <string name="guidance_perfectly_aligned">डिवाइस पूरी तरह से संरेखित है!</string>
+      
+  <string name="guidance_level_adjust_azimuth">डिवाइस समतल है, अज़ीमुथ समायोजित करें.</string>
+      
+  <string name="guidance_adjust_bubble_azimuth">बुलबुले को केन्द्रित करने और अज़ीमुथ को संरेखित करने के लिए डिवाइस को समायोजित करें.</string>
+      
+  <string name="guidance_label_device_azimuth">डिवाइस अज़ीमुथ:</string>
+      
+  <string name="guidance_label_device_tilt">डिवाइस झुकाव (पिच):</string>
+      
+  <string name="guidance_label_device_roll">डिवाइस रोल (स्तर):</string>
+      
+  <string name="guidance_footer_instruction">फोन को पैनल पर सपाट रखें, स्क्रीन ऊपर की ओर रखें. उपरोक्त अज़ीमुथ गाइड का उपयोग करके फ़ोन के ऊपरी किनारे को संरेखित करें. मैच पैनल झुकाव.</string>
+      
+  <string name="guidance_footer_true_north_declination">अजीमुथ मार्गदर्शन सच्चे उत्तर के लिए है. (अध्रुवीकरण: %1$.1f°)</string>
+      
+  <string name="guidance_footer_magnetic_north">अज़ीमुथ मार्गदर्शन चुंबकीय उत्तर (कम्पास) के लिए है.</string>
+      
+  <string name="guidance_row_current_value">वर्तमान: %s</string>
+      
+  <string name="guidance_row_target_value">लक्ष्य: %s</string>
+      
+  <string name="solar_app_screen_title">सौर पैनल अनुकूलक</string>
+      
+  <string name="solar_app_screen_subtitle_tilt_mode">झुकाव मोड: %s</string>
+      
+  <string name="help_dialog_title">पैनल संरेखण सहायता</string>
+      
+  <string name="help_dialog_graphic_description">ग्राफिक में फोन को सौर पैनल पर सपाट रखा गया है, दोनों सूर्य की ओर मुंह करके रखे गए हैं.</string>
+      
+  <string name="help_dialog_text_line1">1. अपने फोन को सौर पैनल पर सपाट रखें, स्क्रीन ऊपर की ओर हो.</string>
+      
+  <string name="help_dialog_text_line2">2. अपने फोन के ऊपरी किनारे को सौर पैनल के ऊपरी (या ऊंचे) किनारे के साथ संरेखित करें.</string>
+      
+  <string name="help_dialog_text_line3">3. संपूर्ण पैनल को संरेखित होने तक घुमाने के लिए ऐप में एज़िमुथ गाइड का उपयोग करें.</string>
+      
+  <string name="help_dialog_text_line4">4. पैनल के कोण को इष्टतम होने तक समायोजित करने के लिए झुकाव गाइड का उपयोग करें.</string>
+      
+  <string name="help_dialog_title_default">सहायता और मार्गदर्शन</string>
+      
+  <string name="help_dialog_button_dismiss">समझ गया!</string>
+      
+  <string name="sensor_accuracy_high">उच्च</string>
+      
+  <string name="sensor_accuracy_medium">मध्यम</string>
+      
+  <string name="sensor_accuracy_low">कम</string>
+      
+  <string name="sensor_accuracy_unreliable">अविश्वसनीय</string>
+      
+  <string name="sensor_accuracy_unknown">अज्ञात</string>
+      
+  <string name="tilt_mode_year_round">वर्ष के दौरान</string>
+      
+  <string name="tilt_mode_summer">गर्मी</string>
+      
+  <string name="tilt_mode_winter">सर्दी</string>
+      
+  <string name="tilt_mode_spring_autumn">वसंत/पतझड़</string>
+      
+  <string name="tilt_mode_realtime">रियल टाइम</string>
+      
+  <string name="about_libraries">पुस्तकालयों के बारे में</string>
+      
+  <string name="back">पीछे</string>
+      
+  <string name="buy_me_a_coffee">मेरे लिए एक कॉफ़ी खरीदें ☕️</string>
+  
+</resources>

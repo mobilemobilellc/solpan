@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2025 MobileMobile LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under
+  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  ~ OF ANY KIND, either express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<resources>
+      
+  <string name="app_name">SolPan</string>
+      
+  <string name="permission_card_icon_desc">Permisiunea locației este necesară</string>
+      
+  <string name="permission_card_rationale_text">Calculele solare precise necesită locația ta. Vă rugăm să acordați permisiunea.</string>
+      
+  <string name="permission_card_essential_text">Permisiunea pentru locație este esențială pentru ca această aplicație să funcționeze corect.</string>
+      
+  <string name="permission_card_button_text">Solicitați permisiuni</string>
+      
+  <string name="current_orientation_card_title">Orientarea curentă a dispozitivului</string>
+      
+  <string name="current_orientation_azimuth_label">Azimut (magnetic):</string>
+      
+  <string name="current_orientation_pitch_label">Înclinare (Pitch):</string>
+      
+  <string name="current_orientation_roll_label">Rolă:</string>
+      
+  <string name="current_orientation_accuracy_label">Precizia senzorului:</string>
+      
+  <string name="target_param_card_title">Configurarea panoului țintă</string>
+      
+  <string name="target_param_mode_label">Mod:</string>
+      
+  <string name="target_param_true_azimuth_label">Azimut real țintă:</string>
+      
+  <string name="target_param_magnetic_azimuth_label">Azimutul magnetic al țintei:</string>
+      
+  <string name="target_param_magnetic_azimuth_calculating_label">Azimut magnetic:</string>
+      
+  <string name="calculating_text">De calculat…</string>
+      
+  <string name="target_param_tilt_label">Înclinarea panoului țintă:</string>
+      
+  <string name="target_param_declination_label">Declinație magnetică:</string>
+      
+  <string name="target_param_waiting_location_text">Se calculează… Se așteaptă locația…</string>
+      
+  <string name="target_param_grant_permission_text">Acordați permisiunea locației pentru a vedea parametrii țintă.</string>
+      
+  <string name="target_param_current_location_label">Locația curentă</string>
+      
+  <string name="target_param_latitude_label">Latitudine:</string>
+      
+  <string name="target_param_longitude_label">Longitudine:</string>
+      
+  <string name="target_param_accuracy_label">Precizie:</string>
+      
+  <string name="target_param_value_degree_unit">%1$.1f°</string>
+      
+  <string name="target_param_value_degree_aim_unit">%1$.1f° (Țintește)</string>
+      
+  <string name="target_param_value_degree_horizontal_unit">%1$.1f° (de la orizontală)</string>
+      
+  <string name="target_param_value_meter_unit">%1$.1fm.</string>
+      
+  <string name="guidance_card_title">Instrucțiuni de aliniere a panourilor</string>
+   
+  <!-- Modified -->
+      
+  <string name="azimuth_visualizer_card_title">Vizualizator de aliniere a dispozitivelor</string>
+   
+  <!-- Added -->
+      
+  <string name="guidance_waiting_for_target">Se așteaptă ca parametrii țintă să ofere îndrumări…</string>
+      
+  <string name="guidance_azimuth_aligned">Azimutul este aliniat!</string>
+      
+  <string name="guidance_azimuth_rotate_right">Rotiți dispozitivul la DREAPTA (în sensul acelor de ceasornic pentru a%1$s °)</string>
+      
+  <string name="guidance_azimuth_rotate_left">Rotiți dispozitivul la STÂNGA (în sens invers acelor de ceasornic pentru a%1$s °)</string>
+      
+  <string name="guidance_tilt_optimal">Înclinarea este optimă!</string>
+      
+  <string name="guidance_tilt_up">Înclinați dispozitivul ÎN SUS (Țintiți: %1$s °)</string>
+      
+  <string name="guidance_tilt_down">Înclinați dispozitivul ÎN JOS (Țintiți: %1$s °)</string>
+      
+  <string name="guidance_roll_level">Dispozitivul este la nivel!</string>
+      
+  <string name="guidance_roll_tilt_right_down">Nivel: Înclinați partea DREAPTĂ ÎN JOS (Țintiți: %1$s °)</string>
+      
+  <string name="guidance_roll_tilt_left_down">Nivel: Înclinați partea STÂNGĂ ÎN JOS (Țintiți: %1$s °)</string>
+      
+  <string name="guidance_roll_adjust_level">Ajustați rola pentru a fi la nivel</string>
+      
+  <string name="guidance_level_device_title">Dispozitiv de nivelare (înclinare și rulare)</string>
+      
+  <string name="guidance_perfectly_aligned">Dispozitivul este perfect aliniat!</string>
+      
+  <string name="guidance_level_adjust_azimuth">Dispozitivul este la nivel, ajustați azimutul.</string>
+      
+  <string name="guidance_adjust_bubble_azimuth">Ajustați dispozitivul pentru a centra bula și a alinia Azimutul.</string>
+      
+  <string name="guidance_label_device_azimuth">Azimutul dispozitivului:</string>
+      
+  <string name="guidance_label_device_tilt">Înclinare dispozitiv (Pitch):</string>
+      
+  <string name="guidance_label_device_roll">Aruncarea Dispozitivului (Nivel):</string>
+      
+  <string name="guidance_footer_instruction">Așezați telefonul plat pe panou, cu ecranul în sus. Aliniați marginea superioară a telefonului folosind ghidul de azimut de mai sus. Potriviți înclinarea panoului.</string>
+      
+  <string name="guidance_footer_true_north_declination">Ghidarea azimutală este pentru Nordul True. (Declinaţie: %1$.1f °)</string>
+      
+  <string name="guidance_footer_magnetic_north">Ghidarea azimutală este pentru Nordul Magnetic (busolă).</string>
+      
+  <string name="guidance_row_current_value">Actual: %s</string>
+      
+  <string name="guidance_row_target_value">Ţintă: %s</string>
+      
+  <string name="solar_app_screen_title">Optimizator de panouri solare</string>
+      
+  <string name="solar_app_screen_subtitle_tilt_mode">Mod înclinare: %s</string>
+      
+  <string name="help_dialog_title">Ajutor pentru alinierea panourilor</string>
+      
+  <string name="help_dialog_graphic_description">Grafică care prezintă telefonul așezat plat pe un panou solar, ambele cu fața spre soare.</string>
+      
+  <string name="help_dialog_text_line1">1. Așezați telefonul plat pe panoul solar, cu ecranul în sus.</string>
+      
+  <string name="help_dialog_text_line2">2. Aliniați marginea superioară a telefonului cu marginea superioară (sau superioară) a panoului solar.</string>
+      
+  <string name="help_dialog_text_line3">3. Folosește ghidul Azimut din aplicație pentru a roti întregul panou până la aliniere.</string>
+      
+  <string name="help_dialog_text_line4">4. Folosește ghidajul de înclinare pentru a ajusta unghiul panoului până la atingerea optimă.</string>
+      
+  <string name="help_dialog_title_default">Ajutor și îndrumare</string>
+      
+  <string name="help_dialog_button_dismiss">Am înţeles!</string>
+      
+  <string name="sensor_accuracy_high">Ridicat</string>
+      
+  <string name="sensor_accuracy_medium">Mediu</string>
+      
+  <string name="sensor_accuracy_low">Scăzut</string>
+      
+  <string name="sensor_accuracy_unreliable">Nesigur</string>
+      
+  <string name="sensor_accuracy_unknown">Necunoscut</string>
+      
+  <string name="tilt_mode_year_round">Tot anul</string>
+      
+  <string name="tilt_mode_summer">Vară</string>
+      
+  <string name="tilt_mode_winter">Iarnă</string>
+      
+  <string name="tilt_mode_spring_autumn">Primăvară/Toamnă</string>
+      
+  <string name="tilt_mode_realtime">În timp real</string>
+      
+  <string name="about_libraries">Despre biblioteci</string>
+      
+  <string name="back">Spate</string>
+      
+  <string name="buy_me_a_coffee">Cumpără-mi o cafea ☕️</string>
+  
+</resources>

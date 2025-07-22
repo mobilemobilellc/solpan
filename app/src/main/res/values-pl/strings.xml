@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2025 MobileMobile LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under
+  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  ~ OF ANY KIND, either express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<resources>
+      
+  <string name="app_name">SolPan</string>
+      
+  <string name="permission_card_icon_desc">Wymagane pozwolenie na lokalizację</string>
+      
+  <string name="permission_card_rationale_text">Dokładne obliczenia nasłonecznienia wymagają podania Twojej lokalizacji. Proszę o udzielenie pozwolenia.</string>
+      
+  <string name="permission_card_essential_text">Dostęp do lokalizacji jest niezbędny do prawidłowego funkcjonowania tej aplikacji.</string>
+      
+  <string name="permission_card_button_text">Poproś o uprawnienia</string>
+      
+  <string name="current_orientation_card_title">Aktualna orientacja urządzenia</string>
+      
+  <string name="current_orientation_azimuth_label">Azymut (magnetyczny):</string>
+      
+  <string name="current_orientation_pitch_label">Pochylenie (nachylenie):</string>
+      
+  <string name="current_orientation_roll_label">Rolka:</string>
+      
+  <string name="current_orientation_accuracy_label">Dokładność czujnika:</string>
+      
+  <string name="target_param_card_title">Konfiguracja panelu docelowego</string>
+      
+  <string name="target_param_mode_label">Tryb:</string>
+      
+  <string name="target_param_true_azimuth_label">Docelowy azymut rzeczywisty:</string>
+      
+  <string name="target_param_magnetic_azimuth_label">Azymut magnetyczny celu:</string>
+      
+  <string name="target_param_magnetic_azimuth_calculating_label">Azymut magnetyczny:</string>
+      
+  <string name="calculating_text">Obliczenie…</string>
+      
+  <string name="target_param_tilt_label">Pochylenie panelu docelowego:</string>
+      
+  <string name="target_param_declination_label">Deklinacja magnetyczna:</string>
+      
+  <string name="target_param_waiting_location_text">Obliczanie… Czekam na lokalizację…</string>
+      
+  <string name="target_param_grant_permission_text">Udziel uprawnień do wyświetlania parametrów docelowych w danej lokalizacji.</string>
+      
+  <string name="target_param_current_location_label">Aktualna lokalizacja</string>
+      
+  <string name="target_param_latitude_label">Szerokość:</string>
+      
+  <string name="target_param_longitude_label">Długość geograficzna:</string>
+      
+  <string name="target_param_accuracy_label">Dokładność:</string>
+      
+  <string name="target_param_value_degree_unit">%1$.1f°</string>
+      
+  <string name="target_param_value_degree_aim_unit">%1$.1f° (Cel)</string>
+      
+  <string name="target_param_value_degree_horizontal_unit">%1$.1f° (od poziomu)</string>
+      
+  <string name="target_param_value_meter_unit">%1$.1fm</string>
+      
+  <string name="guidance_card_title">Instrukcje wyrównywania paneli</string>
+   
+  <!-- Modified -->
+      
+  <string name="azimuth_visualizer_card_title">Wizualizator wyrównania urządzeń</string>
+   
+  <!-- Added -->
+      
+  <string name="guidance_waiting_for_target">Czekamy, aż parametry docelowe dostarczą wskazówek…</string>
+      
+  <string name="guidance_azimuth_aligned">Azymut jest ustawiony!</string>
+      
+  <string name="guidance_azimuth_rotate_right">Obróć urządzenie w PRAWO (zgodnie z ruchem wskazówek zegara do %1$s°)</string>
+      
+  <string name="guidance_azimuth_rotate_left">Obróć urządzenie W LEWO (przeciwnie do ruchu wskazówek zegara do %1$s°)</string>
+      
+  <string name="guidance_tilt_optimal">Pochylenie jest optymalne!</string>
+      
+  <string name="guidance_tilt_up">Przechyl urządzenie W GÓRĘ (Cel: %1$s°)</string>
+      
+  <string name="guidance_tilt_down">Pochyl urządzenie W DÓŁ (Cel: %1$s°)</string>
+      
+  <string name="guidance_roll_level">Urządzenie jest wypoziomowane!</string>
+      
+  <string name="guidance_roll_tilt_right_down">Poziom: Pochyl w prawą stronę W DÓŁ (Cel: %1$s°)</string>
+      
+  <string name="guidance_roll_tilt_left_down">Poziom: Pochyl LEWĄ stronę W DÓŁ (Cel: %1$s°)</string>
+      
+  <string name="guidance_roll_adjust_level">Wyreguluj rolkę, aby była wypoziomowana</string>
+      
+  <string name="guidance_level_device_title">Urządzenie poziomujące (pochylenie i przechylenie)</string>
+      
+  <string name="guidance_perfectly_aligned">Urządzenie jest idealnie wyregulowane!</string>
+      
+  <string name="guidance_level_adjust_azimuth">Urządzenie jest wypoziomowane, należy dostosować azymut.</string>
+      
+  <string name="guidance_adjust_bubble_azimuth">Wyreguluj urządzenie tak, aby wyśrodkować bańkę i ustawić azymut.</string>
+      
+  <string name="guidance_label_device_azimuth">Azymut urządzenia:</string>
+      
+  <string name="guidance_label_device_tilt">Pochylenie urządzenia (kąt nachylenia):</string>
+      
+  <string name="guidance_label_device_roll">Rolka urządzenia (poziom):</string>
+      
+  <string name="guidance_footer_instruction">Połóż telefon płasko na panelu, ekranem do góry. Wyrównaj górną krawędź telefonu, korzystając z powyższej prowadnicy azymutu. Dopasuj panel Pochyl.</string>
+      
+  <string name="guidance_footer_true_north_declination">Nawigacja azymutalna dotyczy północy geograficznej. (Deklinacja: %1$.1f°)</string>
+      
+  <string name="guidance_footer_magnetic_north">Nawigacja azymutalna dotyczy północy magnetycznej (kompas).</string>
+      
+  <string name="guidance_row_current_value">Aktualny: %s</string>
+      
+  <string name="guidance_row_target_value">Cel: %s</string>
+      
+  <string name="solar_app_screen_title">Optymalizator paneli słonecznych</string>
+      
+  <string name="solar_app_screen_subtitle_tilt_mode">Tryb pochylenia: %s</string>
+      
+  <string name="help_dialog_title">Pomoc dotycząca wyrównywania paneli</string>
+      
+  <string name="help_dialog_graphic_description">Grafika przedstawiająca telefon położony płasko na panelu słonecznym, oba zwrócone w stronę słońca.</string>
+      
+  <string name="help_dialog_text_line1">1. Połóż telefon płasko na panelu słonecznym, ekranem skierowanym do góry.</string>
+      
+  <string name="help_dialog_text_line2">2. Wyrównaj górną krawędź telefonu z górną (lub wyższą) krawędzią panelu słonecznego.</string>
+      
+  <string name="help_dialog_text_line3">3. Użyj przewodnika azymutu w aplikacji, aby obrócić cały panel, aż do momentu jego wyrównania.</string>
+      
+  <string name="help_dialog_text_line4">4. Za pomocą prowadnicy pochylenia ustaw kąt nachylenia panelu tak, aby uzyskać optymalny kąt.</string>
+      
+  <string name="help_dialog_title_default">Pomoc i wskazówki</string>
+      
+  <string name="help_dialog_button_dismiss">Zrozumiałem!</string>
+      
+  <string name="sensor_accuracy_high">Wysoki</string>
+      
+  <string name="sensor_accuracy_medium">Średni</string>
+      
+  <string name="sensor_accuracy_low">Niski</string>
+      
+  <string name="sensor_accuracy_unreliable">Niepewny</string>
+      
+  <string name="sensor_accuracy_unknown">Nieznany</string>
+      
+  <string name="tilt_mode_year_round">Przez cały rok</string>
+      
+  <string name="tilt_mode_summer">Lato</string>
+      
+  <string name="tilt_mode_winter">Zima</string>
+      
+  <string name="tilt_mode_spring_autumn">Wiosna/Jesień</string>
+      
+  <string name="tilt_mode_realtime">W czasie rzeczywistym</string>
+      
+  <string name="about_libraries">O bibliotekach</string>
+      
+  <string name="back">Z powrotem</string>
+      
+  <string name="buy_me_a_coffee">Kup mi kawę ☕️</string>
+  
+</resources>

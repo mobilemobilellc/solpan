@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2025 MobileMobile LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under
+  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  ~ OF ANY KIND, either express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<resources>
+      
+  <string name="app_name">SolPan</string>
+      
+  <string name="permission_card_icon_desc">Permissão de localização necessária</string>
+      
+  <string name="permission_card_rationale_text">Cálculos solares precisos exigem sua localização. Por favor, conceda permissão.</string>
+      
+  <string name="permission_card_essential_text">A permissão de localização é essencial para que este aplicativo funcione corretamente.</string>
+      
+  <string name="permission_card_button_text">Solicitar permissões</string>
+      
+  <string name="current_orientation_card_title">Orientação atual do dispositivo</string>
+      
+  <string name="current_orientation_azimuth_label">Azimute (Magnético):</string>
+      
+  <string name="current_orientation_pitch_label">Inclinação (Pitch):</string>
+      
+  <string name="current_orientation_roll_label">Rolar:</string>
+      
+  <string name="current_orientation_accuracy_label">Precisão do sensor:</string>
+      
+  <string name="target_param_card_title">Configuração do painel de destino</string>
+      
+  <string name="target_param_mode_label">Modo:</string>
+      
+  <string name="target_param_true_azimuth_label">Azimute verdadeiro do alvo:</string>
+      
+  <string name="target_param_magnetic_azimuth_label">Azimute magnético do alvo:</string>
+      
+  <string name="target_param_magnetic_azimuth_calculating_label">Azimute magnético:</string>
+      
+  <string name="calculating_text">Calculando…</string>
+      
+  <string name="target_param_tilt_label">Inclinação do painel de destino:</string>
+      
+  <string name="target_param_declination_label">Declinação magnética:</string>
+      
+  <string name="target_param_waiting_location_text">Calculando… Aguardando localização…</string>
+      
+  <string name="target_param_grant_permission_text">Conceda permissão de localização para ver parâmetros de destino.</string>
+      
+  <string name="target_param_current_location_label">Localização atual</string>
+      
+  <string name="target_param_latitude_label">Latitude:</string>
+      
+  <string name="target_param_longitude_label">Longitude:</string>
+      
+  <string name="target_param_accuracy_label">Precisão:</string>
+      
+  <string name="target_param_value_degree_unit">%1$.1f°</string>
+      
+  <string name="target_param_value_degree_aim_unit">%1$.1f° (Objetivo)</string>
+      
+  <string name="target_param_value_degree_horizontal_unit">%1$.1f° (da horizontal)</string>
+      
+  <string name="target_param_value_meter_unit">%1$.1fm</string>
+      
+  <string name="guidance_card_title">Instruções de alinhamento do painel</string>
+   
+  <!-- Modified -->
+      
+  <string name="azimuth_visualizer_card_title">Visualizador de alinhamento de dispositivos</string>
+   
+  <!-- Added -->
+      
+  <string name="guidance_waiting_for_target">Aguardando os parâmetros alvo para fornecer orientação…</string>
+      
+  <string name="guidance_azimuth_aligned">O azimute está alinhado!</string>
+      
+  <string name="guidance_azimuth_rotate_right">Gire o dispositivo para a DIREITA (sentido horário até %1$s°)</string>
+      
+  <string name="guidance_azimuth_rotate_left">Gire o dispositivo para a ESQUERDA (sentido anti-horário até %1$s°)</string>
+      
+  <string name="guidance_tilt_optimal">A inclinação é ótima!</string>
+      
+  <string name="guidance_tilt_up">Incline o dispositivo para CIMA (Objetivo: %1$s°)</string>
+      
+  <string name="guidance_tilt_down">Incline o dispositivo PARA BAIXO (Objetivo: %1$s°)</string>
+      
+  <string name="guidance_roll_level">O dispositivo está nivelado!</string>
+      
+  <string name="guidance_roll_tilt_right_down">Nível: Incline o lado DIREITO PARA BAIXO (Mirar: %1$s°)</string>
+      
+  <string name="guidance_roll_tilt_left_down">Nível: Incline o lado ESQUERDO PARA BAIXO (Mirar: %1$s°)</string>
+      
+  <string name="guidance_roll_adjust_level">Ajuste o rolo para ficar nivelado</string>
+      
+  <string name="guidance_level_device_title">Dispositivo de nível (Pitch &amp; Roll)</string>
+      
+  <string name="guidance_perfectly_aligned">O dispositivo está perfeitamente alinhado!</string>
+      
+  <string name="guidance_level_adjust_azimuth">O dispositivo está nivelado, ajuste o azimute.</string>
+      
+  <string name="guidance_adjust_bubble_azimuth">Ajuste o dispositivo para centralizar a bolha e alinhar o azimute.</string>
+      
+  <string name="guidance_label_device_azimuth">Azimute do dispositivo:</string>
+      
+  <string name="guidance_label_device_tilt">Inclinação do dispositivo (inclinação):</string>
+      
+  <string name="guidance_label_device_roll">Rolagem do Dispositivo (Nível):</string>
+      
+  <string name="guidance_footer_instruction">Coloque o telefone sobre o painel, com a tela voltada para cima. Alinhe a borda superior do telefone usando a guia de azimute acima. Inclinação do painel de correspondência.</string>
+      
+  <string name="guidance_footer_true_north_declination">A orientação de azimute é para o Norte Verdadeiro. (Declinação: %1$.1f°)</string>
+      
+  <string name="guidance_footer_magnetic_north">A orientação de azimute é para o Norte magnético (bússola).</string>
+      
+  <string name="guidance_row_current_value">Atual: %s</string>
+      
+  <string name="guidance_row_target_value">Alvo: %s</string>
+      
+  <string name="solar_app_screen_title">Otimizador de painéis solares</string>
+      
+  <string name="solar_app_screen_subtitle_tilt_mode">Modo de inclinação: %s</string>
+      
+  <string name="help_dialog_title">Ajuda para alinhamento de painéis</string>
+      
+  <string name="help_dialog_graphic_description">Gráfico mostrando um telefone plano sobre um painel solar, ambos voltados para o sol.</string>
+      
+  <string name="help_dialog_text_line1">1. Coloque o telefone sobre o painel solar, com a tela voltada para cima.</string>
+      
+  <string name="help_dialog_text_line2">2. Alinhe a borda superior do seu telefone com a borda superior (ou mais alta) do painel solar.</string>
+      
+  <string name="help_dialog_text_line3">3. Use o guia de azimute no aplicativo para girar o painel inteiro até alinhá-lo.</string>
+      
+  <string name="help_dialog_text_line4">4. Use o guia de inclinação para ajustar o ângulo do painel até o ideal.</string>
+      
+  <string name="help_dialog_title_default">Ajuda e Orientação</string>
+      
+  <string name="help_dialog_button_dismiss">Entendi!</string>
+      
+  <string name="sensor_accuracy_high">Alto</string>
+      
+  <string name="sensor_accuracy_medium">Médio</string>
+      
+  <string name="sensor_accuracy_low">Baixo</string>
+      
+  <string name="sensor_accuracy_unreliable">Não confiável</string>
+      
+  <string name="sensor_accuracy_unknown">Desconhecido</string>
+      
+  <string name="tilt_mode_year_round">Durante todo o ano</string>
+      
+  <string name="tilt_mode_summer">Verão</string>
+      
+  <string name="tilt_mode_winter">Inverno</string>
+      
+  <string name="tilt_mode_spring_autumn">Primavera/Outono</string>
+      
+  <string name="tilt_mode_realtime">Em tempo real</string>
+      
+  <string name="about_libraries">Sobre Bibliotecas</string>
+      
+  <string name="back">Voltar</string>
+      
+  <string name="buy_me_a_coffee">Compre-me um café ☕️</string>
+  
+</resources>

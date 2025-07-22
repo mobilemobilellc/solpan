@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2025 MobileMobile LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under
+  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  ~ OF ANY KIND, either express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<resources>
+      
+  <string name="app_name">SolPan</string>
+      
+  <string name="permission_card_icon_desc">Platstillstånd krävs</string>
+      
+  <string name="permission_card_rationale_text">Noggranna solberäkningar kräver din plats. Vänligen bevilja tillstånd.</string>
+      
+  <string name="permission_card_essential_text">Platsbehörighet är avgörande för att den här appen ska fungera korrekt.</string>
+      
+  <string name="permission_card_button_text">Begär behörigheter</string>
+      
+  <string name="current_orientation_card_title">Nuvarande enhetsorientering</string>
+      
+  <string name="current_orientation_azimuth_label">Azimut (magnetisk):</string>
+      
+  <string name="current_orientation_pitch_label">Lutning (Lutning):</string>
+      
+  <string name="current_orientation_roll_label">Rulla:</string>
+      
+  <string name="current_orientation_accuracy_label">Sensornoggrannhet:</string>
+      
+  <string name="target_param_card_title">Inställning av målpanel</string>
+      
+  <string name="target_param_mode_label">Läge:</string>
+      
+  <string name="target_param_true_azimuth_label">Målets sanna azimut:</string>
+      
+  <string name="target_param_magnetic_azimuth_label">Målets magnetiska azimut:</string>
+      
+  <string name="target_param_magnetic_azimuth_calculating_label">Magnetisk azimut:</string>
+      
+  <string name="calculating_text">Beräknande…</string>
+      
+  <string name="target_param_tilt_label">Målpanelens lutning:</string>
+      
+  <string name="target_param_declination_label">Magnetisk deklination:</string>
+      
+  <string name="target_param_waiting_location_text">Beräknar… Väntar på plats…</string>
+      
+  <string name="target_param_grant_permission_text">Ge platsbehörighet att se målparametrar.</string>
+      
+  <string name="target_param_current_location_label">Nuvarande plats</string>
+      
+  <string name="target_param_latitude_label">Latitud:</string>
+      
+  <string name="target_param_longitude_label">Longitud:</string>
+      
+  <string name="target_param_accuracy_label">Noggrannhet:</string>
+      
+  <string name="target_param_value_degree_unit">%1$.1f°</string>
+      
+  <string name="target_param_value_degree_aim_unit">%1$.1f° (Sikta)</string>
+      
+  <string name="target_param_value_degree_horizontal_unit">%1$.1f° (från horisontellt läge)</string>
+      
+  <string name="target_param_value_meter_unit">%1$.1f min</string>
+      
+  <string name="guidance_card_title">Instruktioner för paneljustering</string>
+   
+  <!-- Modified -->
+      
+  <string name="azimuth_visualizer_card_title">Visualiserare för enhetsjustering</string>
+   
+  <!-- Added -->
+      
+  <string name="guidance_waiting_for_target">Väntar på att målparametrar ska ge vägledning…</string>
+      
+  <string name="guidance_azimuth_aligned">Azimut är i linje!</string>
+      
+  <string name="guidance_azimuth_rotate_right">Rotera enheten HÖGER (medsols till %1$s°)</string>
+      
+  <string name="guidance_azimuth_rotate_left">Rotera enheten VÄNSTER (moturs till %1$s°)</string>
+      
+  <string name="guidance_tilt_optimal">Lutningen är optimal!</string>
+      
+  <string name="guidance_tilt_up">Luta enheten UPPÅT (Sikta: %1$s°)</string>
+      
+  <string name="guidance_tilt_down">Luta enheten NER (Sikta: %1$s°)</string>
+      
+  <string name="guidance_roll_level">Enheten är i våg!</string>
+      
+  <string name="guidance_roll_tilt_right_down">Nivå: Luta HÖGER sida NER (Sikta: %1$s°)</string>
+      
+  <string name="guidance_roll_tilt_left_down">Nivå: Luta VÄNSTER sida NER (Sikta: %1$s°)</string>
+      
+  <string name="guidance_roll_adjust_level">Justera rullen så att den är jämn</string>
+      
+  <string name="guidance_level_device_title">Nivåenhet (Pitch &amp; Roll)</string>
+      
+  <string name="guidance_perfectly_aligned">Apparaten är perfekt justerad!</string>
+      
+  <string name="guidance_level_adjust_azimuth">Enheten är i våg, justera azimuten.</string>
+      
+  <string name="guidance_adjust_bubble_azimuth">Justera enheten för att centrera bubblan och justera azimuten.</string>
+      
+  <string name="guidance_label_device_azimuth">Enhetens azimut:</string>
+      
+  <string name="guidance_label_device_tilt">Enhetens lutning (lutning):</string>
+      
+  <string name="guidance_label_device_roll">Enhetsrulle (nivå):</string>
+      
+  <string name="guidance_footer_instruction">Lägg telefonen platt på panelen, med skärmen uppåt. Rikta in telefonens övre kant med hjälp av Azimuth-guiden ovan. Matcha panelens lutning.</string>
+      
+  <string name="guidance_footer_true_north_declination">Azimutvägledningen gäller för den geografiska nordpolen. (Deklination: %1$.1f°)</string>
+      
+  <string name="guidance_footer_magnetic_north">Azimutvägledningen är för magnetisk nordpol (kompass).</string>
+      
+  <string name="guidance_row_current_value">Nuvarande: %s</string>
+      
+  <string name="guidance_row_target_value">Mål: %s</string>
+      
+  <string name="solar_app_screen_title">Solpaneloptimerare</string>
+      
+  <string name="solar_app_screen_subtitle_tilt_mode">Lutningsläge: %s</string>
+      
+  <string name="help_dialog_title">Hjälp med paneljustering</string>
+      
+  <string name="help_dialog_graphic_description">Grafik som visar en telefon platt på en solpanel, båda vända mot solen.</string>
+      
+  <string name="help_dialog_text_line1">1. Placera telefonen platt på solpanelen, med skärmen uppåt.</string>
+      
+  <string name="help_dialog_text_line2">2. Rikta in telefonens överkant mot solpanelens överkant (eller högre).</string>
+      
+  <string name="help_dialog_text_line3">3. Använd Azimuth-guiden i appen för att rotera hela panelen tills den är i linje.</string>
+      
+  <string name="help_dialog_text_line4">4. Använd lutningsguiden för att justera panelens vinkel tills den är optimal.</string>
+      
+  <string name="help_dialog_title_default">Hjälp och vägledning</string>
+      
+  <string name="help_dialog_button_dismiss">Förstod!</string>
+      
+  <string name="sensor_accuracy_high">Hög</string>
+      
+  <string name="sensor_accuracy_medium">Medium</string>
+      
+  <string name="sensor_accuracy_low">Låg</string>
+      
+  <string name="sensor_accuracy_unreliable">Opålitlig</string>
+      
+  <string name="sensor_accuracy_unknown">Okänd</string>
+      
+  <string name="tilt_mode_year_round">Året runt</string>
+      
+  <string name="tilt_mode_summer">Sommar</string>
+      
+  <string name="tilt_mode_winter">Vinter</string>
+      
+  <string name="tilt_mode_spring_autumn">Vår/höst</string>
+      
+  <string name="tilt_mode_realtime">Realtid</string>
+      
+  <string name="about_libraries">Om bibliotek</string>
+      
+  <string name="back">Tillbaka</string>
+      
+  <string name="buy_me_a_coffee">Bjud mig på en kaffe ☕️</string>
+  
+</resources>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2025 MobileMobile LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under
+  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  ~ OF ANY KIND, either express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<resources>
+      
+  <string name="app_name">SolPan</string>
+      
+  <string name="permission_card_icon_desc">Konum İzni Gerekli</string>
+      
+  <string name="permission_card_rationale_text">Doğru güneş hesaplamaları için konumunuza ihtiyaç vardır. Lütfen izin verin.</string>
+      
+  <string name="permission_card_essential_text">Bu uygulamanın düzgün çalışması için konum izni şarttır.</string>
+      
+  <string name="permission_card_button_text">İzin İsteği</string>
+      
+  <string name="current_orientation_card_title">Mevcut Cihaz Yönü</string>
+      
+  <string name="current_orientation_azimuth_label">Azimut (Manyetik):</string>
+      
+  <string name="current_orientation_pitch_label">Pitch (Eğim):</string>
+      
+  <string name="current_orientation_roll_label">Rulo:</string>
+      
+  <string name="current_orientation_accuracy_label">Sensör Doğruluğu:</string>
+      
+  <string name="target_param_card_title">Hedef Panel Kurulumu</string>
+      
+  <string name="target_param_mode_label">Mod:</string>
+      
+  <string name="target_param_true_azimuth_label">Hedef Gerçek Azimut:</string>
+      
+  <string name="target_param_magnetic_azimuth_label">Hedef Manyetik Azimut:</string>
+      
+  <string name="target_param_magnetic_azimuth_calculating_label">Manyetik Azimut:</string>
+      
+  <string name="calculating_text">Hesaplanıyor…</string>
+      
+  <string name="target_param_tilt_label">Hedef Panel Eğimi:</string>
+      
+  <string name="target_param_declination_label">Manyetik Sapma:</string>
+      
+  <string name="target_param_waiting_location_text">Hesaplanıyor… Konum bekleniyor…</string>
+      
+  <string name="target_param_grant_permission_text">Hedef parametrelerini görmek için konum izni verin.</string>
+      
+  <string name="target_param_current_location_label">Mevcut Konum</string>
+      
+  <string name="target_param_latitude_label">Enlem:</string>
+      
+  <string name="target_param_longitude_label">Boylam:</string>
+      
+  <string name="target_param_accuracy_label">Kesinlik:</string>
+      
+  <string name="target_param_value_degree_unit">%1$.1f°</string>
+      
+  <string name="target_param_value_degree_aim_unit">%1$.1f° (Nişan)</string>
+      
+  <string name="target_param_value_degree_horizontal_unit">%1$.1f° (yataydan)</string>
+      
+  <string name="target_param_value_meter_unit">%1$.1fm</string>
+      
+  <string name="guidance_card_title">Panel Hizalama Talimatları</string>
+   
+  <!-- Modified -->
+      
+  <string name="azimuth_visualizer_card_title">Cihaz Hizalama Görüntüleyicisi</string>
+   
+  <!-- Added -->
+      
+  <string name="guidance_waiting_for_target">Hedef parametrelerin rehberlik sağlaması bekleniyor…</string>
+      
+  <string name="guidance_azimuth_aligned">Azimut hizalandı!</string>
+      
+  <string name="guidance_azimuth_rotate_right">Cihazı SAĞA (Saat yönünde %1$s°) döndürün</string>
+      
+  <string name="guidance_azimuth_rotate_left">Cihazı SOLA (Saat yönünün tersine %1$s°) döndürün</string>
+      
+  <string name="guidance_tilt_optimal">Eğim idealdir!</string>
+      
+  <string name="guidance_tilt_up">Cihazı YUKARI doğru eğin (Hedef: %1$s°)</string>
+      
+  <string name="guidance_tilt_down">Cihazı AŞAĞI doğru eğin (Hedef: %1$s°)</string>
+      
+  <string name="guidance_roll_level">Cihaz düz!</string>
+      
+  <string name="guidance_roll_tilt_right_down">Seviye: SAĞ tarafa AŞAĞI doğru eğin (Nişan: %1$s°)</string>
+      
+  <string name="guidance_roll_tilt_left_down">Seviye: SOL tarafı AŞAĞI doğru eğin (Nişan: %1$s°)</string>
+      
+  <string name="guidance_roll_adjust_level">Ruloyu düz olacak şekilde ayarlayın</string>
+      
+  <string name="guidance_level_device_title">Seviye Cihazı (Pitch &amp; Roll)</string>
+      
+  <string name="guidance_perfectly_aligned">Cihaz mükemmel şekilde hizalanmış!</string>
+      
+  <string name="guidance_level_adjust_azimuth">Cihaz düz, Azimut\'u ayarlayın.</string>
+      
+  <string name="guidance_adjust_bubble_azimuth">Cihazı, balonun ortasını ayarlayacak ve Azimut\'u hizalayacak şekilde ayarlayın.</string>
+      
+  <string name="guidance_label_device_azimuth">Cihaz Azimutu:</string>
+      
+  <string name="guidance_label_device_tilt">Cihaz Eğimi (Pitch):</string>
+      
+  <string name="guidance_label_device_roll">Cihaz Rulosu (Seviye):</string>
+      
+  <string name="guidance_footer_instruction">Telefonu panele düz bir şekilde koyun, ekranı yukarı bakacak şekilde. Yukarıdaki Azimut kılavuzunu kullanarak telefonun üst kenarını hizalayın. Eşleştirme paneli Eğim.</string>
+      
+  <string name="guidance_footer_true_north_declination">Azimut rehberliği Gerçek Kuzey içindir. (Sapma: %1$.1f°)</string>
+      
+  <string name="guidance_footer_magnetic_north">Azimut rehberliği Manyetik Kuzey\'e (pusula) yöneliktir.</string>
+      
+  <string name="guidance_row_current_value">Güncel: %s</string>
+      
+  <string name="guidance_row_target_value">Hedef: %s</string>
+      
+  <string name="solar_app_screen_title">Güneş Paneli Optimizasyonu</string>
+      
+  <string name="solar_app_screen_subtitle_tilt_mode">Eğim Modu: %s</string>
+      
+  <string name="help_dialog_title">Panel Hizalama Yardımı</string>
+      
+  <string name="help_dialog_graphic_description">Telefonun güneş paneli üzerinde düz bir şekilde durduğunu ve her ikisinin de güneşe baktığını gösteren grafik.</string>
+      
+  <string name="help_dialog_text_line1">1. Telefonunuzu güneş panelinin üzerine düz bir şekilde yerleştirin, ekranı yukarı bakacak şekilde.</string>
+      
+  <string name="help_dialog_text_line2">2. Telefonunuzun üst kenarını güneş panelinin üst (veya daha yüksek) kenarıyla hizalayın.</string>
+      
+  <string name="help_dialog_text_line3">3. Uygulamadaki Azimut kılavuzunu kullanarak tüm paneli hizalanana kadar döndürün.</string>
+      
+  <string name="help_dialog_text_line4">4. Panelin açısını en uygun hale gelene kadar Eğim kılavuzunu kullanarak ayarlayın.</string>
+      
+  <string name="help_dialog_title_default">Yardım ve Rehberlik</string>
+      
+  <string name="help_dialog_button_dismiss">Anladım!</string>
+      
+  <string name="sensor_accuracy_high">Yüksek</string>
+      
+  <string name="sensor_accuracy_medium">Orta</string>
+      
+  <string name="sensor_accuracy_low">Düşük</string>
+      
+  <string name="sensor_accuracy_unreliable">Güvenilmez</string>
+      
+  <string name="sensor_accuracy_unknown">Bilinmeyen</string>
+      
+  <string name="tilt_mode_year_round">Yıl Boyunca</string>
+      
+  <string name="tilt_mode_summer">Yaz</string>
+      
+  <string name="tilt_mode_winter">Kış</string>
+      
+  <string name="tilt_mode_spring_autumn">İlkbahar/Sonbahar</string>
+      
+  <string name="tilt_mode_realtime">Gerçek zamanlı</string>
+      
+  <string name="about_libraries">Kütüphaneler Hakkında</string>
+      
+  <string name="back">Geri</string>
+      
+  <string name="buy_me_a_coffee">Bana Bir Kahve Al ☕️</string>
+  
+</resources>

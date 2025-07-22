@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2025 MobileMobile LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under
+  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  ~ OF ANY KIND, either express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<resources>
+      
+  <string name="app_name">솔판</string>
+      
+  <string name="permission_card_icon_desc">위치 권한이 필요합니다</string>
+      
+  <string name="permission_card_rationale_text">정확한 태양 계산에는 사용자의 위치가 필요합니다. 허가해 주세요.</string>
+      
+  <string name="permission_card_essential_text">이 앱이 제대로 작동하려면 위치 권한이 필수입니다.</string>
+      
+  <string name="permission_card_button_text">권한 요청</string>
+      
+  <string name="current_orientation_card_title">현재 장치 방향</string>
+      
+  <string name="current_orientation_azimuth_label">방위각 (자기):</string>
+      
+  <string name="current_orientation_pitch_label">피치 (틸트):</string>
+      
+  <string name="current_orientation_roll_label">연타:</string>
+      
+  <string name="current_orientation_accuracy_label">센서 정확도:</string>
+      
+  <string name="target_param_card_title">타겟 패널 설정</string>
+      
+  <string name="target_param_mode_label">방법:</string>
+      
+  <string name="target_param_true_azimuth_label">목표 진방위각:</string>
+      
+  <string name="target_param_magnetic_azimuth_label">목표 자기 방위각:</string>
+      
+  <string name="target_param_magnetic_azimuth_calculating_label">자기 방위각:</string>
+      
+  <string name="calculating_text">계산 중…</string>
+      
+  <string name="target_param_tilt_label">타겟 패널 기울기:</string>
+      
+  <string name="target_param_declination_label">자기 편각:</string>
+      
+  <string name="target_param_waiting_location_text">계산 중… 위치 대기 중…</string>
+      
+  <string name="target_param_grant_permission_text">대상 매개변수를 보려면 위치 권한을 부여하세요.</string>
+      
+  <string name="target_param_current_location_label">현재 위치</string>
+      
+  <string name="target_param_latitude_label">위도:</string>
+      
+  <string name="target_param_longitude_label">경도:</string>
+      
+  <string name="target_param_accuracy_label">정확성:</string>
+      
+  <string name="target_param_value_degree_unit">%1$.1f°</string>
+      
+  <string name="target_param_value_degree_aim_unit">%1$.1f° (목표)</string>
+      
+  <string name="target_param_value_degree_horizontal_unit">%1$.1f° (수평에서)</string>
+      
+  <string name="target_param_value_meter_unit">%1$.1f분</string>
+      
+  <string name="guidance_card_title">패널 정렬 지침</string>
+   
+  <!-- Modified -->
+      
+  <string name="azimuth_visualizer_card_title">장치 정렬 시각화 도구</string>
+   
+  <!-- Added -->
+      
+  <string name="guidance_waiting_for_target">목표 매개변수가 지침을 제공할 때까지 기다리는 중…</string>
+      
+  <string name="guidance_azimuth_aligned">방위각이 정렬되었습니다!</string>
+      
+  <string name="guidance_azimuth_rotate_right">기기를 오른쪽으로 회전 (시계 방향으로 %1$s°)</string>
+      
+  <string name="guidance_azimuth_rotate_left">기기를 왼쪽으로 회전합니다 (시계 반대 방향으로 %1$s°)</string>
+      
+  <string name="guidance_tilt_optimal">기울기가 최적입니다!</string>
+      
+  <string name="guidance_tilt_up">장치를 위쪽으로 기울입니다 (조준: %1$s°)</string>
+      
+  <string name="guidance_tilt_down">장치를 아래로 기울입니다 (조준: %1$s°)</string>
+      
+  <string name="guidance_roll_level">장치가 수평입니다!</string>
+      
+  <string name="guidance_roll_tilt_right_down">수평: 오른쪽 아래로 기울이기 (조준: %1$s°)</string>
+      
+  <string name="guidance_roll_tilt_left_down">수평: 왼쪽을 아래로 기울이세요 (조준: %1$s°)</string>
+      
+  <string name="guidance_roll_adjust_level">롤을 수평으로 조정하세요</string>
+      
+  <string name="guidance_level_device_title">레벨 장치 (피치 및 롤)</string>
+      
+  <string name="guidance_perfectly_aligned">장치가 완벽하게 정렬되었습니다!</string>
+      
+  <string name="guidance_level_adjust_azimuth">장치가 수평이면 방위각을 조정하세요.</string>
+      
+  <string name="guidance_adjust_bubble_azimuth">기기를 조정하여 거품을 중앙에 놓고 방위각을 맞춥니다.</string>
+      
+  <string name="guidance_label_device_azimuth">장치 방위각:</string>
+      
+  <string name="guidance_label_device_tilt">장치 기울기 (피치):</string>
+      
+  <string name="guidance_label_device_roll">장치 롤 (레벨):</string>
+      
+  <string name="guidance_footer_instruction">휴대폰을 패널 위에 평평히 놓고 화면이 위를 향하게 합니다. 위의 방위각 가이드를 사용하여 휴대폰의 상단 가장자리를 맞춥니다. 패널 기울기 맞추기.</string>
+      
+  <string name="guidance_footer_true_north_declination">방위각 안내는 진북을 기준으로 합니다. (편각: %1$.1f°)</string>
+      
+  <string name="guidance_footer_magnetic_north">방위각 안내는 자북극 (나침반)을 위한 것입니다.</string>
+      
+  <string name="guidance_row_current_value">현재: %s</string>
+      
+  <string name="guidance_row_target_value">대상: %s</string>
+      
+  <string name="solar_app_screen_title">태양광 패널 최적화</string>
+      
+  <string name="solar_app_screen_subtitle_tilt_mode">틸트 모드: %s</string>
+      
+  <string name="help_dialog_title">패널 정렬 도움말</string>
+      
+  <string name="help_dialog_graphic_description">태양광 패널 위에 두 개의 휴대전화가 놓여 있고 두 개 모두 태양을 향하고 있는 모습을 보여주는 그래픽입니다.</string>
+      
+  <string name="help_dialog_text_line1">1. 휴대폰을 태양광 패널 위에 평평하게 놓고 화면이 위를 향하게 하세요.</string>
+      
+  <string name="help_dialog_text_line2">2. 휴대폰의 상단 가장자리를 태양광 패널의 상단 (또는 그 위) 가장자리에 맞춥니다.</string>
+      
+  <string name="help_dialog_text_line3">3. 앱의 방위각 가이드를 사용하여 전체 패널을 정렬될 때까지 회전합니다.</string>
+      
+  <string name="help_dialog_text_line4">4. 틸트 가이드를 사용하여 패널 각도를 최적이 될 때까지 조정하세요.</string>
+      
+  <string name="help_dialog_title_default">도움말 및 안내</string>
+      
+  <string name="help_dialog_button_dismiss">알았어요!</string>
+      
+  <string name="sensor_accuracy_high">높은</string>
+      
+  <string name="sensor_accuracy_medium">중간</string>
+      
+  <string name="sensor_accuracy_low">낮은</string>
+      
+  <string name="sensor_accuracy_unreliable">신뢰할 수 없는</string>
+      
+  <string name="sensor_accuracy_unknown">알려지지 않은</string>
+      
+  <string name="tilt_mode_year_round">일년 내내</string>
+      
+  <string name="tilt_mode_summer">여름</string>
+      
+  <string name="tilt_mode_winter">겨울</string>
+      
+  <string name="tilt_mode_spring_autumn">봄/가을</string>
+      
+  <string name="tilt_mode_realtime">실시간</string>
+      
+  <string name="about_libraries">도서관 소개</string>
+      
+  <string name="back">뒤쪽에</string>
+      
+  <string name="buy_me_a_coffee">커피 한 잔 사주세요 ☕️</string>
+  
+</resources>

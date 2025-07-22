@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2025 MobileMobile LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under
+  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  ~ OF ANY KIND, either express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<resources>
+      
+  <string name="app_name">SolPan</string>
+      
+  <string name="permission_card_icon_desc">Sijaintilupa tarvitaan</string>
+      
+  <string name="permission_card_rationale_text">Tarkat aurinkoenergialaskelmat vaativat sijaintisi. Ole hyvä ja myönnä lupa.</string>
+      
+  <string name="permission_card_essential_text">Sijaintilupa on välttämätön, jotta tämä sovellus toimii oikein.</string>
+      
+  <string name="permission_card_button_text">Pyydä käyttöoikeuksia</string>
+      
+  <string name="current_orientation_card_title">Nykyisen laitteen suunta</string>
+      
+  <string name="current_orientation_azimuth_label">Atsimuutti (magneettinen):</string>
+      
+  <string name="current_orientation_pitch_label">Kallistus (Tilt):</string>
+      
+  <string name="current_orientation_roll_label">Rulla:</string>
+      
+  <string name="current_orientation_accuracy_label">Anturin tarkkuus:</string>
+      
+  <string name="target_param_card_title">Kohdepaneelin asetukset</string>
+      
+  <string name="target_param_mode_label">Tila:</string>
+      
+  <string name="target_param_true_azimuth_label">Kohteen todellinen atsimuutti:</string>
+      
+  <string name="target_param_magnetic_azimuth_label">Kohteen magneettinen atsimuutti:</string>
+      
+  <string name="target_param_magnetic_azimuth_calculating_label">Magneettinen atsimuutti:</string>
+      
+  <string name="calculating_text">Lasketaan…</string>
+      
+  <string name="target_param_tilt_label">Kohdepaneelin kallistus:</string>
+      
+  <string name="target_param_declination_label">Magneettinen deklinaatio:</string>
+      
+  <string name="target_param_waiting_location_text">Lasketaan… Odotetaan sijaintia…</string>
+      
+  <string name="target_param_grant_permission_text">Myönnä sijainnin käyttöoikeus nähdäksesi kohdeparametrit.</string>
+      
+  <string name="target_param_current_location_label">Nykyinen sijainti</string>
+      
+  <string name="target_param_latitude_label">Leveysaste:</string>
+      
+  <string name="target_param_longitude_label">Pituusaste:</string>
+      
+  <string name="target_param_accuracy_label">Tarkkuus:</string>
+      
+  <string name="target_param_value_degree_unit">%1$.1f°</string>
+      
+  <string name="target_param_value_degree_aim_unit">%1$.1f° (Tavoite)</string>
+      
+  <string name="target_param_value_degree_horizontal_unit">%1$.1f° (vaakasuunnasta)</string>
+      
+  <string name="target_param_value_meter_unit">%1$.1fm</string>
+      
+  <string name="guidance_card_title">Paneelin kohdistusohjeet</string>
+   
+  <!-- Modified -->
+      
+  <string name="azimuth_visualizer_card_title">Laitteen kohdistuksen visualisoija</string>
+   
+  <!-- Added -->
+      
+  <string name="guidance_waiting_for_target">Odotetaan kohdeparametrien ohjeita…</string>
+      
+  <string name="guidance_azimuth_aligned">Atsimuutti on linjassa!</string>
+      
+  <string name="guidance_azimuth_rotate_right">Kierrä laitetta OIKEALLE (myötäpäivään)%1$s °)</string>
+      
+  <string name="guidance_azimuth_rotate_left">Kierrä laitetta VASEMMALLE (vastapäivään)%1$s °)</string>
+      
+  <string name="guidance_tilt_optimal">Kallistus on optimaalinen!</string>
+      
+  <string name="guidance_tilt_up">Kallista laitetta YLÖS (Tavoite: %1$s °)</string>
+      
+  <string name="guidance_tilt_down">Kallista laitetta ALAS (Tavoite: %1$s °)</string>
+      
+  <string name="guidance_roll_level">Laite on vaakasuorassa!</string>
+      
+  <string name="guidance_roll_tilt_right_down">Taso: Kallista OIKEALLE puolelle ALAS (Tavoite: %1$s °)</string>
+      
+  <string name="guidance_roll_tilt_left_down">Taso: Kallista VASEMMALLE ALAS (Tavoite: %1$s °)</string>
+      
+  <string name="guidance_roll_adjust_level">Säädä rulla vaakasuoraan</string>
+      
+  <string name="guidance_level_device_title">Tasauslaite (kallistus- ja kallistuskulma)</string>
+      
+  <string name="guidance_perfectly_aligned">Laite on täydellisesti linjassa!</string>
+      
+  <string name="guidance_level_adjust_azimuth">Laite on vaakasuorassa, säädä atsimuuttia.</string>
+      
+  <string name="guidance_adjust_bubble_azimuth">Säädä laitetta kuplan keskittämiseksi ja atsimuutin kohdistamiseksi.</string>
+      
+  <string name="guidance_label_device_azimuth">Laitteen atsimuutti:</string>
+      
+  <string name="guidance_label_device_tilt">Laitteen kallistus (kallistus):</string>
+      
+  <string name="guidance_label_device_roll">Laiteheitto (taso):</string>
+      
+  <string name="guidance_footer_instruction">Aseta puhelin tasaisesti paneelille näyttö ylöspäin. Kohdista puhelimen yläreuna käyttämällä yllä olevaa atsimuuttiohjainta. Ottelupaneelin kallistus.</string>
+      
+  <string name="guidance_footer_true_north_declination">Atsimuuttiohjaus on todelliselle pohjoiselle. (Kirjoitus: %1$.1f °)</string>
+      
+  <string name="guidance_footer_magnetic_north">Atsimuuttiohjaus on magneettista pohjoista (kompassia) varten.</string>
+      
+  <string name="guidance_row_current_value">Nykyinen: %s</string>
+      
+  <string name="guidance_row_target_value">Kohde: %s</string>
+      
+  <string name="solar_app_screen_title">Aurinkopaneelien optimoija</string>
+      
+  <string name="solar_app_screen_subtitle_tilt_mode">Kallistustila: %s</string>
+      
+  <string name="help_dialog_title">Paneelin kohdistusapu</string>
+      
+  <string name="help_dialog_graphic_description">Grafiikka, jossa puhelin on aurinkopaneelin päällä, molemmat aurinkoa kohti.</string>
+      
+  <string name="help_dialog_text_line1">1. Aseta puhelimesi tasaisesti aurinkopaneelin päälle näyttö ylöspäin.</string>
+      
+  <string name="help_dialog_text_line2">2. Kohdista puhelimesi yläreuna aurinkopaneelin yläreunan (tai korkeamman reunan) kanssa.</string>
+      
+  <string name="help_dialog_text_line3">3. Käytä sovelluksen atsimuuttiopasta kiertääksesi koko paneelia, kunnes se on linjassa.</string>
+      
+  <string name="help_dialog_text_line4">4. Säädä paneelin kulmaa optimaaliseksi kallistusohjaimen avulla.</string>
+      
+  <string name="help_dialog_title_default">Apua ja opastusta</string>
+      
+  <string name="help_dialog_button_dismiss">Selvä!</string>
+      
+  <string name="sensor_accuracy_high">Korkea</string>
+      
+  <string name="sensor_accuracy_medium">Keskikokoinen</string>
+      
+  <string name="sensor_accuracy_low">Matala</string>
+      
+  <string name="sensor_accuracy_unreliable">Epäluotettava</string>
+      
+  <string name="sensor_accuracy_unknown">Tuntematon</string>
+      
+  <string name="tilt_mode_year_round">Ympäri vuoden</string>
+      
+  <string name="tilt_mode_summer">Kesä</string>
+      
+  <string name="tilt_mode_winter">Talvi</string>
+      
+  <string name="tilt_mode_spring_autumn">Kevät/Syksy</string>
+      
+  <string name="tilt_mode_realtime">Reaaliaikainen</string>
+      
+  <string name="about_libraries">Tietoja kirjastoista</string>
+      
+  <string name="back">Takaisin</string>
+      
+  <string name="buy_me_a_coffee">Osta minulle kahvi ☕️</string>
+  
+</resources>

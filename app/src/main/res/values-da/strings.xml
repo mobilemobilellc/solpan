@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2025 MobileMobile LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under
+  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  ~ OF ANY KIND, either express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<resources>
+      
+  <string name="app_name">SolPan</string>
+      
+  <string name="permission_card_icon_desc">Lokationstilladelse kræves</string>
+      
+  <string name="permission_card_rationale_text">Nøjagtige solberegninger kræver din placering. Giv venligst tilladelse.</string>
+      
+  <string name="permission_card_essential_text">Placeringstilladelse er afgørende for, at denne app kan fungere korrekt.</string>
+      
+  <string name="permission_card_button_text">Anmod om tilladelser</string>
+      
+  <string name="current_orientation_card_title">Aktuel enhedsretning</string>
+      
+  <string name="current_orientation_azimuth_label">Azimut (magnetisk):</string>
+      
+  <string name="current_orientation_pitch_label">Hældning (hældning):</string>
+      
+  <string name="current_orientation_roll_label">Rulle:</string>
+      
+  <string name="current_orientation_accuracy_label">Sensornøjagtighed:</string>
+      
+  <string name="target_param_card_title">Opsætning af målpanel</string>
+      
+  <string name="target_param_mode_label">Mode:</string>
+      
+  <string name="target_param_true_azimuth_label">Mål sand azimut:</string>
+      
+  <string name="target_param_magnetic_azimuth_label">Målets magnetiske azimut:</string>
+      
+  <string name="target_param_magnetic_azimuth_calculating_label">Magnetisk azimut:</string>
+      
+  <string name="calculating_text">Beregner…</string>
+      
+  <string name="target_param_tilt_label">Målpanelets hældning:</string>
+      
+  <string name="target_param_declination_label">Magnetisk deklination:</string>
+      
+  <string name="target_param_waiting_location_text">Beregner… Venter på placering…</string>
+      
+  <string name="target_param_grant_permission_text">Giv lokationstilladelse til at se målparametre.</string>
+      
+  <string name="target_param_current_location_label">Nuværende placering</string>
+      
+  <string name="target_param_latitude_label">Breddegrad:</string>
+      
+  <string name="target_param_longitude_label">Længde:</string>
+      
+  <string name="target_param_accuracy_label">Nøjagtighed:</string>
+      
+  <string name="target_param_value_degree_unit">%1$.1f°</string>
+      
+  <string name="target_param_value_degree_aim_unit">%1$.1f° (Sigte)</string>
+      
+  <string name="target_param_value_degree_horizontal_unit">%1$.1f° (fra vandret)</string>
+      
+  <string name="target_param_value_meter_unit">%1$.1f min.</string>
+      
+  <string name="guidance_card_title">Instruktioner til paneljustering</string>
+   
+  <!-- Modified -->
+      
+  <string name="azimuth_visualizer_card_title">Visualisator for enhedsjustering</string>
+   
+  <!-- Added -->
+      
+  <string name="guidance_waiting_for_target">Venter på vejledning fra målparametrene…</string>
+      
+  <string name="guidance_azimuth_aligned">Azimut er justeret!</string>
+      
+  <string name="guidance_azimuth_rotate_right">Drej enheden TIL HØJRE (med uret til %1$s°)</string>
+      
+  <string name="guidance_azimuth_rotate_left">Drej enheden TIL VENSTRE (mod uret til %1$s°)</string>
+      
+  <string name="guidance_tilt_optimal">Hældning er optimal!</string>
+      
+  <string name="guidance_tilt_up">Vip enheden OP (sigte: %1$s°)</string>
+      
+  <string name="guidance_tilt_down">Vip enheden NED (sigt: %1$s°)</string>
+      
+  <string name="guidance_roll_level">Enheden er i vater!</string>
+      
+  <string name="guidance_roll_tilt_right_down">Niveau: Vip HØJRE side NED (Sig: %1$s°)</string>
+      
+  <string name="guidance_roll_tilt_left_down">Niveau: Vip VENSTRE side NED (Sig: %1$s°)</string>
+      
+  <string name="guidance_roll_adjust_level">Juster rullen, så den er i vater</string>
+      
+  <string name="guidance_level_device_title">Nivelleringsenhed (Pitch &amp; Roll)</string>
+      
+  <string name="guidance_perfectly_aligned">Apparatet er perfekt justeret!</string>
+      
+  <string name="guidance_level_adjust_azimuth">Enheden er i vater, juster azimut.</string>
+      
+  <string name="guidance_adjust_bubble_azimuth">Juster enheden for at centrere boblen og justere azimut.</string>
+      
+  <string name="guidance_label_device_azimuth">Enhedens azimut:</string>
+      
+  <string name="guidance_label_device_tilt">Enhedens hældning (pitch):</string>
+      
+  <string name="guidance_label_device_roll">Enhedsrulle (niveau):</string>
+      
+  <string name="guidance_footer_instruction">Læg telefonen fladt på panelet med skærmen opad. Juster telefonens øverste kant ved hjælp af Azimuth-guiden ovenfor. Match panel Hældning.</string>
+      
+  <string name="guidance_footer_true_north_declination">Azimut-navigationen er for den ægte nordpol. (Deklination: %1$.1f°)</string>
+      
+  <string name="guidance_footer_magnetic_north">Azimut-vejledningen er for magnetisk nord (kompas).</string>
+      
+  <string name="guidance_row_current_value">Nuværende: %s</string>
+      
+  <string name="guidance_row_target_value">Mål: %s</string>
+      
+  <string name="solar_app_screen_title">Solpaneloptimering</string>
+      
+  <string name="solar_app_screen_subtitle_tilt_mode">Vippetilstand: %s</string>
+      
+  <string name="help_dialog_title">Hjælp til paneljustering</string>
+      
+  <string name="help_dialog_graphic_description">Grafik, der viser en telefon fladt på et solpanel, begge vendt mod solen.</string>
+      
+  <string name="help_dialog_text_line1">1. Placer din telefon fladt på solpanelet med skærmen opad.</string>
+      
+  <string name="help_dialog_text_line2">2. Juster den øverste kant af din telefon med den øverste (eller højere) kant af solpanelet.</string>
+      
+  <string name="help_dialog_text_line3">3. Brug Azimuth-guiden i appen til at rotere hele panelet, indtil det er justeret.</string>
+      
+  <string name="help_dialog_text_line4">4. Brug hældningsguiden til at justere panelets vinkel, indtil den er optimal.</string>
+      
+  <string name="help_dialog_title_default">Hjælp og vejledning</string>
+      
+  <string name="help_dialog_button_dismiss">Forstået!</string>
+      
+  <string name="sensor_accuracy_high">Høj</string>
+      
+  <string name="sensor_accuracy_medium">Medium</string>
+      
+  <string name="sensor_accuracy_low">Lav</string>
+      
+  <string name="sensor_accuracy_unreliable">Upålidelig</string>
+      
+  <string name="sensor_accuracy_unknown">Ukendt</string>
+      
+  <string name="tilt_mode_year_round">Året rundt</string>
+      
+  <string name="tilt_mode_summer">Sommer</string>
+      
+  <string name="tilt_mode_winter">Vinter</string>
+      
+  <string name="tilt_mode_spring_autumn">Forår/Efterår</string>
+      
+  <string name="tilt_mode_realtime">Realtid</string>
+      
+  <string name="about_libraries">Om biblioteker</string>
+      
+  <string name="back">Tilbage</string>
+      
+  <string name="buy_me_a_coffee">Køb mig en kaffe ☕️</string>
+  
+</resources>

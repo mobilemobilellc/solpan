@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2025 MobileMobile LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under
+  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  ~ OF ANY KIND, either express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<resources>
+      
+  <string name="app_name">СолПан</string>
+      
+  <string name="permission_card_icon_desc">Потрібен дозвіл на доступ до місцезнаходження</string>
+      
+  <string name="permission_card_rationale_text">Точні розрахунки сонячної енергії вимагають вашого місцезнаходження. Будь ласка, надайте дозвіл.</string>
+      
+  <string name="permission_card_essential_text">Дозвіл на геодані є важливим для правильної роботи цієї програми.</string>
+      
+  <string name="permission_card_button_text">Запит дозволів</string>
+      
+  <string name="current_orientation_card_title">Поточна орієнтація пристрою</string>
+      
+  <string name="current_orientation_azimuth_label">Азимут (магнітний):</string>
+      
+  <string name="current_orientation_pitch_label">Кут нахилу (таунху):</string>
+      
+  <string name="current_orientation_roll_label">Рулон:</string>
+      
+  <string name="current_orientation_accuracy_label">Точність датчика:</string>
+      
+  <string name="target_param_card_title">Налаштування цільової панелі</string>
+      
+  <string name="target_param_mode_label">Режим:</string>
+      
+  <string name="target_param_true_azimuth_label">Істинний азимут цілі:</string>
+      
+  <string name="target_param_magnetic_azimuth_label">Магнітний азимут цілі:</string>
+      
+  <string name="target_param_magnetic_azimuth_calculating_label">Магнітний азимут:</string>
+      
+  <string name="calculating_text">Обчислення…</string>
+      
+  <string name="target_param_tilt_label">Нахил цільової панелі:</string>
+      
+  <string name="target_param_declination_label">Магнітне схилення:</string>
+      
+  <string name="target_param_waiting_location_text">Обчислення… Очікування місцезнаходження…</string>
+      
+  <string name="target_param_grant_permission_text">Надайте дозвіл на визначення місцезнаходження, щоб переглянути параметри цілі.</string>
+      
+  <string name="target_param_current_location_label">Поточне місцезнаходження</string>
+      
+  <string name="target_param_latitude_label">Широта:</string>
+      
+  <string name="target_param_longitude_label">Довгота:</string>
+      
+  <string name="target_param_accuracy_label">Точність:</string>
+      
+  <string name="target_param_value_degree_unit">%1$.1f°</string>
+      
+  <string name="target_param_value_degree_aim_unit">%1$.1f° (Прицілювання)</string>
+      
+  <string name="target_param_value_degree_horizontal_unit">%1$.1f° (від горизонталі)</string>
+      
+  <string name="target_param_value_meter_unit">%1$.1fм</string>
+      
+  <string name="guidance_card_title">Інструкції з вирівнювання панелей</string>
+   
+  <!-- Modified -->
+      
+  <string name="azimuth_visualizer_card_title">Візуалізатор вирівнювання пристроїв</string>
+   
+  <!-- Added -->
+      
+  <string name="guidance_waiting_for_target">Очікування на цільові параметри для надання рекомендацій…</string>
+      
+  <string name="guidance_azimuth_aligned">Азимут вирівняно!</string>
+      
+  <string name="guidance_azimuth_rotate_right">Поверніть пристрій ПРАВОРУЧ (за годинниковою стрілкою, щоб%1$s °)</string>
+      
+  <string name="guidance_azimuth_rotate_left">Поверніть пристрій ЛІВОРУЧ (проти годинникової стрілки, щоб%1$s °)</string>
+      
+  <string name="guidance_tilt_optimal">Нахил оптимальний!</string>
+      
+  <string name="guidance_tilt_up">Нахиліть пристрій ВГОРУ (Ціль: %1$s °)</string>
+      
+  <string name="guidance_tilt_down">Нахиліть пристрій ВНИЗ (Прицільтеся: %1$s °)</string>
+      
+  <string name="guidance_roll_level">Пристрій вирівняно!</string>
+      
+  <string name="guidance_roll_tilt_right_down">Рівень: Нахил ПРАВОРУЧ ВНИЗ (Прицілювання: %1$s °)</string>
+      
+  <string name="guidance_roll_tilt_left_down">Рівень: Нахил ЛІВОРУЧ ВНИЗ (Прицілювання: %1$s °)</string>
+      
+  <string name="guidance_roll_adjust_level">Відрегулюйте крен, щоб він був рівним</string>
+      
+  <string name="guidance_level_device_title">Пристрій для регулювання рівня (тангування та кренування)</string>
+      
+  <string name="guidance_perfectly_aligned">Пристрій ідеально вирівняний!</string>
+      
+  <string name="guidance_level_adjust_azimuth">Пристрій вирівняно, відрегулюйте азимут.</string>
+      
+  <string name="guidance_adjust_bubble_azimuth">Відрегулюйте пристрій, щоб відцентрувати бульбашку та вирівняти азимут.</string>
+      
+  <string name="guidance_label_device_azimuth">Азимут пристрою:</string>
+      
+  <string name="guidance_label_device_tilt">Нахил пристрою (тангування):</string>
+      
+  <string name="guidance_label_device_roll">Рівень пристрою:</string>
+      
+  <string name="guidance_footer_instruction">Покладіть телефон пласко на панель екраном догори. Вирівняйте верхній край телефону за допомогою азимутальної направляючої вище. Зіставте нахил панелі.</string>
+      
+  <string name="guidance_footer_true_north_declination">Азимутальна навігація призначена для справжньої півночі. (Схилення: %1$.1f °)</string>
+      
+  <string name="guidance_footer_magnetic_north">Азимутальна навігація призначена для магнітного півночі (компас).</string>
+      
+  <string name="guidance_row_current_value">Поточний: %s</string>
+      
+  <string name="guidance_row_target_value">Ціль: %s</string>
+      
+  <string name="solar_app_screen_title">Оптимізатор сонячних панелей</string>
+      
+  <string name="solar_app_screen_subtitle_tilt_mode">Режим нахилу: %s</string>
+      
+  <string name="help_dialog_title">Довідка з вирівнювання панелей</string>
+      
+  <string name="help_dialog_graphic_description">Зображення телефону, розташованого на сонячній панелі, обидва боки повернуті до сонця.</string>
+      
+  <string name="help_dialog_text_line1">1. Покладіть телефон пласко на сонячну панель екраном догори.</string>
+      
+  <string name="help_dialog_text_line2">2. Вирівняйте верхній край телефону з верхнім (або вищим) краєм сонячної панелі.</string>
+      
+  <string name="help_dialog_text_line3">3. Використовуйте азимутальний напрямник у застосунку, щоб повертати всю панель до вирівнювання.</string>
+      
+  <string name="help_dialog_text_line4">4. Використовуйте напрямну нахилу, щоб відрегулювати кут панелі до оптимального положення.</string>
+      
+  <string name="help_dialog_title_default">Допомога та рекомендації</string>
+      
+  <string name="help_dialog_button_dismiss">Зрозуміло!</string>
+      
+  <string name="sensor_accuracy_high">Високий</string>
+      
+  <string name="sensor_accuracy_medium">Середній</string>
+      
+  <string name="sensor_accuracy_low">Низький</string>
+      
+  <string name="sensor_accuracy_unreliable">Ненадійний</string>
+      
+  <string name="sensor_accuracy_unknown">Невідомо</string>
+      
+  <string name="tilt_mode_year_round">Цілий рік</string>
+      
+  <string name="tilt_mode_summer">Літо</string>
+      
+  <string name="tilt_mode_winter">Зима</string>
+      
+  <string name="tilt_mode_spring_autumn">Весна/Осінь</string>
+      
+  <string name="tilt_mode_realtime">У режимі реального часу</string>
+      
+  <string name="about_libraries">Про бібліотеки</string>
+      
+  <string name="back">Назад</string>
+      
+  <string name="buy_me_a_coffee">Купи мені кави ☕️</string>
+  
+</resources>

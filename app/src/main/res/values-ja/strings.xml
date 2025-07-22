@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2025 MobileMobile LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under
+  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  ~ OF ANY KIND, either express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<resources>
+      
+  <string name="app_name">ソルパン</string>
+      
+  <string name="permission_card_icon_desc">位置情報の許可が必要です</string>
+      
+  <string name="permission_card_rationale_text">正確な太陽光計算にはあなたの位置情報が必要です。許可を与えてください。</string>
+      
+  <string name="permission_card_essential_text">このアプリが正しく機能するには、位置情報の許可が不可欠です。</string>
+      
+  <string name="permission_card_button_text">権限を要求する</string>
+      
+  <string name="current_orientation_card_title">現在のデバイスの向き</string>
+      
+  <string name="current_orientation_azimuth_label">方位角（磁気）:</string>
+      
+  <string name="current_orientation_pitch_label">ピッチ（傾き）:</string>
+      
+  <string name="current_orientation_roll_label">ロール：</string>
+      
+  <string name="current_orientation_accuracy_label">センサー精度:</string>
+      
+  <string name="target_param_card_title">ターゲットパネルのセットアップ</string>
+      
+  <string name="target_param_mode_label">モード：</string>
+      
+  <string name="target_param_true_azimuth_label">ターゲット真方位角:</string>
+      
+  <string name="target_param_magnetic_azimuth_label">ターゲット磁気方位:</string>
+      
+  <string name="target_param_magnetic_azimuth_calculating_label">磁気方位角:</string>
+      
+  <string name="calculating_text">計算中…</string>
+      
+  <string name="target_param_tilt_label">ターゲットパネルの傾き:</string>
+      
+  <string name="target_param_declination_label">磁気偏角:</string>
+      
+  <string name="target_param_waiting_location_text">計算中… 位置を待っています…</string>
+      
+  <string name="target_param_grant_permission_text">ターゲットパラメータを表示するには、位置情報の許可を付与します。</string>
+      
+  <string name="target_param_current_location_label">現在の場所</string>
+      
+  <string name="target_param_latitude_label">緯度：</string>
+      
+  <string name="target_param_longitude_label">経度：</string>
+      
+  <string name="target_param_accuracy_label">正確さ：</string>
+      
+  <string name="target_param_value_degree_unit">%1$.1f°</string>
+      
+  <string name="target_param_value_degree_aim_unit">%1$.1f°（目標）</string>
+      
+  <string name="target_param_value_degree_horizontal_unit">%1$.1f°（水平から）</string>
+      
+  <string name="target_param_value_meter_unit">%1$.1fメートル</string>
+      
+  <string name="guidance_card_title">パネルの位置合わせ手順</string>
+   
+  <!-- Modified -->
+      
+  <string name="azimuth_visualizer_card_title">デバイスアライメントビジュアライザー</string>
+   
+  <!-- Added -->
+      
+  <string name="guidance_waiting_for_target">ガイダンスを提供するためのターゲット パラメータを待機しています...</string>
+      
+  <string name="guidance_azimuth_aligned">方位角が揃いました！</string>
+      
+  <string name="guidance_azimuth_rotate_right">デバイスを右に回転します（時計回りに%1$s°)</string>
+      
+  <string name="guidance_azimuth_rotate_left">デバイスを左に回転（反時計回りに回転）%1$s °)</string>
+      
+  <string name="guidance_tilt_optimal">傾きも最適です！</string>
+      
+  <string name="guidance_tilt_up">デバイスを上に傾ける（目標：%1$s °)</string>
+      
+  <string name="guidance_tilt_down">デバイスを下に傾ける（目標：%1$s °)</string>
+      
+  <string name="guidance_roll_level">デバイスは水平です!</string>
+      
+  <string name="guidance_roll_tilt_right_down">レベル: 右側を下向きに傾ける (目標: %1$s °)</string>
+      
+  <string name="guidance_roll_tilt_left_down">レベル: 左下を傾ける (目標: %1$s °)</string>
+      
+  <string name="guidance_roll_adjust_level">ロールを水平に調整する</string>
+      
+  <string name="guidance_level_device_title">レベル装置（ピッチ＆ロール）</string>
+      
+  <string name="guidance_perfectly_aligned">デバイスは完璧に位置合わせされました!</string>
+      
+  <string name="guidance_level_adjust_azimuth">デバイスは水平です。方位角を調整してください。</string>
+      
+  <string name="guidance_adjust_bubble_azimuth">デバイスを調整して、気泡を中央に配置し、方位角を合わせます。</string>
+      
+  <string name="guidance_label_device_azimuth">デバイスの方位角:</string>
+      
+  <string name="guidance_label_device_tilt">デバイスの傾き（ピッチ）：</string>
+      
+  <string name="guidance_label_device_roll">デバイスロール（レベル）:</string>
+      
+  <string name="guidance_footer_instruction">電話を画面を上にしてパネルの上に平らに置きます。上記の方位角ガイドを使用して、携帯電話の上端を合わせます。パネルの傾きを合わせます。</string>
+      
+  <string name="guidance_footer_true_north_declination">方位角ガイダンスは真北を対象としています。（赤緯：%1$.1f °)</string>
+      
+  <string name="guidance_footer_magnetic_north">方位角誘導は磁北（コンパス）用です。</string>
+      
+  <string name="guidance_row_current_value">現在：%s</string>
+      
+  <string name="guidance_row_target_value">ターゲット: %s</string>
+      
+  <string name="solar_app_screen_title">ソーラーパネルオプティマイザー</string>
+      
+  <string name="solar_app_screen_subtitle_tilt_mode">傾斜モード: %s</string>
+      
+  <string name="help_dialog_title">パネル配置ヘルプ</string>
+      
+  <string name="help_dialog_graphic_description">携帯電話がソーラーパネルの上に平らに置かれ、両方とも太陽を向いている様子を示す画像。</string>
+      
+  <string name="help_dialog_text_line1">1. 携帯電話を画面を上に向けてソーラーパネルの上に平らに置きます。</string>
+      
+  <string name="help_dialog_text_line2">2. 携帯電話の上端をソーラーパネルの上端（またはそれより高い端）に合わせます。</string>
+      
+  <string name="help_dialog_text_line3">3. アプリ内の方位角ガイドを使用して、パネル全体を回転させて位置合わせします。</string>
+      
+  <string name="help_dialog_text_line4">4. 傾斜ガイドを使用して、パネルの角度を最適になるまで調整します。</string>
+      
+  <string name="help_dialog_title_default">ヘルプとガイダンス</string>
+      
+  <string name="help_dialog_button_dismiss">わかった！</string>
+      
+  <string name="sensor_accuracy_high">高い</string>
+      
+  <string name="sensor_accuracy_medium">中くらい</string>
+      
+  <string name="sensor_accuracy_low">低い</string>
+      
+  <string name="sensor_accuracy_unreliable">信頼できない</string>
+      
+  <string name="sensor_accuracy_unknown">未知</string>
+      
+  <string name="tilt_mode_year_round">一年中</string>
+      
+  <string name="tilt_mode_summer">夏</string>
+      
+  <string name="tilt_mode_winter">冬</string>
+      
+  <string name="tilt_mode_spring_autumn">春/秋</string>
+      
+  <string name="tilt_mode_realtime">リアルタイム</string>
+      
+  <string name="about_libraries">図書館について</string>
+      
+  <string name="back">戻る</string>
+      
+  <string name="buy_me_a_coffee">コーヒーを買ってください☕️</string>
+  
+</resources>

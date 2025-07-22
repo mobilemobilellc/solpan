@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2025 MobileMobile LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under
+  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  ~ OF ANY KIND, either express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<resources>
+      
+  <string name="app_name">索尔潘</string>
+      
+  <string name="permission_card_icon_desc">需要位置许可</string>
+      
+  <string name="permission_card_rationale_text">准确的太阳计算需要您的位置。请授予许可。</string>
+      
+  <string name="permission_card_essential_text">位置权限对于此应用程序正常运行至关重要。</string>
+      
+  <string name="permission_card_button_text">请求权限</string>
+      
+  <string name="current_orientation_card_title">当前设备方向</string>
+      
+  <string name="current_orientation_azimuth_label">方位角（磁）：</string>
+      
+  <string name="current_orientation_pitch_label">俯仰（倾斜）：</string>
+      
+  <string name="current_orientation_roll_label">卷：</string>
+      
+  <string name="current_orientation_accuracy_label">传感器精度：</string>
+      
+  <string name="target_param_card_title">目标面板设置</string>
+      
+  <string name="target_param_mode_label">模式：</string>
+      
+  <string name="target_param_true_azimuth_label">目标真方位角：</string>
+      
+  <string name="target_param_magnetic_azimuth_label">目标磁方位角：</string>
+      
+  <string name="target_param_magnetic_azimuth_calculating_label">磁方位角：</string>
+      
+  <string name="calculating_text">正在计算…</string>
+      
+  <string name="target_param_tilt_label">目标面板倾斜：</string>
+      
+  <string name="target_param_declination_label">磁偏角：</string>
+      
+  <string name="target_param_waiting_location_text">正在计算…等待定位…</string>
+      
+  <string name="target_param_grant_permission_text">授予位置权限以查看目标参数。</string>
+      
+  <string name="target_param_current_location_label">当前位置</string>
+      
+  <string name="target_param_latitude_label">纬度：</string>
+      
+  <string name="target_param_longitude_label">经度：</string>
+      
+  <string name="target_param_accuracy_label">准确性：</string>
+      
+  <string name="target_param_value_degree_unit">%1$.1f度</string>
+      
+  <string name="target_param_value_degree_aim_unit">%1$.1f°（目标）</string>
+      
+  <string name="target_param_value_degree_horizontal_unit">%1$.1f°（距水平方向）</string>
+      
+  <string name="target_param_value_meter_unit">%1$.1f分钟</string>
+      
+  <string name="guidance_card_title">面板对齐说明</string>
+   
+  <!-- Modified -->
+      
+  <string name="azimuth_visualizer_card_title">设备对齐可视化工具</string>
+   
+  <!-- Added -->
+      
+  <string name="guidance_waiting_for_target">等待目标参数提供指导……</string>
+      
+  <string name="guidance_azimuth_aligned">方位已对准！</string>
+      
+  <string name="guidance_azimuth_rotate_right">向右旋转设备（顺时针旋转 %1$s°）</string>
+      
+  <string name="guidance_azimuth_rotate_left">向左旋转设备（逆时针旋转 %1$s°）</string>
+      
+  <string name="guidance_tilt_optimal">倾斜度最佳！</string>
+      
+  <string name="guidance_tilt_up">向上倾斜设备（目标：%1$s°）</string>
+      
+  <string name="guidance_tilt_down">向下倾斜设备（目标：%1$s°）</string>
+      
+  <string name="guidance_roll_level">设备处于水平状态！</string>
+      
+  <string name="guidance_roll_tilt_right_down">水平：向右下方倾斜（目标：%1$s°）</string>
+      
+  <string name="guidance_roll_tilt_left_down">水平仪：向左下方倾斜（目标：%1$s°）</string>
+      
+  <string name="guidance_roll_adjust_level">调整辊子至水平</string>
+      
+  <string name="guidance_level_device_title">调平装置（俯仰和滚动）</string>
+      
+  <string name="guidance_perfectly_aligned">设备已完美对齐！</string>
+      
+  <string name="guidance_level_adjust_azimuth">设备水平，调整方位角。</string>
+      
+  <string name="guidance_adjust_bubble_azimuth">调整装置使气泡居中并对齐方位角。</string>
+      
+  <string name="guidance_label_device_azimuth">设备方位角：</string>
+      
+  <string name="guidance_label_device_tilt">设备倾斜度（俯仰）：</string>
+      
+  <string name="guidance_label_device_roll">设备卷（等级）：</string>
+      
+  <string name="guidance_footer_instruction">将手机平放在面板上，屏幕朝上。使用上面的方位角指南对齐手机的顶部边缘。匹配面板倾斜。</string>
+      
+  <string name="guidance_footer_true_north_declination">方位角引导针对的是真北。（偏角：%1$.1f°）</string>
+      
+  <string name="guidance_footer_magnetic_north">方位角引导针对的是磁北（罗盘）。</string>
+      
+  <string name="guidance_row_current_value">当前：%s</string>
+      
+  <string name="guidance_row_target_value">目标：%s</string>
+      
+  <string name="solar_app_screen_title">太阳能电池板优化器</string>
+      
+  <string name="solar_app_screen_subtitle_tilt_mode">倾斜模式：%s</string>
+      
+  <string name="help_dialog_title">面板对齐帮助</string>
+      
+  <string name="help_dialog_graphic_description">图中显示手机平放在太阳能电池板上，两侧均面向太阳。</string>
+      
+  <string name="help_dialog_text_line1">1. 将手机平放在太阳能电池板上，屏幕朝上。</string>
+      
+  <string name="help_dialog_text_line2">2. 将手机的顶部边缘与太阳能电池板的顶部（或更高）边缘对齐。</string>
+      
+  <string name="help_dialog_text_line3">3. 使用应用程序中的方位角指南旋转整个面板直至对齐。</string>
+      
+  <string name="help_dialog_text_line4">4. 使用倾斜指南调整面板的角度，直到达到最佳状态。</string>
+      
+  <string name="help_dialog_title_default">帮助与指导</string>
+      
+  <string name="help_dialog_button_dismiss">知道了！</string>
+      
+  <string name="sensor_accuracy_high">高的</string>
+      
+  <string name="sensor_accuracy_medium">中等的</string>
+      
+  <string name="sensor_accuracy_low">低的</string>
+      
+  <string name="sensor_accuracy_unreliable">不可靠</string>
+      
+  <string name="sensor_accuracy_unknown">未知</string>
+      
+  <string name="tilt_mode_year_round">全年</string>
+      
+  <string name="tilt_mode_summer">夏天</string>
+      
+  <string name="tilt_mode_winter">冬天</string>
+      
+  <string name="tilt_mode_spring_autumn">春季/秋季</string>
+      
+  <string name="tilt_mode_realtime">即时的</string>
+      
+  <string name="about_libraries">关于图书馆</string>
+      
+  <string name="back">后退</string>
+      
+  <string name="buy_me_a_coffee">给我买杯咖啡☕️</string>
+  
+</resources>

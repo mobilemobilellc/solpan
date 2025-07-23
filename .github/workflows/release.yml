@@ -98,7 +98,7 @@ jobs:
       - name: Attest Build Provenance
         uses: actions/attest-build-provenance@v2
         with:
-          subject-path: 'app/build/outputs/apk/debug/app-debug.*'
+          subject-path: 'app/build/outputs/*/release/app-release.*'
 
       - name: Upload AAB to Google Play
         if: success() && github.ref_type == 'tag'

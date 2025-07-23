@@ -18,4 +18,7 @@ package app.mobilemobile.solpan.data
  * @property azimuth
  * @property altitude
  */
-data class SolarPosition(val azimuth: Double, val altitude: Double)
+data class SolarPosition(
+    val azimuth: Double,
+    val altitude: Double,
+)

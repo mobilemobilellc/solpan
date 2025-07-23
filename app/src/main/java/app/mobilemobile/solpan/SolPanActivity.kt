@@ -27,18 +27,21 @@ import app.mobilemobile.solpan.ui.theme.SolPanTheme
 import com.google.firebase.analytics.FirebaseAnalytics
 
 class SolPanActivity : ComponentActivity() {
-  private lateinit var analytics: FirebaseAnalytics
+    private lateinit var analytics: FirebaseAnalytics
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    analytics = FirebaseAnalytics.getInstance(this)
-    enableEdgeToEdge()
-    setContent {
-      SolPanTheme {
-        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-          SolPanApp()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        analytics = FirebaseAnalytics.getInstance(this)
+        enableEdgeToEdge()
+        setContent {
+            SolPanTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background,
+                ) {
+                    SolPanApp()
+                }
+            }
         }
-      }
     }
-  }
 }

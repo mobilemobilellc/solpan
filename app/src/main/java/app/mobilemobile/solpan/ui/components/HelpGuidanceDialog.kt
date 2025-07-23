@@ -36,70 +36,74 @@ import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
 import app.mobilemobile.solpan.R
 
-data class LinkInfo(val text: String, val url: String)
+data class LinkInfo(
+    val text: String,
+    val url: String,
+)
 
 @Composable
 fun HelpGuidanceDialog(onDismissRequest: () -> Unit) {
-  val links =
-    listOf(
-      LinkInfo("Buy Me a Coffee ☕", "https://buymeacoffee.com/mobilemobile"),
-      LinkInfo("View on GitHub", "https://github.com/mobilemobilellc/"),
-      LinkInfo("mobilemobile.app", "https://mobilemobile.app"),
+    val links =
+        listOf(
+            LinkInfo("Buy Me a Coffee ☕", "https://buymeacoffee.com/mobilemobile"),
+            LinkInfo("View on GitHub", "https://github.com/mobilemobilellc/"),
+            LinkInfo("mobilemobile.app", "https://mobilemobile.app"),
+        )
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = { Text(stringResource(id = R.string.help_dialog_title)) },
+        text = {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Image(
+                    painter = painterResource(id = R.drawable.happypanel),
+                    contentDescription = stringResource(id = R.string.help_dialog_graphic_description),
+                    modifier = Modifier.fillMaxWidth().height(150.dp).padding(vertical = 8.dp),
+                    contentScale = ContentScale.Fit,
+                )
+                Text(
+                    text = stringResource(id = R.string.help_dialog_text_line1),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 8.dp),
+                )
+                Text(
+                    text = stringResource(id = R.string.help_dialog_text_line2),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 4.dp),
+                )
+                Text(
+                    text = stringResource(id = R.string.help_dialog_text_line3),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 4.dp),
+                )
+                Text(
+                    text = stringResource(id = R.string.help_dialog_text_line4),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 4.dp, bottom = 8.dp),
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                links.forEach { linkInfo ->
+                    ClickableLink(text = linkInfo.text, url = linkInfo.url)
+                    Spacer(modifier = Modifier.height(4.dp))
+                }
+            }
+        },
+        confirmButton = {
+            Button(onClick = onDismissRequest) {
+                Text(stringResource(id = R.string.help_dialog_button_dismiss))
+            }
+        },
     )
-  AlertDialog(
-    onDismissRequest = onDismissRequest,
-    title = { Text(stringResource(id = R.string.help_dialog_title)) },
-    text = {
-      Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Image(
-          painter = painterResource(id = R.drawable.happypanel),
-          contentDescription = stringResource(id = R.string.help_dialog_graphic_description),
-          modifier = Modifier.fillMaxWidth().height(150.dp).padding(vertical = 8.dp),
-          contentScale = ContentScale.Fit,
-        )
-        Text(
-          text = stringResource(id = R.string.help_dialog_text_line1),
-          style = MaterialTheme.typography.bodyMedium,
-          modifier = Modifier.padding(top = 8.dp),
-        )
-        Text(
-          text = stringResource(id = R.string.help_dialog_text_line2),
-          style = MaterialTheme.typography.bodyMedium,
-          modifier = Modifier.padding(top = 4.dp),
-        )
-        Text(
-          text = stringResource(id = R.string.help_dialog_text_line3),
-          style = MaterialTheme.typography.bodyMedium,
-          modifier = Modifier.padding(top = 4.dp),
-        )
-        Text(
-          text = stringResource(id = R.string.help_dialog_text_line4),
-          style = MaterialTheme.typography.bodyMedium,
-          modifier = Modifier.padding(top = 4.dp, bottom = 8.dp),
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        links.forEach { linkInfo ->
-          ClickableLink(text = linkInfo.text, url = linkInfo.url)
-          Spacer(modifier = Modifier.height(4.dp))
-        }
-      }
-    },
-    confirmButton = {
-      Button(onClick = onDismissRequest) {
-        Text(stringResource(id = R.string.help_dialog_button_dismiss))
-      }
-    },
-  )
 }
 
 @Composable
 private fun ClickableLink(
-  text: String,
-  url: String, // Kept for clarity, though not directly used in buildAnnotatedString here
-  modifier: Modifier = Modifier,
+    text: String,
+    url: String, // Kept for clarity, though not directly used in buildAnnotatedString here
+    modifier: Modifier = Modifier,
 ) {
-  Text(
-    modifier = modifier,
-    text = buildAnnotatedString { withLink(link = LinkAnnotation.Url(url = url)) { append(text) } },
-  )
+    Text(
+        modifier = modifier,
+        text =
+            buildAnnotatedString { withLink(link = LinkAnnotation.Url(url = url)) { append(text) } },
+    )
 }

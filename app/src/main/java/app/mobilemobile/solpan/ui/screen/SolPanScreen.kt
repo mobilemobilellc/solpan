@@ -80,216 +80,219 @@ import com.google.firebase.analytics.analytics
 import com.google.firebase.analytics.logEvent
 
 @OptIn(
-  ExperimentalPermissionsApi::class,
-  ExperimentalMaterial3Api::class,
-  ExperimentalMaterial3ExpressiveApi::class,
+    ExperimentalPermissionsApi::class,
+    ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3ExpressiveApi::class,
 )
 @Composable
-fun SolPanScreen(viewModel: SolPanViewModel, onNavigateToAboutLibraries: () -> Unit = {}) {
-  val context = LocalContext.current
-  val preferences =
-    context.getSharedPreferences(
-      "app.mobilemobile.solpan_preferences",
-      android.content.Context.MODE_PRIVATE,
-    )
+fun SolPanScreen(
+    viewModel: SolPanViewModel,
+    onNavigateToAboutLibraries: () -> Unit = {},
+) {
+    val context = LocalContext.current
+    val preferences =
+        context.getSharedPreferences(
+            "app.mobilemobile.solpan_preferences",
+            android.content.Context.MODE_PRIVATE,
+        )
 
-  val optimalParams by viewModel.optimalPanelParameters.collectAsState()
-  val currentSelectedMode by viewModel.selectedTiltModeFlow.collectAsState()
-  val vmLocation by viewModel.currentLocation.collectAsState()
-  val debugFakeAlignmentActive by viewModel.debugFakeAlignmentActive.collectAsState()
+    val optimalParams by viewModel.optimalPanelParameters.collectAsState()
+    val currentSelectedMode by viewModel.selectedTiltModeFlow.collectAsState()
+    val vmLocation by viewModel.currentLocation.collectAsState()
+    val debugFakeAlignmentActive by viewModel.debugFakeAlignmentActive.collectAsState()
 
-  val deviceOrientationController = rememberDeviceOrientationController()
-  val currentOrientation by deviceOrientationController.orientation
+    val deviceOrientationController = rememberDeviceOrientationController()
+    val currentOrientation by deviceOrientationController.orientation
 
-  val tutorialSeen = preferences.getBoolean("tutorialSeen", false)
-  var showHelpDialog by remember { mutableStateOf(!tutorialSeen) }
-  val analytics = remember { Firebase.analytics }
+    val tutorialSeen = preferences.getBoolean("tutorialSeen", false)
+    var showHelpDialog by remember { mutableStateOf(!tutorialSeen) }
+    val analytics = remember { Firebase.analytics }
 
-  if (showHelpDialog) {
-    HelpGuidanceDialog {
-      showHelpDialog = false
-      preferences.edit { putBoolean("tutorialSeen", true) }
-      analytics.logEvent("end_tutorial", null)
+    if (showHelpDialog) {
+        HelpGuidanceDialog {
+            showHelpDialog = false
+            preferences.edit { putBoolean("tutorialSeen", true) }
+            analytics.logEvent("end_tutorial", null)
+        }
     }
-  }
 
-  DisposableEffect(Unit) {
-    deviceOrientationController.startListening()
-    onDispose { deviceOrientationController.stopListening() }
-  }
-
-  val locationPermissionsState =
-    rememberMultiplePermissionsState(
-      listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-    )
-
-  val deviceLocationController =
-    rememberDeviceLocationController(onLocationUpdate = viewModel::updateLocation)
-
-  LaunchedEffect(locationPermissionsState.allPermissionsGranted) {
-    val permissionGranted = locationPermissionsState.allPermissionsGranted
-    analytics.logEvent("permission_request_response") {
-      param("permission_type", "location")
-      param("permission_granted", permissionGranted.toString())
+    DisposableEffect(Unit) {
+        deviceOrientationController.startListening()
+        onDispose { deviceOrientationController.stopListening() }
     }
-    if (permissionGranted) {
-      deviceLocationController.startLocationUpdates()
-    } else {
-      deviceLocationController.stopLocationUpdates()
-      viewModel.updateLocation(null)
+
+    val locationPermissionsState =
+        rememberMultiplePermissionsState(
+            listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+        )
+
+    val deviceLocationController =
+        rememberDeviceLocationController(onLocationUpdate = viewModel::updateLocation)
+
+    LaunchedEffect(locationPermissionsState.allPermissionsGranted) {
+        val permissionGranted = locationPermissionsState.allPermissionsGranted
+        analytics.logEvent("permission_request_response") {
+            param("permission_type", "location")
+            param("permission_granted", permissionGranted.toString())
+        }
+        if (permissionGranted) {
+            deviceLocationController.startLocationUpdates()
+        } else {
+            deviceLocationController.stopLocationUpdates()
+            viewModel.updateLocation(null)
+        }
     }
-  }
-  val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-  var showOverflowMenu by remember { mutableStateOf(false) }
-  Scaffold(
-    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-    topBar = {
-      TopAppBar(
-        scrollBehavior = scrollBehavior,
-        title = { Text(stringResource(id = R.string.solar_app_screen_title)) },
-        subtitle = {
-          Text(
-            stringResource(
-              id = R.string.solar_app_screen_subtitle_tilt_mode,
-              currentSelectedMode.displayName(),
-            )
-          )
-        },
-        colors =
-          TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-          ),
-        actions = {
-          IconButton(
-            onClick = {
-              showHelpDialog = true
-              analytics.logEvent("start_tutorial", null)
-            }
-          ) {
-            Icon(
-              imageVector = Icons.AutoMirrored.Filled.HelpOutline,
-              contentDescription = stringResource(id = R.string.help_dialog_title),
-            )
-          }
-          Box {
-            IconButton(onClick = { showOverflowMenu = !showOverflowMenu }) {
-              Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "More options")
-            }
-            DropdownMenu(
-              expanded = showOverflowMenu,
-              onDismissRequest = { showOverflowMenu = false },
-            ) {
-              if (BuildConfig.DEBUG) {
-                DropdownMenuItem(
-                  text = { Text("Toggle Fake Alignment") },
-                  onClick = {
-                    viewModel.toggleDebugFakeAlignment()
-                    showOverflowMenu = false
-                  },
-                  leadingIcon = {
-                    Icon(
-                      imageVector = Icons.Filled.BugReport,
-                      contentDescription = "Toggle Fake Alignment",
-                      tint =
-                        if (debugFakeAlignmentActive) {
-                          MaterialTheme.colorScheme.error
-                        } else {
-                          MaterialTheme.colorScheme.onSurfaceVariant
-                        },
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+    var showOverflowMenu by remember { mutableStateOf(false) }
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            TopAppBar(
+                scrollBehavior = scrollBehavior,
+                title = { Text(stringResource(id = R.string.solar_app_screen_title)) },
+                subtitle = {
+                    Text(
+                        stringResource(
+                            id = R.string.solar_app_screen_subtitle_tilt_mode,
+                            currentSelectedMode.displayName(),
+                        ),
                     )
-                  },
-                )
-              }
-              DropdownMenuItem(
-                text = { Text(stringResource(id = R.string.about_libraries)) },
-                onClick = {
-                  onNavigateToAboutLibraries()
-                  showOverflowMenu = false
                 },
-              )
-            }
-          }
+                colors =
+                    TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    ),
+                actions = {
+                    IconButton(
+                        onClick = {
+                            showHelpDialog = true
+                            analytics.logEvent("start_tutorial", null)
+                        },
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.HelpOutline,
+                            contentDescription = stringResource(id = R.string.help_dialog_title),
+                        )
+                    }
+                    Box {
+                        IconButton(onClick = { showOverflowMenu = !showOverflowMenu }) {
+                            Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "More options")
+                        }
+                        DropdownMenu(
+                            expanded = showOverflowMenu,
+                            onDismissRequest = { showOverflowMenu = false },
+                        ) {
+                            if (BuildConfig.DEBUG) {
+                                DropdownMenuItem(
+                                    text = { Text("Toggle Fake Alignment") },
+                                    onClick = {
+                                        viewModel.toggleDebugFakeAlignment()
+                                        showOverflowMenu = false
+                                    },
+                                    leadingIcon = {
+                                        Icon(
+                                            imageVector = Icons.Filled.BugReport,
+                                            contentDescription = "Toggle Fake Alignment",
+                                            tint =
+                                                if (debugFakeAlignmentActive) {
+                                                    MaterialTheme.colorScheme.error
+                                                } else {
+                                                    MaterialTheme.colorScheme.onSurfaceVariant
+                                                },
+                                        )
+                                    },
+                                )
+                            }
+                            DropdownMenuItem(
+                                text = { Text(stringResource(id = R.string.about_libraries)) },
+                                onClick = {
+                                    onNavigateToAboutLibraries()
+                                    showOverflowMenu = false
+                                },
+                            )
+                        }
+                    }
+                },
+            )
         },
-      )
-    },
-  ) { contentPadding ->
-    SolPanScreenContent(
-      contentPadding,
-      locationPermissionsState,
-      currentOrientation,
-      optimalParams,
-      debugFakeAlignmentActive,
-      vmLocation,
-    )
-  }
+    ) { contentPadding ->
+        SolPanScreenContent(
+            contentPadding,
+            locationPermissionsState,
+            currentOrientation,
+            optimalParams,
+            debugFakeAlignmentActive,
+            vmLocation,
+        )
+    }
 }
 
 @Composable
 @OptIn(ExperimentalPermissionsApi::class)
 private fun SolPanScreenContent(
-  contentPadding: PaddingValues,
-  locationPermissionsState: MultiplePermissionsState,
-  currentOrientation: OrientationData,
-  optimalParams: OptimalPanelParameters?,
-  debugFakeAlignmentActive: Boolean,
-  vmLocation: LocationData?,
+    contentPadding: PaddingValues,
+    locationPermissionsState: MultiplePermissionsState,
+    currentOrientation: OrientationData,
+    optimalParams: OptimalPanelParameters?,
+    debugFakeAlignmentActive: Boolean,
+    vmLocation: LocationData?,
 ) {
-  LazyVerticalStaggeredGrid(
-    modifier = Modifier.fillMaxSize().padding(contentPadding),
-    columns = StaggeredGridCells.Adaptive(240.dp),
-    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
-    verticalItemSpacing = 8.dp,
-    horizontalArrangement = spacedBy(8.dp),
-  ) {
-    if (!locationPermissionsState.allPermissionsGranted) {
-      item { PermissionRequestCard(locationPermissionsState) }
-    }
+    LazyVerticalStaggeredGrid(
+        modifier = Modifier.fillMaxSize().padding(contentPadding),
+        columns = StaggeredGridCells.Adaptive(240.dp),
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
+        verticalItemSpacing = 8.dp,
+        horizontalArrangement = spacedBy(8.dp),
+    ) {
+        if (!locationPermissionsState.allPermissionsGranted) {
+            item { PermissionRequestCard(locationPermissionsState) }
+        }
 
-    item {
-      AzimuthVisualizerCard(
-        currentOrientation = currentOrientation,
-        targetParameters = optimalParams,
-        debugFakeAlignmentActive = debugFakeAlignmentActive,
-      )
-    }
+        item {
+            AzimuthVisualizerCard(
+                currentOrientation = currentOrientation,
+                targetParameters = optimalParams,
+                debugFakeAlignmentActive = debugFakeAlignmentActive,
+            )
+        }
 
-    item {
-      GuidanceCard(
-        currentOrientation = currentOrientation,
-        targetParameters = optimalParams,
-        debugFakeAlignmentActive = debugFakeAlignmentActive,
-      )
-    }
+        item {
+            GuidanceCard(
+                currentOrientation = currentOrientation,
+                targetParameters = optimalParams,
+                debugFakeAlignmentActive = debugFakeAlignmentActive,
+            )
+        }
 
-    item { CurrentOrientationCard(currentOrientation) }
+        item { CurrentOrientationCard(currentOrientation) }
 
-    item {
-      TargetParametersCard(
-        optimalParams,
-        vmLocation,
-        locationPermissionsState.allPermissionsGranted,
-      )
+        item {
+            TargetParametersCard(
+                optimalParams,
+                vmLocation,
+                locationPermissionsState.allPermissionsGranted,
+            )
+        }
     }
-  }
 }
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 fun SolarAppScreenDarkPreview() {
-  SolPanTheme {
-    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-      SolPanScreen(viewModel = viewModel(), onNavigateToAboutLibraries = {})
+    SolPanTheme {
+        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+            SolPanScreen(viewModel = viewModel(), onNavigateToAboutLibraries = {})
+        }
     }
-  }
 }
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO, name = "Light Mode")
 @Composable
 fun SolarAppScreenLightPreview() {
-  SolPanTheme {
-    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-      SolPanScreen(viewModel = viewModel(), onNavigateToAboutLibraries = {})
+    SolPanTheme {
+        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+            SolPanScreen(viewModel = viewModel(), onNavigateToAboutLibraries = {})
+        }
     }
-  }
 }

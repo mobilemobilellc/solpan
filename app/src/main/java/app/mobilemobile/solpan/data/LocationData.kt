@@ -21,8 +21,8 @@ package app.mobilemobile.solpan.data
  * @property accuracy
  */
 data class LocationData(
-  val latitude: Double,
-  val longitude: Double,
-  val altitude: Float? = null,
-  val accuracy: Float? = null,
+    val latitude: Double,
+    val longitude: Double,
+    val altitude: Float? = null,
+    val accuracy: Float? = null,
 )

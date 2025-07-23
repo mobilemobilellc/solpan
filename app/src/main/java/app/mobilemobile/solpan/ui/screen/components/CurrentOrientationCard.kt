@@ -25,40 +25,51 @@ import app.mobilemobile.solpan.util.format
 
 @Composable
 fun CurrentOrientationCard(orientation: OrientationData) {
-  InfoCard(
-    title = stringResource(id = R.string.current_orientation_card_title),
-    icon = Icons.Filled.Explore,
-  ) {
-    InfoRow(
-      label = stringResource(id = R.string.current_orientation_azimuth_label),
-      value = "${orientation.azimuth.format(1)}°",
-    )
-    InfoRow(
-      label = stringResource(id = R.string.current_orientation_pitch_label),
-      value = "${orientation.pitch.format(1)}°",
-    )
-    InfoRow(
-      label = stringResource(id = R.string.current_orientation_roll_label),
-      value = "${orientation.roll.format(1)}°",
-    )
-    orientation.sensorAccuracy?.let {
-      InfoRow(
-        label = stringResource(id = R.string.current_orientation_accuracy_label),
-        value = sensorAccuracyToString(accuracy = it),
-      )
+    InfoCard(
+        title = stringResource(id = R.string.current_orientation_card_title),
+        icon = Icons.Filled.Explore,
+    ) {
+        InfoRow(
+            label = stringResource(id = R.string.current_orientation_azimuth_label),
+            value = "${orientation.azimuth.format(1)}°",
+        )
+        InfoRow(
+            label = stringResource(id = R.string.current_orientation_pitch_label),
+            value = "${orientation.pitch.format(1)}°",
+        )
+        InfoRow(
+            label = stringResource(id = R.string.current_orientation_roll_label),
+            value = "${orientation.roll.format(1)}°",
+        )
+        orientation.sensorAccuracy?.let {
+            InfoRow(
+                label = stringResource(id = R.string.current_orientation_accuracy_label),
+                value = sensorAccuracyToString(accuracy = it),
+            )
+        }
     }
-  }
 }
 
 @Composable
-private fun sensorAccuracyToString(accuracy: Int): String {
-  return when (accuracy) {
-    SensorManager.SENSOR_STATUS_ACCURACY_HIGH -> stringResource(id = R.string.sensor_accuracy_high)
-    SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM ->
-      stringResource(id = R.string.sensor_accuracy_medium)
-    SensorManager.SENSOR_STATUS_ACCURACY_LOW -> stringResource(id = R.string.sensor_accuracy_low)
-    SensorManager.SENSOR_STATUS_UNRELIABLE ->
-      stringResource(id = R.string.sensor_accuracy_unreliable)
-    else -> stringResource(id = R.string.sensor_accuracy_unknown)
-  }
-}
+private fun sensorAccuracyToString(accuracy: Int): String =
+    when (accuracy) {
+        SensorManager.SENSOR_STATUS_ACCURACY_HIGH -> {
+            stringResource(id = R.string.sensor_accuracy_high)
+        }
+
+        SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM -> {
+            stringResource(id = R.string.sensor_accuracy_medium)
+        }
+
+        SensorManager.SENSOR_STATUS_ACCURACY_LOW -> {
+            stringResource(id = R.string.sensor_accuracy_low)
+        }
+
+        SensorManager.SENSOR_STATUS_UNRELIABLE -> {
+            stringResource(id = R.string.sensor_accuracy_unreliable)
+        }
+
+        else -> {
+            stringResource(id = R.string.sensor_accuracy_unknown)
+        }
+    }

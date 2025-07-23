@@ -23,8 +23,8 @@ import org.junit.Test
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
-  @Test
-  fun additionIsCorrect() {
-    assertEquals(4, 2 + 2)
-  }
+    @Test
+    fun additionIsCorrect() {
+        assertEquals(4, 2 + 2)
+    }
 }

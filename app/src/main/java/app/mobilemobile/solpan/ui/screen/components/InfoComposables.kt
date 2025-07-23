@@ -41,54 +41,55 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun InfoCard(
-  title: String,
-  icon: ImageVector? = null,
-  content: @Composable ColumnScope.() -> Unit,
+    title: String,
+    icon: ImageVector? = null,
+    content: @Composable ColumnScope.() -> Unit,
 ) {
-  Card(
-    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-    modifier = Modifier.fillMaxWidth(),
-    shape = MaterialTheme.shapes.large,
-  ) {
-    Column(modifier = Modifier.padding(16.dp)) {
-      Row(verticalAlignment = Alignment.CenterVertically) {
-        icon?.let {
-          Icon(
-            imageVector = it,
-            contentDescription = title,
-            modifier = Modifier.size(28.dp),
-            tint = MaterialTheme.colorScheme.primary,
-          )
-          Spacer(modifier = Modifier.width(12.dp))
+    Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                icon?.let {
+                    Icon(
+                        imageVector = it,
+                        contentDescription = title,
+                        modifier = Modifier.size(28.dp),
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                }
+                Text(text = title, style = MaterialTheme.typography.titleLarge)
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            HorizontalDivider(thickness = 0.5.dp, color = MaterialTheme.colorScheme.outlineVariant)
+            Spacer(modifier = Modifier.height(12.dp))
+            content()
         }
-        Text(text = title, style = MaterialTheme.typography.titleLarge)
-      }
-      Spacer(modifier = Modifier.height(12.dp))
-      HorizontalDivider(thickness = 0.5.dp, color = MaterialTheme.colorScheme.outlineVariant)
-      Spacer(modifier = Modifier.height(12.dp))
-      content()
     }
-  }
 }
 
 @Composable
 fun InfoRow(
-  label: String,
-  value: String,
-  labelStyle: TextStyle = MaterialTheme.typography.bodyLarge,
-  valueStyle: TextStyle = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
+    label: String,
+    value: String,
+    labelStyle: TextStyle = MaterialTheme.typography.bodyLarge,
+    valueStyle: TextStyle =
+        MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
 ) {
-  Row(
-    modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
-    horizontalArrangement = Arrangement.SpaceBetween,
-    verticalAlignment = Alignment.Top,
-  ) {
-    Text(text = label, style = labelStyle, modifier = Modifier.weight(0.6f).padding(end = 4.dp))
-    Text(
-      text = value,
-      style = valueStyle,
-      textAlign = TextAlign.End,
-      modifier = Modifier.weight(0.4f),
-    )
-  }
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Top,
+    ) {
+        Text(text = label, style = labelStyle, modifier = Modifier.weight(0.6f).padding(end = 4.dp))
+        Text(
+            text = value,
+            style = valueStyle,
+            textAlign = TextAlign.End,
+            modifier = Modifier.weight(0.4f),
+        )
+    }
 }

@@ -22,9 +22,9 @@ package app.mobilemobile.solpan.data
  * @property magneticDeclination
  */
 data class OptimalPanelParameters(
-  val targetTrueAzimuth: Double,
-  val targetMagneticAzimuth: Double?,
-  val targetTilt: Double,
-  val mode: TiltMode,
-  val magneticDeclination: Float? = null,
+    val targetTrueAzimuth: Double,
+    val targetMagneticAzimuth: Double?,
+    val targetTilt: Double,
+    val mode: TiltMode,
+    val magneticDeclination: Float? = null,
 )

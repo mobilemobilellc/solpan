@@ -45,55 +45,55 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun PermissionRequestCard(locationPermissionsState: MultiplePermissionsState) {
-  Card(
-    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
-    modifier = Modifier.fillMaxWidth(),
-  ) {
-    Column(
-      modifier = Modifier.fillMaxWidth().padding(16.dp),
-      horizontalAlignment = Alignment.CenterHorizontally,
-      verticalArrangement = Arrangement.spacedBy(12.dp),
+    Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+        modifier = Modifier.fillMaxWidth(),
     ) {
-      Icon(
-        Icons.Filled.EditLocation,
-        contentDescription = stringResource(R.string.permission_card_icon_desc),
-        tint = MaterialTheme.colorScheme.onErrorContainer,
-        modifier = Modifier.size(32.dp),
-      )
-      Text(
-        text =
-          if (locationPermissionsState.shouldShowRationale) {
-            stringResource(R.string.permission_card_rationale_text)
-          } else {
-            stringResource(R.string.permission_card_essential_text)
-          },
-        style = MaterialTheme.typography.bodyLarge,
-        color = MaterialTheme.colorScheme.onErrorContainer,
-        textAlign = TextAlign.Center,
-      )
-      Button(
-        onClick = { locationPermissionsState.launchMultiplePermissionRequest() },
-        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.onError),
-      ) {
-        Text(
-          stringResource(R.string.permission_card_button_text),
-          color = MaterialTheme.colorScheme.onErrorContainer,
-        )
-      }
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Icon(
+                Icons.Filled.EditLocation,
+                contentDescription = stringResource(R.string.permission_card_icon_desc),
+                tint = MaterialTheme.colorScheme.onErrorContainer,
+                modifier = Modifier.size(32.dp),
+            )
+            Text(
+                text =
+                    if (locationPermissionsState.shouldShowRationale) {
+                        stringResource(R.string.permission_card_rationale_text)
+                    } else {
+                        stringResource(R.string.permission_card_essential_text)
+                    },
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onErrorContainer,
+                textAlign = TextAlign.Center,
+            )
+            Button(
+                onClick = { locationPermissionsState.launchMultiplePermissionRequest() },
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.onError),
+            ) {
+                Text(
+                    stringResource(R.string.permission_card_button_text),
+                    color = MaterialTheme.colorScheme.onErrorContainer,
+                )
+            }
+        }
     }
-  }
 }
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Preview(showBackground = true)
 @Composable
 fun PermissionRequestCardPreview() {
-  SolPanTheme {
-    val dummyPermissionsState =
-      rememberMultiplePermissionsState(
-        permissions = listOf(Manifest.permission.ACCESS_FINE_LOCATION)
-      )
-    PermissionRequestCard(locationPermissionsState = dummyPermissionsState)
-  }
+    SolPanTheme {
+        val dummyPermissionsState =
+            rememberMultiplePermissionsState(
+                permissions = listOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            )
+        PermissionRequestCard(locationPermissionsState = dummyPermissionsState)
+    }
 }

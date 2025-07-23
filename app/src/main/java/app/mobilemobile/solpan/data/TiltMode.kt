@@ -25,19 +25,28 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.serialization.Serializable
 
 @Serializable
-enum class TiltMode(@param:StringRes val titleRes: Int, val icon: ImageVector) {
-  YEAR_ROUND(
-    titleRes = app.mobilemobile.solpan.R.string.tilt_mode_year_round,
-    icon = Icons.Filled.Cached,
-  ),
-  SUMMER(titleRes = app.mobilemobile.solpan.R.string.tilt_mode_summer, icon = Icons.Filled.WbSunny),
-  WINTER(titleRes = app.mobilemobile.solpan.R.string.tilt_mode_winter, icon = Icons.Filled.AcUnit),
-  SPRING_AUTUMN(
-    titleRes = app.mobilemobile.solpan.R.string.tilt_mode_spring_autumn,
-    icon = Icons.Filled.Eco,
-  ),
-  REALTIME(
-    titleRes = app.mobilemobile.solpan.R.string.tilt_mode_realtime,
-    icon = Icons.Filled.AccessTime,
-  ),
+enum class TiltMode(
+    @param:StringRes val titleRes: Int,
+    val icon: ImageVector,
+) {
+    YEAR_ROUND(
+        titleRes = app.mobilemobile.solpan.R.string.tilt_mode_year_round,
+        icon = Icons.Filled.Cached,
+    ),
+    SUMMER(
+        titleRes = app.mobilemobile.solpan.R.string.tilt_mode_summer,
+        icon = Icons.Filled.WbSunny,
+    ),
+    WINTER(
+        titleRes = app.mobilemobile.solpan.R.string.tilt_mode_winter,
+        icon = Icons.Filled.AcUnit,
+    ),
+    SPRING_AUTUMN(
+        titleRes = app.mobilemobile.solpan.R.string.tilt_mode_spring_autumn,
+        icon = Icons.Filled.Eco,
+    ),
+    REALTIME(
+        titleRes = app.mobilemobile.solpan.R.string.tilt_mode_realtime,
+        icon = Icons.Filled.AccessTime,
+    ),
 }

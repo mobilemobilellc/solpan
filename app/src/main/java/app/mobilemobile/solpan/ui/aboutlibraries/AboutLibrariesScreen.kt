@@ -42,37 +42,37 @@ import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AboutLibrariesScreen(onNavigateBack: () -> Unit = {}) {
-  val libraries by rememberLibraries(R.raw.aboutlibraries)
-  val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-  Scaffold(
-    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-    topBar = {
-      TopAppBar(
-        navigationIcon = {
-          IconButton(onClick = onNavigateBack) {
-            Icon(
-              imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-              contentDescription = stringResource(id = R.string.back),
+    val libraries by rememberLibraries(R.raw.aboutlibraries)
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            TopAppBar(
+                navigationIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(id = R.string.back),
+                        )
+                    }
+                },
+                scrollBehavior = scrollBehavior,
+                title = { Text(stringResource(id = R.string.solar_app_screen_title)) },
+                subtitle = { Text(stringResource(id = R.string.about_libraries)) },
+                colors =
+                    TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    ),
             )
-          }
         },
-        scrollBehavior = scrollBehavior,
-        title = { Text(stringResource(id = R.string.solar_app_screen_title)) },
-        subtitle = { Text(stringResource(id = R.string.about_libraries)) },
-        colors =
-          TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-          ),
-      )
-    },
-  ) { contentPadding ->
-    LibrariesContainer(
-      modifier = Modifier.fillMaxSize().padding(contentPadding),
-      showDescription = true,
-      showFundingBadges = true,
-      libraries = libraries,
-      contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
-    )
-  }
+    ) { contentPadding ->
+        LibrariesContainer(
+            modifier = Modifier.fillMaxSize().padding(contentPadding),
+            showDescription = true,
+            showFundingBadges = true,
+            libraries = libraries,
+            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
+        )
+    }
 }

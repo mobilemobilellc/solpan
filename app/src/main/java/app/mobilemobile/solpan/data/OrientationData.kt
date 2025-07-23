@@ -21,8 +21,8 @@ package app.mobilemobile.solpan.data
  * @property sensorAccuracy
  */
 data class OrientationData(
-  val azimuth: Float = 0f,
-  val pitch: Float = 0f,
-  val roll: Float = 0f,
-  val sensorAccuracy: Int? = null,
+    val azimuth: Float = 0f,
+    val pitch: Float = 0f,
+    val roll: Float = 0f,
+    val sensorAccuracy: Int? = null,
 )

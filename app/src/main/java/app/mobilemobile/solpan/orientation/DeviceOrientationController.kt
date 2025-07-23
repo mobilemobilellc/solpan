@@ -31,159 +31,189 @@ import app.mobilemobile.solpan.util.roundTo
 
 @Composable
 fun rememberDeviceOrientationController(): DeviceOrientationController {
-  val context = LocalContext.current
-  val controller = remember { DeviceOrientationController(context) }
+    val context = LocalContext.current
+    val controller = remember { DeviceOrientationController(context) }
 
-  DisposableEffect(controller) { onDispose { controller.stopListening() } }
-  return controller
+    DisposableEffect(controller) { onDispose { controller.stopListening() } }
+    return controller
 }
 
-class DeviceOrientationController(context: Context) : SensorEventListener {
-  private val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-  private val accelerometer: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-  private val magnetometer: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
+class DeviceOrientationController(
+    context: Context,
+) : SensorEventListener {
+    private val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    private val accelerometer: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+    private val magnetometer: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
 
-  private val rawAccelerometerReading = FloatArray(3)
-  private val rawMagnetometerReading = FloatArray(3)
+    private val rawAccelerometerReading = FloatArray(3)
+    private val rawMagnetometerReading = FloatArray(3)
 
-  private var filteredAccelerometerReading: FloatArray? = null
-  private var filteredMagnetometerReading: FloatArray? = null
+    private var filteredAccelerometerReading: FloatArray? = null
+    private var filteredMagnetometerReading: FloatArray? = null
 
-  private val rotationMatrix = FloatArray(9)
-  private val orientationAnglesOutput = FloatArray(3)
+    private val rotationMatrix = FloatArray(9)
+    private val orientationAnglesOutput = FloatArray(3)
 
-  private val _orientation = mutableStateOf(OrientationData())
-  val orientation: State<OrientationData> = _orientation
+    private val _orientation = mutableStateOf(OrientationData())
+    val orientation: State<OrientationData> = _orientation
 
-  private var sensorsAvailable = true
+    private var sensorsAvailable = true
 
-  init {
-    if (accelerometer == null) {
-      Log.e("DeviceOrientationController", "Accelerometer not available.")
-      sensorsAvailable = false
-    }
-    if (magnetometer == null) {
-      Log.e("DeviceOrientationController", "Magnetometer not available.")
-      sensorsAvailable = false
-    }
-    if (!sensorsAvailable) {
-      _orientation.value = OrientationData(sensorAccuracy = null)
-    }
-  }
-
-  fun startListening() {
-    if (!sensorsAvailable) {
-      Log.w("DeviceOrientationController", "Cannot start listening, essential sensors missing.")
-      _orientation.value = OrientationData(sensorAccuracy = _orientation.value.sensorAccuracy)
-      return
+    init {
+        if (accelerometer == null) {
+            Log.e("DeviceOrientationController", "Accelerometer not available.")
+            sensorsAvailable = false
+        }
+        if (magnetometer == null) {
+            Log.e("DeviceOrientationController", "Magnetometer not available.")
+            sensorsAvailable = false
+        }
+        if (!sensorsAvailable) {
+            _orientation.value = OrientationData(sensorAccuracy = null)
+        }
     }
 
-    filteredAccelerometerReading = null
-    filteredMagnetometerReading = null
-    _orientation.value =
-      _orientation.value.copy(azimuth = 0f, pitch = 0f, roll = 0f, sensorAccuracy = null)
-
-    accelerometer?.let { sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_UI) }
-    magnetometer?.let { sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_UI) }
-  }
-
-  fun stopListening() {
-    sensorManager.unregisterListener(this)
-  }
-
-  override fun onSensorChanged(event: SensorEvent?) {
-    if (event == null || !sensorsAvailable) return
-
-    when (event.sensor.type) {
-      Sensor.TYPE_ACCELEROMETER -> {
-        System.arraycopy(event.values, 0, rawAccelerometerReading, 0, rawAccelerometerReading.size)
-        filteredAccelerometerReading =
-          applyLowPassFilter(rawAccelerometerReading, filteredAccelerometerReading)
-      }
-
-      Sensor.TYPE_MAGNETIC_FIELD -> {
-        System.arraycopy(event.values, 0, rawMagnetometerReading, 0, rawMagnetometerReading.size)
-        filteredMagnetometerReading =
-          applyLowPassFilter(rawMagnetometerReading, filteredMagnetometerReading)
-      }
-    }
-    updateOrientationAngles()
-  }
-
-  private fun applyLowPassFilter(
-    inputValues: FloatArray,
-    previousFilteredValues: FloatArray?,
-  ): FloatArray {
-    if (previousFilteredValues == null) {
-      return inputValues.clone()
-    }
-    val newFilteredValues = FloatArray(inputValues.size)
-    for (i in inputValues.indices) {
-      newFilteredValues[i] =
-        FILTER_ALPHA * inputValues[i] + (1 - FILTER_ALPHA) * previousFilteredValues[i]
-    }
-    return newFilteredValues
-  }
-
-  private fun updateOrientationAngles() {
-    if (!sensorsAvailable) {
-      _orientation.value = OrientationData(sensorAccuracy = _orientation.value.sensorAccuracy)
-      return
-    }
-
-    val accelReading = filteredAccelerometerReading
-    val magReading = filteredMagnetometerReading
-
-    if (accelReading != null && magReading != null) {
-      val success = SensorManager.getRotationMatrix(rotationMatrix, null, accelReading, magReading)
-      if (success) {
-        SensorManager.getOrientation(rotationMatrix, orientationAnglesOutput)
-
-        var azimuthInDegrees = Math.toDegrees(orientationAnglesOutput[0].toDouble()).toFloat()
-        if (azimuthInDegrees < 0) {
-          azimuthInDegrees += 360f
+    fun startListening() {
+        if (!sensorsAvailable) {
+            Log.w(
+                "DeviceOrientationController",
+                "Cannot start listening, essential sensors missing.",
+            )
+            _orientation.value = OrientationData(sensorAccuracy = _orientation.value.sensorAccuracy)
+            return
         }
 
-        val pitchInDegrees = Math.toDegrees(orientationAnglesOutput[1].toDouble()).toFloat()
-        val rollInDegrees = Math.toDegrees(orientationAnglesOutput[2].toDouble()).toFloat()
-
+        filteredAccelerometerReading = null
+        filteredMagnetometerReading = null
         _orientation.value =
-          OrientationData(
-            azimuth = azimuthInDegrees.roundTo(2),
-            pitch = pitchInDegrees.roundTo(2),
-            roll = rollInDegrees.roundTo(2),
-            sensorAccuracy = _orientation.value.sensorAccuracy,
-          )
-      } else {
-        Log.w(
-          "DeviceOrientationController",
-          "Failed to get rotation matrix. Device may be in freefall or near magnetic pole.",
-        )
-        _orientation.value = OrientationData(sensorAccuracy = _orientation.value.sensorAccuracy)
-      }
-    } else {
-      _orientation.value = OrientationData(sensorAccuracy = _orientation.value.sensorAccuracy)
+            _orientation.value.copy(azimuth = 0f, pitch = 0f, roll = 0f, sensorAccuracy = null)
+
+        accelerometer?.let { sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_UI) }
+        magnetometer?.let { sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_UI) }
     }
-  }
 
-  override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-    _orientation.value = _orientation.value.copy(sensorAccuracy = accuracy)
+    fun stopListening() {
+        sensorManager.unregisterListener(this)
+    }
 
-    val accuracyDescription =
-      when (accuracy) {
-        SensorManager.SENSOR_STATUS_ACCURACY_LOW -> "LOW"
-        SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM -> "MEDIUM"
-        SensorManager.SENSOR_STATUS_ACCURACY_HIGH -> "HIGH"
-        SensorManager.SENSOR_STATUS_UNRELIABLE -> "UNRELIABLE"
-        else -> "UNKNOWN ($accuracy)"
-      }
-    Log.i(
-      "DeviceOrientationController",
-      "Accuracy for ${sensor?.name ?: "Unknown Sensor"} changed to: $accuracyDescription",
-    )
-  }
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (event == null || !sensorsAvailable) return
 
-  companion object {
-    private const val FILTER_ALPHA = 0.08f
-  }
+        when (event.sensor.type) {
+            Sensor.TYPE_ACCELEROMETER -> {
+                System.arraycopy(
+                    event.values,
+                    0,
+                    rawAccelerometerReading,
+                    0,
+                    rawAccelerometerReading.size,
+                )
+                filteredAccelerometerReading =
+                    applyLowPassFilter(rawAccelerometerReading, filteredAccelerometerReading)
+            }
+
+            Sensor.TYPE_MAGNETIC_FIELD -> {
+                System.arraycopy(
+                    event.values,
+                    0,
+                    rawMagnetometerReading,
+                    0,
+                    rawMagnetometerReading.size,
+                )
+                filteredMagnetometerReading =
+                    applyLowPassFilter(rawMagnetometerReading, filteredMagnetometerReading)
+            }
+        }
+        updateOrientationAngles()
+    }
+
+    private fun applyLowPassFilter(
+        inputValues: FloatArray,
+        previousFilteredValues: FloatArray?,
+    ): FloatArray {
+        if (previousFilteredValues == null) {
+            return inputValues.clone()
+        }
+        val newFilteredValues = FloatArray(inputValues.size)
+        for (i in inputValues.indices) {
+            newFilteredValues[i] =
+                FILTER_ALPHA * inputValues[i] + (1 - FILTER_ALPHA) * previousFilteredValues[i]
+        }
+        return newFilteredValues
+    }
+
+    private fun updateOrientationAngles() {
+        if (!sensorsAvailable) {
+            _orientation.value = OrientationData(sensorAccuracy = _orientation.value.sensorAccuracy)
+            return
+        }
+
+        val accelReading = filteredAccelerometerReading
+        val magReading = filteredMagnetometerReading
+
+        if (accelReading != null && magReading != null) {
+            val success =
+                SensorManager.getRotationMatrix(
+                    rotationMatrix,
+                    null,
+                    accelReading,
+                    magReading,
+                )
+            if (success) {
+                SensorManager.getOrientation(rotationMatrix, orientationAnglesOutput)
+
+                var azimuthInDegrees =
+                    Math
+                        .toDegrees(
+                            orientationAnglesOutput[0].toDouble(),
+                        ).toFloat()
+                if (azimuthInDegrees < 0) {
+                    azimuthInDegrees += 360f
+                }
+
+                val pitchInDegrees = Math.toDegrees(orientationAnglesOutput[1].toDouble()).toFloat()
+                val rollInDegrees = Math.toDegrees(orientationAnglesOutput[2].toDouble()).toFloat()
+
+                _orientation.value =
+                    OrientationData(
+                        azimuth = azimuthInDegrees.roundTo(2),
+                        pitch = pitchInDegrees.roundTo(2),
+                        roll = rollInDegrees.roundTo(2),
+                        sensorAccuracy = _orientation.value.sensorAccuracy,
+                    )
+            } else {
+                Log.w(
+                    "DeviceOrientationController",
+                    "Failed to get rotation matrix. Device may be in freefall or near magnetic pole.",
+                )
+                _orientation.value = OrientationData(sensorAccuracy = _orientation.value.sensorAccuracy)
+            }
+        } else {
+            _orientation.value = OrientationData(sensorAccuracy = _orientation.value.sensorAccuracy)
+        }
+    }
+
+    override fun onAccuracyChanged(
+        sensor: Sensor?,
+        accuracy: Int,
+    ) {
+        _orientation.value = _orientation.value.copy(sensorAccuracy = accuracy)
+
+        val accuracyDescription =
+            when (accuracy) {
+                SensorManager.SENSOR_STATUS_ACCURACY_LOW -> "LOW"
+                SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM -> "MEDIUM"
+                SensorManager.SENSOR_STATUS_ACCURACY_HIGH -> "HIGH"
+                SensorManager.SENSOR_STATUS_UNRELIABLE -> "UNRELIABLE"
+                else -> "UNKNOWN ($accuracy)"
+            }
+        Log.i(
+            "DeviceOrientationController",
+            "Accuracy for ${sensor?.name ?: "Unknown Sensor"} changed to: $accuracyDescription",
+        )
+    }
+
+    companion object {
+        private const val FILTER_ALPHA = 0.08f
+    }
 }

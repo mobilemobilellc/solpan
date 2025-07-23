@@ -33,61 +33,71 @@ import app.mobilemobile.solpan.ui.aboutlibraries.AboutLibrariesScreen
 import app.mobilemobile.solpan.ui.screen.SolPanScreen
 import kotlinx.serialization.Serializable
 
-@Serializable data class SolPan(val mode: TiltMode) : NavKey
+@Serializable
+data class SolPan(
+    val mode: TiltMode,
+) : NavKey
 
 @Serializable data object AboutLibraries : NavKey
 
 @Composable
 fun SolPanApp() {
-  val backStack = rememberNavBackStack(SolPan(TiltMode.YEAR_ROUND))
+    val backStack = rememberNavBackStack(SolPan(TiltMode.YEAR_ROUND))
 
-  NavigationSuiteScaffold(
-    navigationSuiteItems = {
-      TiltMode.entries.forEach { mode ->
-        val currentScreen = backStack.lastOrNull()
-        item(
-          selected = currentScreen is SolPan && currentScreen.mode == mode,
-          onClick = {
-            if (backStack.lastOrNull() != SolPan(mode)) {
-              backStack.clear()
-              backStack.add(SolPan(mode))
+    NavigationSuiteScaffold(
+        navigationSuiteItems = {
+            TiltMode.entries.forEach { mode ->
+                val currentScreen = backStack.lastOrNull()
+                item(
+                    selected = currentScreen is SolPan && currentScreen.mode == mode,
+                    onClick = {
+                        if (backStack.lastOrNull() != SolPan(mode)) {
+                            backStack.clear()
+                            backStack.add(SolPan(mode))
+                        }
+                    },
+                    icon = {
+                        Icon(
+                            imageVector = mode.icon,
+                            contentDescription = stringResource(id = mode.titleRes),
+                        )
+                    },
+                    label = { Text(stringResource(id = mode.titleRes)) },
+                )
             }
-          },
-          icon = {
-            Icon(imageVector = mode.icon, contentDescription = stringResource(id = mode.titleRes))
-          },
-          label = { Text(stringResource(id = mode.titleRes)) },
+        },
+    ) {
+        NavDisplay(
+            entryDecorators =
+                listOf(
+                    rememberSceneSetupNavEntryDecorator(),
+                    rememberSavedStateNavEntryDecorator(),
+                    rememberViewModelStoreNavEntryDecorator(),
+                ),
+            backStack = backStack,
+            onBack = { backStack.removeLastOrNull() },
+            entryProvider = { key ->
+                when (key) {
+                    is SolPan -> {
+                        NavEntry(key) {
+                            SolPanScreen(
+                                viewModel = viewModel(factory = SolPanViewModel.Factory(key)),
+                                onNavigateToAboutLibraries = { backStack.add(AboutLibraries) },
+                            )
+                        }
+                    }
+
+                    is AboutLibraries -> {
+                        NavEntry(key) {
+                            AboutLibrariesScreen(onNavigateBack = { backStack.removeLastOrNull() })
+                        }
+                    }
+
+                    else -> {
+                        NavEntry(key) { error("Unknown key: $key") }
+                    }
+                }
+            },
         )
-      }
     }
-  ) {
-    NavDisplay(
-      entryDecorators =
-        listOf(
-          rememberSceneSetupNavEntryDecorator(),
-          rememberSavedStateNavEntryDecorator(),
-          rememberViewModelStoreNavEntryDecorator(),
-        ),
-      backStack = backStack,
-      onBack = { backStack.removeLastOrNull() },
-      entryProvider = { key ->
-        when (key) {
-          is SolPan ->
-            NavEntry(key) {
-              SolPanScreen(
-                viewModel = viewModel(factory = SolPanViewModel.Factory(key)),
-                onNavigateToAboutLibraries = { backStack.add(AboutLibraries) },
-              )
-            }
-
-          is AboutLibraries ->
-            NavEntry(key) {
-              AboutLibrariesScreen(onNavigateBack = { backStack.removeLastOrNull() })
-            }
-
-          else -> NavEntry(key) { error("Unknown key: $key") }
-        }
-      },
-    )
-  }
 }

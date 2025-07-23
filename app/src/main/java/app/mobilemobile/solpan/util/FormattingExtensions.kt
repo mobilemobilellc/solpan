@@ -41,17 +41,17 @@ fun Float.format(digits: Int): String = "%.${digits}f".format(Locale.US, this)
  * @return The rounded Float.
  */
 fun Float.roundTo(decimalPlaces: Int): Float {
-  require(decimalPlaces >= 0) { "Decimal places cannot be negative" }
-  return BigDecimal(this.toString()).setScale(decimalPlaces, RoundingMode.HALF_UP).toFloat()
+    require(decimalPlaces >= 0) { "Decimal places cannot be negative" }
+    return BigDecimal(this.toString()).setScale(decimalPlaces, RoundingMode.HALF_UP).toFloat()
 }
 
 // Extension function for a more readable display name for TiltMode
 @Composable
 fun TiltMode.displayName(): String =
-  when (this) {
-    TiltMode.YEAR_ROUND -> stringResource(id = R.string.tilt_mode_year_round)
-    TiltMode.SUMMER -> stringResource(id = R.string.tilt_mode_summer)
-    TiltMode.WINTER -> stringResource(id = R.string.tilt_mode_winter)
-    TiltMode.SPRING_AUTUMN -> stringResource(id = R.string.tilt_mode_spring_autumn)
-    TiltMode.REALTIME -> stringResource(id = R.string.tilt_mode_realtime)
-  }
+    when (this) {
+        TiltMode.YEAR_ROUND -> stringResource(id = R.string.tilt_mode_year_round)
+        TiltMode.SUMMER -> stringResource(id = R.string.tilt_mode_summer)
+        TiltMode.WINTER -> stringResource(id = R.string.tilt_mode_winter)
+        TiltMode.SPRING_AUTUMN -> stringResource(id = R.string.tilt_mode_spring_autumn)
+        TiltMode.REALTIME -> stringResource(id = R.string.tilt_mode_realtime)
+    }

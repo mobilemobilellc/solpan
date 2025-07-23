@@ -55,6 +55,11 @@ android {
     }
   }
 
+  @Suppress("UnstableApiUsage")
+  androidResources {
+    generateLocaleConfig = true
+  }
+
   buildTypes {
     release {
       isMinifyEnabled = true

@@ -55,10 +55,7 @@ android {
     }
   }
 
-  @Suppress("UnstableApiUsage")
-  androidResources {
-    generateLocaleConfig = true
-  }
+  @Suppress("UnstableApiUsage") androidResources { generateLocaleConfig = true }
 
   buildTypes {
     release {

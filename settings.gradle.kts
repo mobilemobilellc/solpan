@@ -30,11 +30,11 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-  repositories {
-    google()
-    mavenCentral()
-    maven { url = uri("https://androidx.dev/snapshots/builds/13786634/artifacts/repository") }
-  }
+    repositories {
+        google()
+        mavenCentral()
+        maven { url = uri("https://androidx.dev/snapshots/builds/13786634/artifacts/repository") }
+    }
 }
 
 rootProject.name = "SolPan"
@@ -42,28 +42,29 @@ rootProject.name = "SolPan"
 include(":app")
 
 plugins {
-  id("org.gradle.toolchains.foojay-resolver") version "1.0.0"
-  id("com.gradle.develocity") version("4.1")
+    id("org.gradle.toolchains.foojay-resolver") version "1.0.0"
+    id("com.gradle.develocity") version ("4.1")
+    id("com.gradle.common-custom-user-data-gradle-plugin") version "2.3"
 }
 
 develocity {
-  buildScan {
-    termsOfUseUrl.set("https://gradle.com/terms-of-service")
-    termsOfUseAgree.set("yes")
-    capture {
-      fileFingerprints.set(true)
+    buildScan {
+        termsOfUseUrl.set("https://gradle.com/terms-of-service")
+        termsOfUseAgree.set("yes")
+        capture {
+            fileFingerprints.set(true)
+        }
+        publishing.onlyIf { false }
     }
-    publishing.onlyIf { false }
-  }
 }
 
 @Suppress("UnstableApiUsage")
 toolchainManagement {
-  jvm {
-    javaRepositories {
-      repository("foojay") {
-        resolverClass.set(org.gradle.toolchains.foojay.FoojayToolchainResolver::class.java)
-      }
+    jvm {
+        javaRepositories {
+            repository("foojay") {
+                resolverClass.set(org.gradle.toolchains.foojay.FoojayToolchainResolver::class.java)
+            }
+        }
     }
-  }
 }

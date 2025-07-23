@@ -35,7 +35,6 @@ android {
         targetSdk = 36
         versionCode = (findProperty("appVersionCode") as String? ?: "1").toInt()
         versionName = findProperty("appVersionName") as String? ?: "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -56,7 +55,39 @@ android {
     }
 
     @Suppress("UnstableApiUsage")
-    androidResources { generateLocaleConfig = true }
+    androidResources {
+        generateLocaleConfig = true
+        localeFilters.addAll(
+            listOf(
+                "ar",
+                "b+es+419",
+                "cs",
+                "de",
+                "en",
+                "es",
+                "fr",
+                "hi",
+                "hu",
+                "id",
+                "it",
+                "iw",
+                "ja",
+                "ko",
+                "no",
+                "pl",
+                "pt",
+                "ro",
+                "ru",
+                "sk",
+                "sv",
+                "th",
+                "tr",
+                "uk",
+                "vi",
+                "zh-rCN",
+            ),
+        )
+    }
 
     buildTypes {
         release {

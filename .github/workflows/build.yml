@@ -13,6 +13,8 @@ concurrency:
 
 permissions:
   checks: write
+  id-token: write
+  attestations: write
 
 jobs:
   build:
@@ -58,3 +60,8 @@ jobs:
           name: debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+
+      - name: Attest Build Provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: 'app/build/outputs/apk/debug/app-debug.apk'

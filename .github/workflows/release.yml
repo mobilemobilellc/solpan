@@ -14,6 +14,8 @@ concurrency:
 permissions:
   contents: write
   pull-requests: read
+  id-token: write
+  attestations: write
 
 jobs:
   release:
@@ -92,6 +94,11 @@ jobs:
           prerelease: ${{ contains(github.ref_name, '-alpha') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-test.') }} # Mark as pre-release if tag contains -alpha, -beta or -test.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Attest Build Provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: 'app/build/outputs/apk/debug/app-debug.*'
 
       - name: Upload AAB to Google Play
         if: success() && github.ref_type == 'tag'

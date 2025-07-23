@@ -93,6 +93,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Attest Build Provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: 'app/build/outputs/apk/debug/app-debug.*'
+
       - name: Upload AAB to Google Play
         if: success() && github.ref_type == 'tag'
         uses: r0adkll/upload-google-play@v1

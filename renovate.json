@@ -13,9 +13,35 @@
   ],
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch"],
+      "description": "Automerge minor and patch updates after CI passes",
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "matchCurrentVersion": "!/^0/",
-      "automerge": true
+      "automerge": true,
+      "automergeType": "pr-awaiting-status"
+    },
+    {
+      "description": "Group Kotlin and Android Gradle Plugin updates",
+      "matchPackagePatterns": [
+        "^com.android.tools.build:gradle",
+        "^org.jetbrains.kotlin.",
+        "^com.google.devtools.ksp"
+      ],
+      "groupName": "kotlin & agp"
+    },
+    {
+      "description": "Group all Jetpack packages",
+      "matchPackagePatterns": [
+        "^androidx."
+      ],
+      "groupName": "androidx"
+    },
+    {
+      "description": "Do not automerge unstable pre-release versions",
+      "matchNewVersion": "/-alpha|-beta|-rc/",
+      "automerge": false
     }
   ]
 }

@@ -51,7 +51,7 @@ jobs:
           configuration: ".github/changelog-config.json"
           owner: mobilemobilellc
           repo: solpan
-          ignorePreReleases: false
+          ignorePreReleases: true
           failOnError: true
           fetchViaCommits: true
         env:
@@ -91,6 +91,7 @@ jobs:
           files: |
             app/build/outputs/bundle/release/app-release.aab
             app/build/outputs/apk/release/app-release.apk
+          draft: true
           prerelease: ${{ contains(github.ref_name, '-alpha') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-test.') }} # Mark as pre-release if tag contains -alpha, -beta or -test.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

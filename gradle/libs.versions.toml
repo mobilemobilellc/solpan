@@ -1,5 +1,5 @@
 [versions]
-aboutLibraries = "13.0.0-a01"
+aboutLibraries = "12.2.4"
 accompanistPermissions = "0.37.3"
 activityCompose = "1.10.1"
 agp = "8.11.1"
@@ -74,7 +74,7 @@ androidxMaterial = ["androidx-material-icons-core", "androidx-material-icons-ext
 test = ["junit", "androidx-junit", "androidx-espresso-core", "androidx-ui-test-junit4"]
 
 [plugins]
-aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin.android", version.ref = "aboutLibraries" }
+aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibraries" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt"}
 google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "googleFirebaseCrashlytics" }

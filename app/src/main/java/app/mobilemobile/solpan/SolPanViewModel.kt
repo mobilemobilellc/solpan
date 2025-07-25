@@ -45,7 +45,13 @@ class SolPanViewModel(
     class Factory(
         private val key: SolPan,
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T = SolPanViewModel(key) as T
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(SolPanViewModel::class.java)) {
+                @Suppress("UNCHECKED_CAST")
+                return SolPanViewModel(key) as T
+            }
+            throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
+        }
     }
 
     private val _currentLocation = MutableStateFlow<LocationData?>(null)

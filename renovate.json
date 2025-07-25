@@ -40,6 +40,9 @@
     },
     {
       "description": "Do not automerge unstable pre-release versions",
+      "matchPackagePatterns": [
+        "*"
+      ],
       "matchNewVersion": "/-alpha|-beta|-rc/",
       "automerge": false
     }

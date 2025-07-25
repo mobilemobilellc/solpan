@@ -20,7 +20,8 @@
       ],
       "matchCurrentVersion": "!/^0/",
       "automerge": true,
-      "automergeType": "pr-awaiting-status"
+      "automergeType": "pr",
+      "ignoreTests": false
     },
     {
       "description": "Group Kotlin and Android Gradle Plugin updates",

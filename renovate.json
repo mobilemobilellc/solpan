@@ -25,19 +25,19 @@
     },
     {
       "description": "Group Kotlin and Android Gradle Plugin updates",
-      "matchPackagePatterns": [
-        "^com.android.tools.build:gradle",
-        "^org.jetbrains.kotlin.",
-        "^com.google.devtools.ksp"
-      ],
-      "groupName": "kotlin & agp"
+      "groupName": "kotlin & agp",
+      "matchPackageNames": [
+        "/^com.android.tools.build:gradle/",
+        "/^org.jetbrains.kotlin./",
+        "/^com.google.devtools.ksp/"
+      ]
     },
     {
       "description": "Group all Jetpack packages",
-      "matchPackagePatterns": [
-        "^androidx."
-      ],
-      "groupName": "androidx"
+      "groupName": "androidx",
+      "matchPackageNames": [
+        "/^androidx./"
+      ]
     }
   ]
 }

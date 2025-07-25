@@ -27,3 +27,8 @@
 # R8 warning workaround for the suncalc library, which uses compile-only
 # findbugs annotations that are not included in the final artifact.
 -dontwarn edu.umd.cs.findbugs.annotations.**
+
+# R8 warning workaround for kotlinx.serialization library
+-keepnames class kotlinx.serialization.internal.*Serializer* {
+    <init>(...);
+}

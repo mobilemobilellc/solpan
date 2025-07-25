@@ -24,4 +24,5 @@ plugins {
   alias(libs.plugins.aboutlibraries) apply false
   alias(libs.plugins.jetbrains.kotlin.serialization) apply false
   alias(libs.plugins.spotless) apply false
+  alias(libs.plugins.detekt) apply false
 }

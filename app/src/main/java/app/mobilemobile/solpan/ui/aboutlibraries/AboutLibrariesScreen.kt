@@ -41,11 +41,14 @@ import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun AboutLibrariesScreen(onNavigateBack: () -> Unit = {}) {
+fun AboutLibrariesScreen(
+    modifier: Modifier = Modifier,
+    onNavigateBack: () -> Unit = {},
+) {
     val libraries by rememberLibraries(R.raw.aboutlibraries)
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBar(
                 navigationIcon = {

@@ -45,10 +45,12 @@ fun TargetParametersCard(
     optimalParams: OptimalPanelParameters?,
     currentLocation: LocationData?,
     hasLocationPermission: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     InfoCard(
         title = stringResource(id = R.string.target_param_card_title),
         icon = Icons.Filled.WbSunny,
+        modifier = modifier,
     ) {
         if (optimalParams != null) {
             InfoRow(

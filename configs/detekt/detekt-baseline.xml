@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+<!--
+  ~ Copyright 2025 MobileMobile LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under
+  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  ~ OF ANY KIND, either express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:AzimuthAwareBubbleLevel.kt$@Composable fun AzimuthAwareBubbleLevel( currentPitch: Double, currentRoll: Double, targetPitch: Double, currentAzimuth: Double, targetAzimuth: Double, modifier: Modifier = Modifier, bubbleColor: Color = MaterialTheme.colorScheme.primary, targetPitchRollColor: Color = MaterialTheme.colorScheme.secondary, inTargetPitchRollBubbleColor: Color = MaterialTheme.colorScheme.tertiary, housingColor: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f), azimuthRingColor: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f), currentAzimuthIndicatorColor: Color = MaterialTheme.colorScheme.primary, targetAzimuthIndicatorColor: Color = MaterialTheme.colorScheme.error, maxAngleDeviation: Float = 20f, pitchAlignmentThresholdDeg: Double = 3.0, rollAlignmentThresholdDeg: Double = 3.0, azimuthAlignmentThresholdDeg: Double = 5.0, bubbleRadiusDp: Dp = 12.dp, housingStrokeWidthDp: Dp = 2.dp, azimuthRingWidthDp: Dp = 15.dp, azimuthIndicatorSizeDp: Dp = 10.dp, visualTargetRadiusDp: Dp = 3.dp, )</ID>
+    <ID>CyclomaticComplexMethod:AzimuthVisualizerCard.kt$@Composable fun AzimuthVisualizerCard( currentOrientation: OrientationData, targetParameters: OptimalPanelParameters?, modifier: Modifier = Modifier, debugFakeAlignmentActive: Boolean = false, )</ID>
+    <ID>CyclomaticComplexMethod:GuidanceComposables.kt$@Composable fun GuidanceCard( currentOrientation: OrientationData, targetParameters: OptimalPanelParameters?, modifier: Modifier = Modifier, debugFakeAlignmentActive: Boolean = false, // New parameter with default )</ID>
+    <ID>Indentation:AboutLibrariesScreen.kt$ </ID>
+    <ID>Indentation:AzimuthAwareBubbleLevel.kt$ </ID>
+    <ID>Indentation:AzimuthVisualizerCard.kt$ </ID>
+    <ID>Indentation:DeviceLocationManager.kt$DeviceLocationManager.&lt;no name provided&gt;$ </ID>
+    <ID>Indentation:GuidanceComposables.kt$ </ID>
+    <ID>Indentation:HelpGuidanceDialog.kt$ </ID>
+    <ID>Indentation:PermissionRequestCard.kt$ </ID>
+    <ID>Indentation:SolPanApp.kt$ </ID>
+    <ID>Indentation:SolPanScreen.kt$ </ID>
+    <ID>Indentation:SolPanViewModel.kt$SolPanViewModel$ </ID>
+    <ID>Indentation:TargetParametersCard.kt$ </ID>
+    <ID>Indentation:Type.kt$ </ID>
+    <ID>LongMethod:AzimuthAwareBubbleLevel.kt$@Composable fun AzimuthAwareBubbleLevel( currentPitch: Double, currentRoll: Double, targetPitch: Double, currentAzimuth: Double, targetAzimuth: Double, modifier: Modifier = Modifier, bubbleColor: Color = MaterialTheme.colorScheme.primary, targetPitchRollColor: Color = MaterialTheme.colorScheme.secondary, inTargetPitchRollBubbleColor: Color = MaterialTheme.colorScheme.tertiary, housingColor: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f), azimuthRingColor: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f), currentAzimuthIndicatorColor: Color = MaterialTheme.colorScheme.primary, targetAzimuthIndicatorColor: Color = MaterialTheme.colorScheme.error, maxAngleDeviation: Float = 20f, pitchAlignmentThresholdDeg: Double = 3.0, rollAlignmentThresholdDeg: Double = 3.0, azimuthAlignmentThresholdDeg: Double = 5.0, bubbleRadiusDp: Dp = 12.dp, housingStrokeWidthDp: Dp = 2.dp, azimuthRingWidthDp: Dp = 15.dp, azimuthIndicatorSizeDp: Dp = 10.dp, visualTargetRadiusDp: Dp = 3.dp, )</ID>
+    <ID>LongMethod:AzimuthAwareBubbleLevel.kt$@Composable private fun ShootingSunsEffect( shootDistance: Float, modifier: Modifier = Modifier, particleCountPerWave: Int = 2, waveDelayMillis: Long = 150, minSizeSp: Int = 15, maxSizeSp: Int = 28, minDurationMillis: Long = 300, maxDurationMillis: Long = 700, )</ID>
+    <ID>LongMethod:AzimuthVisualizerCard.kt$@Composable fun AzimuthVisualizerCard( currentOrientation: OrientationData, targetParameters: OptimalPanelParameters?, modifier: Modifier = Modifier, debugFakeAlignmentActive: Boolean = false, )</ID>
+    <ID>LongMethod:GuidanceComposables.kt$@Composable fun GuidanceCard( currentOrientation: OrientationData, targetParameters: OptimalPanelParameters?, modifier: Modifier = Modifier, debugFakeAlignmentActive: Boolean = false, // New parameter with default )</ID>
+    <ID>LongMethod:SolPanScreen.kt$@OptIn( ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class, ) @Composable fun SolPanScreen( viewModel: SolPanViewModel, modifier: Modifier = Modifier, onNavigateToAboutLibraries: () -&gt; Unit = {}, )</ID>
+    <ID>LongMethod:TargetParametersCard.kt$@Composable fun TargetParametersCard( optimalParams: OptimalPanelParameters?, currentLocation: LocationData?, hasLocationPermission: Boolean, modifier: Modifier = Modifier, )</ID>
+    <ID>MagicNumber:AzimuthAwareBubbleLevel.kt$0.01f</ID>
+    <ID>MagicNumber:AzimuthAwareBubbleLevel.kt$10</ID>
+    <ID>MagicNumber:AzimuthAwareBubbleLevel.kt$180.0</ID>
+    <ID>MagicNumber:AzimuthAwareBubbleLevel.kt$270.0</ID>
+    <ID>MagicNumber:AzimuthAwareBubbleLevel.kt$3</ID>
+    <ID>MagicNumber:AzimuthAwareBubbleLevel.kt$90.0</ID>
+    <ID>MagicNumber:AzimuthVisualizerCard.kt$180</ID>
+    <ID>MagicNumber:AzimuthVisualizerCard.kt$3.0</ID>
+    <ID>MagicNumber:AzimuthVisualizerCard.kt$360.0</ID>
+    <ID>MagicNumber:AzimuthVisualizerCard.kt$5.0</ID>
+    <ID>MagicNumber:DeviceLocationManager.kt$DeviceLocationManager$10000L</ID>
+    <ID>MagicNumber:DeviceLocationManager.kt$DeviceLocationManager$5000L</ID>
+    <ID>MagicNumber:DeviceOrientationController.kt$DeviceOrientationController$360f</ID>
+    <ID>MagicNumber:GuidanceComposables.kt$180</ID>
+    <ID>MagicNumber:GuidanceComposables.kt$3.0</ID>
+    <ID>MagicNumber:GuidanceComposables.kt$30.0</ID>
+    <ID>MagicNumber:GuidanceComposables.kt$360.0</ID>
+    <ID>MagicNumber:GuidanceComposables.kt$45.0</ID>
+    <ID>MagicNumber:GuidanceComposables.kt$45f</ID>
+    <ID>MagicNumber:GuidanceComposables.kt$5.0</ID>
+    <ID>MagicNumber:InfoComposables.kt$0.4f</ID>
+    <ID>MagicNumber:InfoComposables.kt$0.6f</ID>
+    <ID>MagicNumber:SolPanViewModel.kt$SolPanViewModel$180.0</ID>
+    <ID>MagicNumber:SolPanViewModel.kt$SolPanViewModel$360.0</ID>
+    <ID>MagicNumber:SolPanViewModel.kt$SolPanViewModel$90.0</ID>
+    <ID>MagicNumber:SolarCalculator.kt$SolarCalculator$180.0</ID>
+    <ID>MagicNumber:SolarCalculator.kt$SolarCalculator$360.0</ID>
+    <ID>MagicNumber:TargetParametersCard.kt$4</ID>
+    <ID>MatchingDeclarationName:HelpGuidanceDialog.kt$LinkInfo</ID>
+    <ID>TooGenericExceptionCaught:DeviceLocationManager.kt$DeviceLocationManager$e: Exception</ID>
+    <ID>TopLevelPropertyNaming:SolPanViewModel.kt$private const val EARTH_AXIAL_TILT = 23.5</ID>
+  </CurrentIssues>
+</SmellBaseline>

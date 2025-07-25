@@ -23,6 +23,7 @@ plugins {
     alias(libs.plugins.aboutlibraries)
     alias(libs.plugins.jetbrains.kotlin.serialization)
     alias(libs.plugins.spotless)
+    alias(libs.plugins.detekt)
 }
 
 android {
@@ -131,6 +132,8 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(platform(libs.firebase.bom))
     testImplementation(libs.junit)
+    detektPlugins(libs.detekt.formatting)
+    detektPlugins(libs.detekt.compose.rules)
 }
 
 // spotless { // if you are using build.gradle.kts, instead of 'spotless {' use:
@@ -138,12 +141,23 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     kotlin {
         target("src/*/kotlin/**/*.kt", "src/*/java/**/*.kt")
         ktfmt()
-        ktlint("1.7.1").setEditorConfigPath("../.editorconfig")
-        licenseHeaderFile(rootProject.file("copyright.kt"))
+        ktlint("1.7.1")
+            .setEditorConfigPath("../configs/spotless/.editorconfig")
+            .customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.4.25"))
+        licenseHeaderFile(rootProject.file("configs/spotless/copyright.kt"))
     }
     kotlinGradle {
         target("*.gradle.kts")
         ktfmt()
-        ktlint("1.7.1").setEditorConfigPath("../.editorconfig")
+        ktlint("1.7.1")
+            .setEditorConfigPath("../configs/spotless/.editorconfig")
+            .customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.4.25"))
     }
+}
+
+detekt {
+    config.setFrom("../configs/detekt/detekt.yml")
+    baseline = file("../configs/detekt/detekt-baseline.xml")
+    ignoredBuildTypes = listOf("release")
+    enableCompilerPlugin.set(true)
 }

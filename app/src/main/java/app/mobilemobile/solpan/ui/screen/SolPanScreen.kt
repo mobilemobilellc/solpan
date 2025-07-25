@@ -87,6 +87,7 @@ import com.google.firebase.analytics.logEvent
 @Composable
 fun SolPanScreen(
     viewModel: SolPanViewModel,
+    modifier: Modifier = Modifier,
     onNavigateToAboutLibraries: () -> Unit = {},
 ) {
     val context = LocalContext.current
@@ -145,7 +146,7 @@ fun SolPanScreen(
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
     var showOverflowMenu by remember { mutableStateOf(false) }
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBar(
                 scrollBehavior = scrollBehavior,
@@ -218,12 +219,12 @@ fun SolPanScreen(
         },
     ) { contentPadding ->
         SolPanScreenContent(
-            contentPadding,
-            locationPermissionsState,
-            currentOrientation,
-            optimalParams,
-            debugFakeAlignmentActive,
-            vmLocation,
+            contentPadding = contentPadding,
+            locationPermissionsState = locationPermissionsState,
+            currentOrientation = currentOrientation,
+            optimalParams = optimalParams,
+            debugFakeAlignmentActive = debugFakeAlignmentActive,
+            vmLocation = vmLocation,
         )
     }
 }
@@ -237,9 +238,10 @@ private fun SolPanScreenContent(
     optimalParams: OptimalPanelParameters?,
     debugFakeAlignmentActive: Boolean,
     vmLocation: LocationData?,
+    modifier: Modifier = Modifier,
 ) {
     LazyVerticalStaggeredGrid(
-        modifier = Modifier.fillMaxSize().padding(contentPadding),
+        modifier = modifier.fillMaxSize().padding(contentPadding),
         columns = StaggeredGridCells.Adaptive(240.dp),
         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
         verticalItemSpacing = 8.dp,
@@ -279,7 +281,7 @@ private fun SolPanScreenContent(
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
-fun SolarAppScreenDarkPreview() {
+private fun SolarAppScreenDarkPreview() {
     SolPanTheme {
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             SolPanScreen(viewModel = viewModel(), onNavigateToAboutLibraries = {})
@@ -289,7 +291,7 @@ fun SolarAppScreenDarkPreview() {
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO, name = "Light Mode")
 @Composable
-fun SolarAppScreenLightPreview() {
+private fun SolarAppScreenLightPreview() {
     SolPanTheme {
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             SolPanScreen(viewModel = viewModel(), onNavigateToAboutLibraries = {})

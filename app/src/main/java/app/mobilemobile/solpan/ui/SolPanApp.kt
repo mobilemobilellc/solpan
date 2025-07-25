@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -41,10 +42,10 @@ data class SolPan(
 @Serializable data object AboutLibraries : NavKey
 
 @Composable
-fun SolPanApp() {
+fun SolPanApp(modifier: Modifier = Modifier) {
     val backStack = rememberNavBackStack(SolPan(TiltMode.YEAR_ROUND))
-
     NavigationSuiteScaffold(
+        modifier = modifier,
         navigationSuiteItems = {
             TiltMode.entries.forEach { mode ->
                 val currentScreen = backStack.lastOrNull()

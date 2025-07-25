@@ -44,11 +44,14 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun PermissionRequestCard(locationPermissionsState: MultiplePermissionsState) {
+fun PermissionRequestCard(
+    locationPermissionsState: MultiplePermissionsState,
+    modifier: Modifier = Modifier,
+) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
     ) {
         Column(
             modifier = Modifier.fillMaxWidth().padding(16.dp),
@@ -88,7 +91,7 @@ fun PermissionRequestCard(locationPermissionsState: MultiplePermissionsState) {
 @OptIn(ExperimentalPermissionsApi::class)
 @Preview(showBackground = true)
 @Composable
-fun PermissionRequestCardPreview() {
+private fun PermissionRequestCardPreview() {
     SolPanTheme {
         val dummyPermissionsState =
             rememberMultiplePermissionsState(

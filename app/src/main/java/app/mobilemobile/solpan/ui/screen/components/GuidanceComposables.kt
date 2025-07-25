@@ -58,10 +58,15 @@ import kotlin.math.abs
 fun GuidanceCard(
     currentOrientation: OrientationData,
     targetParameters: OptimalPanelParameters?,
+    modifier: Modifier = Modifier,
     debugFakeAlignmentActive: Boolean = false, // New parameter with default
 ) {
     if (targetParameters == null) {
-        InfoCard(title = stringResource(id = R.string.guidance_card_title), icon = Icons.Filled.Tune) {
+        InfoCard(
+            title = stringResource(id = R.string.guidance_card_title),
+            icon = Icons.Filled.Tune,
+            modifier = modifier,
+        ) {
             Text(
                 text = stringResource(id = R.string.guidance_waiting_for_target),
                 style = MaterialTheme.typography.bodyMedium,
@@ -195,16 +200,20 @@ fun GuidanceCard(
             (1.0f - (abs(rollDifference) / maxRelevantRollDiff).toFloat()).coerceIn(0.0f, 1.0f)
         }
 
-    InfoCard(title = stringResource(id = R.string.guidance_card_title), icon = Icons.Filled.Tune) {
+    InfoCard(
+        title = stringResource(id = R.string.guidance_card_title),
+        icon = Icons.Filled.Tune,
+        modifier = modifier,
+    ) {
         GuidanceRow(
             label = stringResource(id = R.string.guidance_label_device_azimuth),
             currentValue = "${currentAzimuthValueForCalculations.format(1)}°",
             targetValue = "${phoneTargetAzimuth.format(1)}°",
             instruction = azimuthInstruction,
             icon = if (isAzimuthCorrect) Icons.Filled.CheckCircle else Icons.Filled.Cached,
-            iconRotation = azimuthIconRotation, // This is already 0f if isAzimuthCorrect
             isCorrect = isAzimuthCorrect,
             progress = azimuthProgress,
+            iconRotation = azimuthIconRotation, // This is already 0f if isAzimuthCorrect
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -268,9 +277,10 @@ fun GuidanceRow(
     targetValue: String,
     instruction: String,
     icon: ImageVector?,
-    iconRotation: Float = 0f,
     isCorrect: Boolean,
     progress: Float,
+    modifier: Modifier = Modifier,
+    iconRotation: Float = 0f,
 ) {
     val contentColor =
         if (isCorrect) {
@@ -279,7 +289,7 @@ fun GuidanceRow(
             MaterialTheme.colorScheme.onSurfaceVariant
         }
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -331,7 +341,7 @@ fun GuidanceRow(
 
 @Preview(showBackground = true, name = "GuidanceCard Preview (Aligned)")
 @Composable
-fun GuidanceCardAlignedPreview() {
+private fun GuidanceCardAlignedPreview() {
     SolPanTheme {
         Surface {
             // Panel target magnetic azimuth is 178.0. Phone's top should point to 178.0 for
@@ -356,7 +366,7 @@ fun GuidanceCardAlignedPreview() {
 
 @Preview(showBackground = true, name = "GuidanceCard Preview (Misaligned)")
 @Composable
-fun GuidanceCardMisalignedPreview() {
+private fun GuidanceCardMisalignedPreview() {
     SolPanTheme {
         Surface {
             // Panel target magnetic azimuth is 178.0. Phone is currently pointing to 150f.
@@ -376,7 +386,7 @@ fun GuidanceCardMisalignedPreview() {
 
 @Preview(showBackground = true, name = "GuidanceCard Preview (No Target)")
 @Composable
-fun GuidanceCardNoTargetPreview() {
+private fun GuidanceCardNoTargetPreview() {
     SolPanTheme {
         Surface {
             val sampleOrientation = OrientationData(azimuth = 150f, pitch = -25f, roll = 10f)

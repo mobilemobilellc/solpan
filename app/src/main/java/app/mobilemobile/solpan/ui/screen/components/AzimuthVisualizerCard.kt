@@ -37,6 +37,7 @@ import kotlin.math.abs
 fun AzimuthVisualizerCard(
     currentOrientation: OrientationData,
     targetParameters: OptimalPanelParameters?,
+    modifier: Modifier = Modifier,
     debugFakeAlignmentActive: Boolean = false,
 ) {
     if (targetParameters == null) {
@@ -44,6 +45,7 @@ fun AzimuthVisualizerCard(
         InfoCard(
             title = stringResource(id = R.string.azimuth_visualizer_card_title),
             icon = Icons.Filled.Explore,
+            modifier = modifier,
         ) {
             Text(
                 text = stringResource(id = R.string.guidance_waiting_for_target),
@@ -94,6 +96,7 @@ fun AzimuthVisualizerCard(
     InfoCard(
         title = stringResource(id = R.string.azimuth_visualizer_card_title),
         icon = Icons.Filled.Explore,
+        modifier = modifier,
     ) {
         Text(
             text = stringResource(id = R.string.guidance_level_device_title),

@@ -74,8 +74,8 @@ private data class SunParticle(
 
 @Composable
 private fun ShootingSunsEffect(
-    modifier: Modifier = Modifier,
     shootDistance: Float,
+    modifier: Modifier = Modifier,
     particleCountPerWave: Int = 2,
     waveDelayMillis: Long = 150,
     minSizeSp: Int = 15,
@@ -352,7 +352,7 @@ fun AzimuthAwareBubbleLevel(
 
 @Preview(showBackground = true, name = "Azimuth Bubble Level - Aligned")
 @Composable
-fun AzimuthBubbleLevelAlignedPreview() {
+private fun AzimuthBubbleLevelAlignedPreview() {
     MaterialTheme {
         Box(modifier = Modifier.size(250.dp)) {
             AzimuthAwareBubbleLevel(
@@ -372,7 +372,7 @@ fun AzimuthBubbleLevelAlignedPreview() {
 
 @Preview(showBackground = true, name = "Azimuth Bubble Level - Pitch/Roll Off")
 @Composable
-fun AzimuthBubbleLevelPitchRollOffPreview() {
+private fun AzimuthBubbleLevelPitchRollOffPreview() {
     MaterialTheme {
         AzimuthAwareBubbleLevel(
             currentPitch = 35.0,
@@ -390,7 +390,7 @@ fun AzimuthBubbleLevelPitchRollOffPreview() {
 
 @Preview(showBackground = true, name = "Azimuth Bubble Level - Azimuth Off")
 @Composable
-fun AzimuthBubbleLevelAzimuthOffPreview() {
+private fun AzimuthBubbleLevelAzimuthOffPreview() {
     MaterialTheme {
         AzimuthAwareBubbleLevel(
             currentPitch = 30.0,
@@ -408,7 +408,7 @@ fun AzimuthBubbleLevelAzimuthOffPreview() {
 
 @Preview(showBackground = true, name = "Azimuth Bubble Level - All Off")
 @Composable
-fun AzimuthBubbleLevelAllOffPreview() {
+private fun AzimuthBubbleLevelAllOffPreview() {
     MaterialTheme {
         AzimuthAwareBubbleLevel(
             currentPitch = 35.0,
@@ -426,7 +426,7 @@ fun AzimuthBubbleLevelAllOffPreview() {
 
 @Preview(showBackground = true, name = "Shooting Suns Effect Preview")
 @Composable
-fun ShootingSunsEffectPreview() {
+private fun ShootingSunsEffectPreview() {
     MaterialTheme {
         Box(modifier = Modifier.size(250.dp).padding(16.dp), contentAlignment = Alignment.Center) {
             ShootingSunsEffect(modifier = Modifier.fillMaxSize(), shootDistance = 100f)

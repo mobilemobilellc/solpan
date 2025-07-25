@@ -41,11 +41,14 @@ jobs:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
           cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
 
-      # - name: Run Detekt
-      #   run: ./gradlew detekt
-
       - name: Run checks and build debug APK
-        run: ./gradlew spotlessCheck :app:testDebugUnitTest :app:assembleDebug --parallel --continue --scan
+        run: ./gradlew app:detekt app:spotlessCheck :app:testDebugUnitTest :app:assembleDebug --parallel --continue --scan
+
+      - name: Upload SARIF to GitHub using the upload-sarif action
+        uses: github/codeql-action/upload-sarif@v2
+        if: success() || failure()
+        with:
+          sarif_file: build/reports/detekt/detekt.sarif
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v5

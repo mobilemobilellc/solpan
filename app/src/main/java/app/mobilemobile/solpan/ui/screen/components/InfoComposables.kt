@@ -42,12 +42,13 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun InfoCard(
     title: String,
+    modifier: Modifier = Modifier,
     icon: ImageVector? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -75,12 +76,13 @@ fun InfoCard(
 fun InfoRow(
     label: String,
     value: String,
+    modifier: Modifier = Modifier,
     labelStyle: TextStyle = MaterialTheme.typography.bodyLarge,
     valueStyle: TextStyle =
         MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
+        modifier = modifier.fillMaxWidth().padding(vertical = 6.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Top,
     ) {

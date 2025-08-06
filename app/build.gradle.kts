@@ -143,7 +143,7 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         ktfmt()
         ktlint("1.7.1")
             .setEditorConfigPath("../configs/spotless/.editorconfig")
-            .customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.4.26"))
+            .customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.4.27"))
         licenseHeaderFile(rootProject.file("configs/spotless/copyright.kt"))
     }
     kotlinGradle {
@@ -151,7 +151,7 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         ktfmt()
         ktlint("1.7.1")
             .setEditorConfigPath("../configs/spotless/.editorconfig")
-            .customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.4.26"))
+            .customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.4.27"))
     }
 }
 

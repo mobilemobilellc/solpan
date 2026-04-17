@@ -27,11 +27,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.mobilemobile.solpan.R
+import app.mobilemobile.solpan.data.AlignmentState
 import app.mobilemobile.solpan.data.OptimalPanelParameters
 import app.mobilemobile.solpan.data.OrientationData
-import app.mobilemobile.solpan.solar.SolarCalculator
 import app.mobilemobile.solpan.ui.components.AzimuthAwareBubbleLevel
-import kotlin.math.abs
 
 @Composable
 fun AzimuthVisualizerCard(
@@ -41,7 +40,6 @@ fun AzimuthVisualizerCard(
     debugFakeAlignmentActive: Boolean = false,
 ) {
     if (targetParameters == null) {
-        // Or show a simpler placeholder if preferred
         InfoCard(
             title = stringResource(id = R.string.azimuth_visualizer_card_title),
             icon = Icons.Filled.Explore,
@@ -50,48 +48,15 @@ fun AzimuthVisualizerCard(
             Text(
                 text = stringResource(id = R.string.guidance_waiting_for_target),
                 style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Companion.Center,
-                modifier = Modifier.Companion.fillMaxWidth().padding(8.dp),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
             )
         }
         return
     }
 
-    val actualPanelTargetAzimuth =
-        targetParameters.targetMagneticAzimuth ?: targetParameters.targetTrueAzimuth
-    val phoneTargetAzimuth = (actualPanelTargetAzimuth + 180) % 360.0
-    val targetTilt = targetParameters.targetTilt
-    val targetRoll = 0.0 // Assuming panel should be level side-to-side
-
-    val currentAzimuthValueForCalculations: Double
-    val currentPitchValueForCalculations: Double
-    val currentRollValueForCalculations: Double
-
-    if (debugFakeAlignmentActive) {
-        currentAzimuthValueForCalculations = phoneTargetAzimuth
-        currentPitchValueForCalculations = targetTilt
-        currentRollValueForCalculations = targetRoll
-    } else {
-        currentAzimuthValueForCalculations = currentOrientation.azimuth.toDouble()
-        currentPitchValueForCalculations = -currentOrientation.pitch.toDouble() // Invert pitch
-        currentRollValueForCalculations = currentOrientation.roll.toDouble()
-    }
-
-    val azimuthDifference =
-        SolarCalculator.calculateAzimuthDifference(
-            currentAzimuthValueForCalculations,
-            phoneTargetAzimuth,
-        )
-    val azimuthThreshold = 5.0 // degrees
-    val tiltDifference = targetTilt - currentPitchValueForCalculations
-    val tiltThreshold = 3.0
-    val rollDifference = targetRoll - currentRollValueForCalculations
-    val rollThreshold = 3.0
-
-    val isAzimuthCorrect =
-        if (debugFakeAlignmentActive) true else abs(azimuthDifference) <= azimuthThreshold
-    val isTiltCorrect = if (debugFakeAlignmentActive) true else abs(tiltDifference) <= tiltThreshold
-    val isRollCorrect = if (debugFakeAlignmentActive) true else abs(rollDifference) <= rollThreshold
+    val alignment =
+        AlignmentState.calculate(currentOrientation, targetParameters, debugFakeAlignmentActive)
 
     InfoCard(
         title = stringResource(id = R.string.azimuth_visualizer_card_title),
@@ -101,25 +66,24 @@ fun AzimuthVisualizerCard(
         Text(
             text = stringResource(id = R.string.guidance_level_device_title),
             style = MaterialTheme.typography.titleMedium,
-            modifier =
-                Modifier.Companion.padding(bottom = 8.dp).align(Alignment.Companion.CenterHorizontally),
+            modifier = Modifier.padding(bottom = 8.dp).align(Alignment.CenterHorizontally),
         )
 
         AzimuthAwareBubbleLevel(
-            currentPitch = currentPitchValueForCalculations,
-            currentRoll = currentRollValueForCalculations,
-            targetPitch = targetTilt,
-            currentAzimuth = currentAzimuthValueForCalculations,
-            targetAzimuth = phoneTargetAzimuth,
-            pitchAlignmentThresholdDeg = tiltThreshold,
-            rollAlignmentThresholdDeg = rollThreshold,
-            azimuthAlignmentThresholdDeg = azimuthThreshold,
-            modifier = Modifier.Companion.fillMaxWidth().padding(vertical = 16.dp),
+            currentPitch = alignment.currentPitch,
+            currentRoll = alignment.currentRoll,
+            targetPitch = alignment.targetTilt,
+            currentAzimuth = alignment.currentAzimuth,
+            targetAzimuth = alignment.phoneTargetAzimuth,
+            pitchAlignmentThresholdDeg = 3.0,
+            rollAlignmentThresholdDeg = 3.0,
+            azimuthAlignmentThresholdDeg = 5.0,
+            modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
             maxAngleDeviation = 15f,
         )
 
         val guidanceTextColor =
-            if (isTiltCorrect && isRollCorrect && isAzimuthCorrect) {
+            if (alignment.isFullyAligned) {
                 MaterialTheme.colorScheme.primary
             } else {
                 MaterialTheme.colorScheme.onSurfaceVariant
@@ -128,11 +92,11 @@ fun AzimuthVisualizerCard(
         Text(
             text =
                 when {
-                    isTiltCorrect && isRollCorrect && isAzimuthCorrect -> {
+                    alignment.isFullyAligned -> {
                         stringResource(id = R.string.guidance_perfectly_aligned)
                     }
 
-                    isTiltCorrect && isRollCorrect -> {
+                    alignment.isTiltCorrect && alignment.isRollCorrect -> {
                         stringResource(id = R.string.guidance_level_adjust_azimuth)
                     }
 
@@ -141,8 +105,8 @@ fun AzimuthVisualizerCard(
                     }
                 },
             color = guidanceTextColor,
-            textAlign = TextAlign.Companion.Center,
-            modifier = Modifier.Companion.fillMaxWidth().padding(bottom = 16.dp),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
         )
     }
 }

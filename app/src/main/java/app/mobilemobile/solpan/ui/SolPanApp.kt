@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -42,6 +43,12 @@ data class SolPan(
 
 @Composable
 fun SolPanApp(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val preferences =
+        context.getSharedPreferences(
+            "app.mobilemobile.solpan_preferences",
+            android.content.Context.MODE_PRIVATE,
+        )
     val backStack = rememberNavBackStack(SolPan(TiltMode.YEAR_ROUND))
     NavigationSuiteScaffold(
         modifier = modifier,
@@ -80,7 +87,7 @@ fun SolPanApp(modifier: Modifier = Modifier) {
                     is SolPan -> {
                         NavEntry(key) {
                             SolPanScreen(
-                                viewModel = viewModel(factory = SolPanViewModel.Factory(key)),
+                                viewModel = viewModel(factory = SolPanViewModel.factory(key, preferences)),
                                 onNavigateToAboutLibraries = { backStack.add(AboutLibraries) },
                             )
                         }

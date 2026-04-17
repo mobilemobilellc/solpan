@@ -34,7 +34,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -42,25 +41,23 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.edit
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.mobilemobile.solpan.BuildConfig
 import app.mobilemobile.solpan.R
 import app.mobilemobile.solpan.SolPanViewModel
 import app.mobilemobile.solpan.data.LocationData
 import app.mobilemobile.solpan.data.OptimalPanelParameters
 import app.mobilemobile.solpan.data.OrientationData
+import app.mobilemobile.solpan.data.TiltMode
 import app.mobilemobile.solpan.location.rememberDeviceLocationController
 import app.mobilemobile.solpan.orientation.rememberDeviceOrientationController
 import app.mobilemobile.solpan.ui.components.HelpGuidanceDialog
@@ -88,29 +85,20 @@ fun SolPanScreen(
     modifier: Modifier = Modifier,
     onNavigateToAboutLibraries: () -> Unit = {},
 ) {
-    val context = LocalContext.current
-    val preferences =
-        context.getSharedPreferences(
-            "app.mobilemobile.solpan_preferences",
-            android.content.Context.MODE_PRIVATE,
-        )
-
-    val optimalParams by viewModel.optimalPanelParameters.collectAsState()
-    val currentSelectedMode by viewModel.selectedTiltModeFlow.collectAsState()
-    val vmLocation by viewModel.currentLocation.collectAsState()
-    val debugFakeAlignmentActive by viewModel.debugFakeAlignmentActive.collectAsState()
+    val optimalParams by viewModel.optimalPanelParameters.collectAsStateWithLifecycle()
+    val currentSelectedMode by viewModel.selectedTiltModeFlow.collectAsStateWithLifecycle()
+    val vmLocation by viewModel.currentLocation.collectAsStateWithLifecycle()
+    val debugFakeAlignmentActive by viewModel.debugFakeAlignmentActive.collectAsStateWithLifecycle()
+    val showHelpDialog by viewModel.showTutorial.collectAsStateWithLifecycle()
 
     val deviceOrientationController = rememberDeviceOrientationController()
     val currentOrientation by deviceOrientationController.orientation
 
-    val tutorialSeen = preferences.getBoolean("tutorialSeen", false)
-    var showHelpDialog by remember { mutableStateOf(!tutorialSeen) }
     val analytics = remember { Firebase.analytics }
 
     if (showHelpDialog) {
         HelpGuidanceDialog {
-            showHelpDialog = false
-            preferences.edit { putBoolean("tutorialSeen", true) }
+            viewModel.dismissTutorial()
             analytics.logEvent("end_tutorial", null)
         }
     }
@@ -168,7 +156,7 @@ fun SolPanScreen(
                 actions = {
                     IconButton(
                         onClick = {
-                            showHelpDialog = true
+                            viewModel.requestTutorial()
                             analytics.logEvent("start_tutorial", null)
                         },
                     ) {
@@ -234,13 +222,15 @@ fun SolPanScreen(
 @OptIn(ExperimentalPermissionsApi::class)
 private fun SolPanScreenContent(
     contentPadding: PaddingValues,
-    locationPermissionsState: MultiplePermissionsState,
+    locationPermissionsState: MultiplePermissionsState?,
     currentOrientation: OrientationData,
     optimalParams: OptimalPanelParameters?,
     debugFakeAlignmentActive: Boolean,
     vmLocation: LocationData?,
     modifier: Modifier = Modifier,
 ) {
+    val hasLocationPermission = locationPermissionsState?.allPermissionsGranted != false
+
     LazyVerticalStaggeredGrid(
         modifier = modifier.fillMaxSize().padding(contentPadding),
         columns = StaggeredGridCells.Adaptive(240.dp),
@@ -248,7 +238,7 @@ private fun SolPanScreenContent(
         verticalItemSpacing = 8.dp,
         horizontalArrangement = spacedBy(8.dp),
     ) {
-        if (!locationPermissionsState.allPermissionsGranted) {
+        if (locationPermissionsState != null && !locationPermissionsState.allPermissionsGranted) {
             item { PermissionRequestCard(locationPermissionsState) }
         }
 
@@ -274,28 +264,54 @@ private fun SolPanScreenContent(
             TargetParametersCard(
                 optimalParams,
                 vmLocation,
-                locationPermissionsState.allPermissionsGranted,
+                hasLocationPermission,
             )
         }
     }
 }
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 private fun SolarAppScreenDarkPreview() {
     SolPanTheme {
-        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-            SolPanScreen(viewModel = viewModel(), onNavigateToAboutLibraries = {})
-        }
+        SolPanScreenContent(
+            contentPadding = PaddingValues(0.dp),
+            locationPermissionsState = null,
+            currentOrientation = OrientationData(azimuth = 178f, pitch = -13f, roll = 1f),
+            optimalParams =
+                OptimalPanelParameters(
+                    targetTrueAzimuth = 180.0,
+                    targetMagneticAzimuth = 178.0,
+                    targetTilt = 35.0,
+                    mode = TiltMode.YEAR_ROUND,
+                    magneticDeclination = -2.0f,
+                ),
+            debugFakeAlignmentActive = false,
+            vmLocation = LocationData(latitude = 36.1627, longitude = -86.7816),
+        )
     }
 }
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO, name = "Light Mode")
 @Composable
 private fun SolarAppScreenLightPreview() {
     SolPanTheme {
-        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-            SolPanScreen(viewModel = viewModel(), onNavigateToAboutLibraries = {})
-        }
+        SolPanScreenContent(
+            contentPadding = PaddingValues(0.dp),
+            locationPermissionsState = null,
+            currentOrientation = OrientationData(azimuth = 150f, pitch = -25f, roll = 10f),
+            optimalParams =
+                OptimalPanelParameters(
+                    targetTrueAzimuth = 180.0,
+                    targetMagneticAzimuth = 178.0,
+                    targetTilt = 35.0,
+                    mode = TiltMode.SUMMER,
+                    magneticDeclination = -2.0f,
+                ),
+            debugFakeAlignmentActive = false,
+            vmLocation = LocationData(latitude = 36.1627, longitude = -86.7816),
+        )
     }
 }

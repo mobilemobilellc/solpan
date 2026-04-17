@@ -106,6 +106,7 @@ android {
         compose = true
         buildConfig = true
     }
+    testOptions { unitTests.isReturnDefaultValues = true }
 }
 
 kotlin { jvmToolchain(21) }
@@ -131,6 +132,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(platform(libs.firebase.bom))
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
     detektPlugins(libs.detekt.formatting)
     detektPlugins(libs.detekt.compose.rules)
 }

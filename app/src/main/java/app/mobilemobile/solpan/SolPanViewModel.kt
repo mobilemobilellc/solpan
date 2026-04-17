@@ -14,16 +14,20 @@
  */
 package app.mobilemobile.solpan
 
+import android.content.SharedPreferences
 import android.hardware.GeomagneticField
+import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import app.mobilemobile.solpan.data.LocationData
 import app.mobilemobile.solpan.data.OptimalPanelParameters
 import app.mobilemobile.solpan.data.TiltMode
 import app.mobilemobile.solpan.solar.SolarCalculator
 import app.mobilemobile.solpan.ui.SolPan
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -31,27 +35,26 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import java.time.ZonedDateTime
 
 private const val EARTH_AXIAL_TILT = 23.5
+private const val REALTIME_TICK_INTERVAL_MS = 30_000L
 
 @OptIn(FlowPreview::class)
 class SolPanViewModel(
     key: SolPan,
+    private val preferences: SharedPreferences,
 ) : ViewModel() {
-    class Factory(
-        private val key: SolPan,
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(SolPanViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return SolPanViewModel(key) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
-        }
+    companion object {
+        fun factory(
+            key: SolPan,
+            preferences: SharedPreferences,
+        ) = viewModelFactory { initializer { SolPanViewModel(key, preferences) } }
     }
 
     private val _currentLocation = MutableStateFlow<LocationData?>(null)
@@ -63,8 +66,20 @@ class SolPanViewModel(
     private val _debugFakeAlignmentActive = MutableStateFlow(false)
     val debugFakeAlignmentActive: StateFlow<Boolean> = _debugFakeAlignmentActive.asStateFlow()
 
+    private val _showTutorial = MutableStateFlow(!preferences.getBoolean("tutorialSeen", false))
+    val showTutorial: StateFlow<Boolean> = _showTutorial.asStateFlow()
+
     fun toggleDebugFakeAlignment() {
         _debugFakeAlignmentActive.update { !it }
+    }
+
+    fun dismissTutorial() {
+        _showTutorial.value = false
+        preferences.edit { putBoolean("tutorialSeen", true) }
+    }
+
+    fun requestTutorial() {
+        _showTutorial.value = true
     }
 
     private val magneticDeclinationFlow: StateFlow<Float?> =
@@ -85,11 +100,12 @@ class SolPanViewModel(
             )
 
     val optimalPanelParameters: StateFlow<OptimalPanelParameters?> =
-        combine(_currentLocation.debounce(300), magneticDeclinationFlow, _selectedTiltModeFlow) {
-            location,
-            declination,
-            mode,
-            ->
+        combine(
+            _currentLocation.debounce(300),
+            magneticDeclinationFlow,
+            _selectedTiltModeFlow,
+            realtimeTickerFlow(_selectedTiltModeFlow),
+        ) { location, declination, mode, _ ->
             calculateOptimalParameters(location, declination, mode)
         }.distinctUntilChanged()
             .stateIn(
@@ -161,3 +177,21 @@ class SolPanViewModel(
         )
     }
 }
+
+/**
+ * Emits a tick every [REALTIME_TICK_INTERVAL_MS] when in REALTIME mode, ensuring sun position
+ * recalculates even without location changes. Emits a single value and stops for non-REALTIME
+ * modes.
+ */
+private fun realtimeTickerFlow(modeFlow: StateFlow<TiltMode>) =
+    modeFlow.flatMapLatest { mode ->
+        flow {
+            emit(Unit)
+            if (mode == TiltMode.REALTIME) {
+                while (true) {
+                    delay(REALTIME_TICK_INTERVAL_MS)
+                    emit(Unit)
+                }
+            }
+        }
+    }

@@ -46,10 +46,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.mobilemobile.solpan.R
+import app.mobilemobile.solpan.data.AlignmentState
 import app.mobilemobile.solpan.data.OptimalPanelParameters
 import app.mobilemobile.solpan.data.OrientationData
 import app.mobilemobile.solpan.data.TiltMode
-import app.mobilemobile.solpan.solar.SolarCalculator // Corrected import
 import app.mobilemobile.solpan.ui.theme.SolPanTheme
 import app.mobilemobile.solpan.util.format
 import kotlin.math.abs
@@ -77,127 +77,111 @@ fun GuidanceCard(
         return
     }
 
-    // Determine the actual target azimuth for the panel
-    val actualPanelTargetAzimuth =
-        targetParameters.targetMagneticAzimuth ?: targetParameters.targetTrueAzimuth
-
-    // The phone's top edge should point towards the panel's actual target azimuth.
-    // So the phone's target azimuth is 180 degrees from the panel's target.
-    val phoneTargetAzimuth = (actualPanelTargetAzimuth + 180) % 360.0
-
-    val targetTilt = targetParameters.targetTilt
-    val targetRoll = 0.0 // Assuming panel should be level side-to-side
-
-    val currentAzimuthValueForCalculations: Double
-    val currentPitchValueForCalculations: Double
-    val currentRollValueForCalculations: Double
-
-    if (debugFakeAlignmentActive) {
-        currentAzimuthValueForCalculations = phoneTargetAzimuth
-        currentPitchValueForCalculations = targetTilt
-        currentRollValueForCalculations = targetRoll
-    } else {
-        currentAzimuthValueForCalculations = currentOrientation.azimuth.toDouble()
-        currentPitchValueForCalculations = -currentOrientation.pitch.toDouble() // Invert pitch
-        currentRollValueForCalculations = currentOrientation.roll.toDouble()
-    }
-
-    val azimuthDifference =
-        SolarCalculator.calculateAzimuthDifference(
-            currentAzimuthValueForCalculations,
-            phoneTargetAzimuth,
-        )
-    val azimuthThreshold = 5.0 // degrees
-    val maxRelevantAzimuthDiff = 45.0 // For progress calculation
-
-    val isAzimuthCorrect =
-        if (debugFakeAlignmentActive) true else abs(azimuthDifference) <= azimuthThreshold
+    val alignment =
+        AlignmentState.calculate(currentOrientation, targetParameters, debugFakeAlignmentActive)
 
     val azimuthInstruction: String
-    var azimuthIconRotation: Float // Changed to var to allow modification
+    var azimuthIconRotation: Float
 
-    if (isAzimuthCorrect) {
+    if (alignment.isAzimuthCorrect) {
         azimuthInstruction = stringResource(id = R.string.guidance_azimuth_aligned)
         azimuthIconRotation = 0f
-    } else if (azimuthDifference > 0) { // Current is to the East (clockwise) of phoneTargetAzimuth
+    } else if (alignment.azimuthDifference > 0) {
         azimuthInstruction =
-            stringResource(id = R.string.guidance_azimuth_rotate_left, phoneTargetAzimuth.format(0))
-        azimuthIconRotation = -45f // Rotate icon left
-    } else { // Current is to the West (counter-clockwise) of phoneTargetAzimuth
+            stringResource(
+                id = R.string.guidance_azimuth_rotate_left,
+                alignment.phoneTargetAzimuth.format(0),
+            )
+        azimuthIconRotation = -45f
+    } else {
         azimuthInstruction =
-            stringResource(id = R.string.guidance_azimuth_rotate_right, phoneTargetAzimuth.format(0))
-        azimuthIconRotation = 45f // Rotate icon right
+            stringResource(
+                id = R.string.guidance_azimuth_rotate_right,
+                alignment.phoneTargetAzimuth.format(0),
+            )
+        azimuthIconRotation = 45f
     }
+
+    val maxRelevantAzimuthDiff = 45.0
     val azimuthProgress =
-        if (isAzimuthCorrect) {
+        if (alignment.isAzimuthCorrect) {
             1.0f
         } else {
-            (1.0f - (abs(azimuthDifference) / maxRelevantAzimuthDiff).toFloat()).coerceIn(0.0f, 1.0f)
+            (1.0f - (abs(alignment.azimuthDifference) / maxRelevantAzimuthDiff).toFloat()).coerceIn(
+                0.0f,
+                1.0f,
+            )
         }
 
-    val tiltDifference = targetTilt - currentPitchValueForCalculations
-    val tiltThreshold = 3.0
     val maxRelevantTiltDiff = 30.0
-
-    val isTiltCorrect = if (debugFakeAlignmentActive) true else abs(tiltDifference) <= tiltThreshold
-
     val tiltInstruction =
         when {
-            isTiltCorrect -> stringResource(id = R.string.guidance_tilt_optimal)
-            tiltDifference > 0 -> stringResource(id = R.string.guidance_tilt_down, targetTilt.format(0))
-            else -> stringResource(id = R.string.guidance_tilt_up, targetTilt.format(0))
+            alignment.isTiltCorrect -> {
+                stringResource(id = R.string.guidance_tilt_optimal)
+            }
+
+            alignment.tiltDifference > 0 -> {
+                stringResource(id = R.string.guidance_tilt_down, alignment.targetTilt.format(0))
+            }
+
+            else -> {
+                stringResource(id = R.string.guidance_tilt_up, alignment.targetTilt.format(0))
+            }
         }
     val tiltIcon =
         when {
-            isTiltCorrect -> Icons.Filled.CheckCircle
-            tiltDifference > 0 -> Icons.Filled.ArrowDownward
+            alignment.isTiltCorrect -> Icons.Filled.CheckCircle
+            alignment.tiltDifference > 0 -> Icons.Filled.ArrowDownward
             else -> Icons.Filled.ArrowUpward
         }
-
     val tiltProgress =
-        if (isTiltCorrect) {
+        if (alignment.isTiltCorrect) {
             1.0f
         } else {
-            (1.0f - (abs(tiltDifference) / maxRelevantTiltDiff).toFloat()).coerceIn(0.0f, 1.0f)
+            (1.0f - (abs(alignment.tiltDifference) / maxRelevantTiltDiff).toFloat()).coerceIn(
+                0.0f,
+                1.0f,
+            )
         }
 
-    val rollDifference = targetRoll - currentRollValueForCalculations
     val rollThreshold = 3.0
     val maxRelevantRollDiff = 30.0
-
-    val isRollCorrect = if (debugFakeAlignmentActive) true else abs(rollDifference) <= rollThreshold
-
     val rollInstruction =
         when {
-            isRollCorrect -> {
+            alignment.isRollCorrect -> {
                 stringResource(id = R.string.guidance_roll_level)
             }
 
-            currentRollValueForCalculations > rollThreshold -> {
-                stringResource(id = R.string.guidance_roll_tilt_left_down, targetRoll.format(0))
+            alignment.currentRoll > rollThreshold -> {
+                stringResource(id = R.string.guidance_roll_tilt_left_down, alignment.targetRoll.format(0))
             }
 
-            currentRollValueForCalculations < -rollThreshold -> {
-                stringResource(id = R.string.guidance_roll_tilt_right_down, targetRoll.format(0))
+            alignment.currentRoll < -rollThreshold -> {
+                stringResource(
+                    id = R.string.guidance_roll_tilt_right_down,
+                    alignment.targetRoll.format(0),
+                )
             }
 
             else -> {
                 stringResource(id = R.string.guidance_roll_adjust_level)
             }
         }
-
     val rollIcon =
         when {
-            isRollCorrect -> Icons.Filled.CheckCircle
-            currentRollValueForCalculations > rollThreshold -> Icons.AutoMirrored.Filled.RotateLeft
-            currentRollValueForCalculations < -rollThreshold -> Icons.AutoMirrored.Filled.RotateRight
+            alignment.isRollCorrect -> Icons.Filled.CheckCircle
+            alignment.currentRoll > rollThreshold -> Icons.AutoMirrored.Filled.RotateLeft
+            alignment.currentRoll < -rollThreshold -> Icons.AutoMirrored.Filled.RotateRight
             else -> Icons.Filled.Tune
         }
     val rollProgress =
-        if (isRollCorrect) {
+        if (alignment.isRollCorrect) {
             1.0f
         } else {
-            (1.0f - (abs(rollDifference) / maxRelevantRollDiff).toFloat()).coerceIn(0.0f, 1.0f)
+            (1.0f - (abs(alignment.rollDifference) / maxRelevantRollDiff).toFloat()).coerceIn(
+                0.0f,
+                1.0f,
+            )
         }
 
     InfoCard(
@@ -207,11 +191,11 @@ fun GuidanceCard(
     ) {
         GuidanceRow(
             label = stringResource(id = R.string.guidance_label_device_azimuth),
-            currentValue = "${currentAzimuthValueForCalculations.format(1)}°",
-            targetValue = "${phoneTargetAzimuth.format(1)}°",
+            currentValue = "${alignment.currentAzimuth.format(1)}°",
+            targetValue = "${alignment.phoneTargetAzimuth.format(1)}°",
             instruction = azimuthInstruction,
-            icon = if (isAzimuthCorrect) Icons.Filled.CheckCircle else Icons.Filled.Cached,
-            isCorrect = isAzimuthCorrect,
+            icon = if (alignment.isAzimuthCorrect) Icons.Filled.CheckCircle else Icons.Filled.Cached,
+            isCorrect = alignment.isAzimuthCorrect,
             progress = azimuthProgress,
             iconRotation = azimuthIconRotation, // This is already 0f if isAzimuthCorrect
         )
@@ -220,22 +204,22 @@ fun GuidanceCard(
 
         GuidanceRow(
             label = stringResource(id = R.string.guidance_label_device_tilt),
-            currentValue = "${currentPitchValueForCalculations.format(1)}°",
-            targetValue = "${targetTilt.format(1)}°",
+            currentValue = "${alignment.currentPitch.format(1)}°",
+            targetValue = "${alignment.targetTilt.format(1)}°",
             instruction = tiltInstruction,
             icon = tiltIcon,
-            isCorrect = isTiltCorrect,
+            isCorrect = alignment.isTiltCorrect,
             progress = tiltProgress,
         )
 
         Spacer(modifier = Modifier.height(12.dp))
         GuidanceRow(
             label = stringResource(id = R.string.guidance_label_device_roll),
-            currentValue = "${currentRollValueForCalculations.format(1)}°",
-            targetValue = "${targetRoll.format(1)}°",
+            currentValue = "${alignment.currentRoll.format(1)}°",
+            targetValue = "${alignment.targetRoll.format(1)}°",
             instruction = rollInstruction,
             icon = rollIcon,
-            isCorrect = isRollCorrect,
+            isCorrect = alignment.isRollCorrect,
             progress = rollProgress,
         )
 

@@ -127,6 +127,7 @@ dependencies {
     implementation(libs.bundles.androidxUi)
     implementation(libs.bundles.firebase)
     implementation(libs.commons.suncalc)
+    implementation(libs.datastore.preferences)
     implementation(libs.kotlinx.serialization.core)
     implementation(libs.play.services.location)
     implementation(platform(libs.androidx.compose.bom))

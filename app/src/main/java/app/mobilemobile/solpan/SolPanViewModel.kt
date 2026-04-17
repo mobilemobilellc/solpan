@@ -14,9 +14,7 @@
  */
 package app.mobilemobile.solpan
 
-import android.content.SharedPreferences
 import android.hardware.GeomagneticField
-import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
@@ -24,6 +22,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import app.mobilemobile.solpan.data.LocationData
 import app.mobilemobile.solpan.data.OptimalPanelParameters
 import app.mobilemobile.solpan.data.TiltMode
+import app.mobilemobile.solpan.data.UserPreferencesRepository
 import app.mobilemobile.solpan.solar.SolarCalculator
 import app.mobilemobile.solpan.ui.SolPan
 import kotlinx.coroutines.FlowPreview
@@ -40,6 +39,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.time.ZonedDateTime
 
 private const val EARTH_AXIAL_TILT = 23.5
@@ -48,13 +48,13 @@ private const val REALTIME_TICK_INTERVAL_MS = 30_000L
 @OptIn(FlowPreview::class)
 class SolPanViewModel(
     key: SolPan,
-    private val preferences: SharedPreferences,
+    private val preferencesRepository: UserPreferencesRepository,
 ) : ViewModel() {
     companion object {
         fun factory(
             key: SolPan,
-            preferences: SharedPreferences,
-        ) = viewModelFactory { initializer { SolPanViewModel(key, preferences) } }
+            preferencesRepository: UserPreferencesRepository,
+        ) = viewModelFactory { initializer { SolPanViewModel(key, preferencesRepository) } }
     }
 
     private val _currentLocation = MutableStateFlow<LocationData?>(null)
@@ -66,20 +66,27 @@ class SolPanViewModel(
     private val _debugFakeAlignmentActive = MutableStateFlow(false)
     val debugFakeAlignmentActive: StateFlow<Boolean> = _debugFakeAlignmentActive.asStateFlow()
 
-    private val _showTutorial = MutableStateFlow(!preferences.getBoolean("tutorialSeen", false))
-    val showTutorial: StateFlow<Boolean> = _showTutorial.asStateFlow()
+    private val tutorialOverride = MutableStateFlow<Boolean?>(null)
+
+    val showTutorial: StateFlow<Boolean> =
+        combine(
+            preferencesRepository.tutorialSeen,
+            tutorialOverride,
+        ) { seen, override ->
+            override ?: !seen
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
     fun toggleDebugFakeAlignment() {
         _debugFakeAlignmentActive.update { !it }
     }
 
     fun dismissTutorial() {
-        _showTutorial.value = false
-        preferences.edit { putBoolean("tutorialSeen", true) }
+        tutorialOverride.value = null
+        viewModelScope.launch { preferencesRepository.setTutorialSeen(true) }
     }
 
     fun requestTutorial() {
-        _showTutorial.value = true
+        tutorialOverride.value = true
     }
 
     private val magneticDeclinationFlow: StateFlow<Float?> =

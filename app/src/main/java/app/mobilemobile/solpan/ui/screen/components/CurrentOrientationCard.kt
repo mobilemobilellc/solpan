@@ -18,16 +18,21 @@ import android.hardware.SensorManager
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Explore
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.mobilemobile.solpan.R
 import app.mobilemobile.solpan.data.OrientationData
 import app.mobilemobile.solpan.util.format
 
 @Composable
-fun CurrentOrientationCard(orientation: OrientationData) {
+fun CurrentOrientationCard(
+    orientation: OrientationData,
+    modifier: Modifier = Modifier,
+) {
     InfoCard(
         title = stringResource(id = R.string.current_orientation_card_title),
         icon = Icons.Filled.Explore,
+        modifier = modifier,
     ) {
         InfoRow(
             label = stringResource(id = R.string.current_orientation_azimuth_label),

@@ -34,12 +34,12 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class SolPanViewModelTest {
     private val testDispatcher = UnconfinedTestDispatcher()
-    private lateinit var fakePrefs: FakeSharedPreferences
+    private lateinit var fakePrefs: FakeUserPreferencesRepository
 
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-        fakePrefs = FakeSharedPreferences()
+        fakePrefs = FakeUserPreferencesRepository()
     }
 
     @After

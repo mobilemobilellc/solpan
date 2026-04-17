@@ -239,32 +239,37 @@ private fun SolPanScreenContent(
         horizontalArrangement = spacedBy(8.dp),
     ) {
         if (locationPermissionsState != null && !locationPermissionsState.allPermissionsGranted) {
-            item { PermissionRequestCard(locationPermissionsState) }
+            item(key = "permission") {
+                PermissionRequestCard(locationPermissionsState, Modifier.animateItem())
+            }
         }
 
-        item {
+        item(key = "azimuth") {
             AzimuthVisualizerCard(
                 currentOrientation = currentOrientation,
                 targetParameters = optimalParams,
                 debugFakeAlignmentActive = debugFakeAlignmentActive,
+                modifier = Modifier.animateItem(),
             )
         }
 
-        item {
+        item(key = "guidance") {
             GuidanceCard(
                 currentOrientation = currentOrientation,
                 targetParameters = optimalParams,
                 debugFakeAlignmentActive = debugFakeAlignmentActive,
+                modifier = Modifier.animateItem(),
             )
         }
 
-        item { CurrentOrientationCard(currentOrientation) }
+        item(key = "orientation") { CurrentOrientationCard(currentOrientation, Modifier.animateItem()) }
 
-        item {
+        item(key = "target") {
             TargetParametersCard(
                 optimalParams,
                 vmLocation,
                 hasLocationPermission,
+                modifier = Modifier.animateItem(),
             )
         }
     }

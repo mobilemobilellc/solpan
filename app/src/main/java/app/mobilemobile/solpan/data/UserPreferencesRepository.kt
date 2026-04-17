@@ -1,0 +1,45 @@
+/*
+ * Copyright 2025 MobileMobile LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+package app.mobilemobile.solpan.data
+
+import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+
+private val Context.dataStore by preferencesDataStore(name = "solpan_settings")
+
+object UserPreferencesKeys {
+    val TUTORIAL_SEEN = booleanPreferencesKey("tutorialSeen")
+}
+
+interface UserPreferencesRepository {
+    val tutorialSeen: Flow<Boolean>
+
+    suspend fun setTutorialSeen(seen: Boolean)
+}
+
+class DataStoreUserPreferencesRepository(
+    private val context: Context,
+) : UserPreferencesRepository {
+    override val tutorialSeen: Flow<Boolean> =
+        context.dataStore.data.map { prefs -> prefs[UserPreferencesKeys.TUTORIAL_SEEN] ?: false }
+
+    override suspend fun setTutorialSeen(seen: Boolean) {
+        context.dataStore.edit { prefs -> prefs[UserPreferencesKeys.TUTORIAL_SEEN] = seen }
+    }
+}

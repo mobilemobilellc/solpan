@@ -81,7 +81,7 @@ class SolPanViewModel(
     }
 
     fun dismissTutorial() {
-        tutorialOverride.value = null
+        tutorialOverride.value = false
         viewModelScope.launch { preferencesRepository.setTutorialSeen(true) }
     }
 

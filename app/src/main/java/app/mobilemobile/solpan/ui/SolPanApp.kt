@@ -22,10 +22,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
-import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
@@ -80,29 +81,26 @@ fun SolPanApp(modifier: Modifier = Modifier) {
                 ),
             backStack = backStack,
             onBack = { backStack.removeLastOrNull() },
-            entryProvider = { key ->
-                when (key) {
-                    is SolPan -> {
-                        NavEntry(key) {
-                            SolPanScreen(
-                                viewModel =
-                                    viewModel(factory = SolPanViewModel.factory(key, preferencesRepository)),
-                                onNavigateToAboutLibraries = { backStack.add(AboutLibraries) },
-                            )
-                        }
+            entryProvider =
+                entryProvider {
+                    entry<SolPan> { key ->
+                        SolPanScreen(
+                            viewModel =
+                                viewModel(factory = SolPanViewModel.factory(key, preferencesRepository)),
+                            onNavigateToAboutLibraries =
+                                dropUnlessResumed {
+                                    if (backStack.lastOrNull() !is AboutLibraries) {
+                                        backStack.add(AboutLibraries)
+                                    }
+                                },
+                        )
                     }
-
-                    is AboutLibraries -> {
-                        NavEntry(key) {
-                            AboutLibrariesScreen(onNavigateBack = { backStack.removeLastOrNull() })
-                        }
+                    entry<AboutLibraries> {
+                        AboutLibrariesScreen(
+                            onNavigateBack = dropUnlessResumed { backStack.removeLastOrNull() },
+                        )
                     }
-
-                    else -> {
-                        NavEntry(key) { error("Unknown key: $key") }
-                    }
-                }
-            },
+                },
         )
     }
 }

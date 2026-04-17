@@ -38,6 +38,7 @@ androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", versi
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNav3" }
@@ -72,7 +73,7 @@ play-services-location = { module = "com.google.android.gms:play-services-locati
 [bundles]
 firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
 androidxUi = ["androidx-ui", "androidx-ui-graphics", "androidx-ui-tooling-preview"]
-androidxLifecycle = ["androidx-lifecycle-runtime-ktx", "androidx-lifecycle-viewmodel-compose", "androidx-lifecycle-viewmodel-navigation3"]
+androidxLifecycle = ["androidx-lifecycle-runtime-compose", "androidx-lifecycle-runtime-ktx", "androidx-lifecycle-viewmodel-compose", "androidx-lifecycle-viewmodel-navigation3"]
 androidxNavigation = ["androidx-navigation3-runtime", "androidx-navigation3-ui", "androidx-material3-adaptive-navigation3"]
 androidxMaterial = ["androidx-material-icons-core", "androidx-material-icons-extended", "material3"]
 test = ["junit", "androidx-junit", "androidx-espresso-core", "androidx-ui-test-junit4"]

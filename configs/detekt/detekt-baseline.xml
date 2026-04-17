@@ -1,19 +1,4 @@
 <?xml version="1.0" ?>
-<!--
-  ~ Copyright 2025 MobileMobile LLC
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~
-  ~ You may obtain a copy of the License at
-  ~ http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software distributed under
-  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
-  ~ OF ANY KIND, either express or implied. See the License for the specific language
-  ~ governing permissions and limitations under the License.
-  -->
-
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
@@ -36,7 +21,7 @@
     <ID>LongMethod:AzimuthAwareBubbleLevel.kt$@Composable private fun ShootingSunsEffect( shootDistance: Float, modifier: Modifier = Modifier, particleCountPerWave: Int = 2, waveDelayMillis: Long = 150, minSizeSp: Int = 15, maxSizeSp: Int = 28, minDurationMillis: Long = 300, maxDurationMillis: Long = 700, )</ID>
     <ID>LongMethod:AzimuthVisualizerCard.kt$@Composable fun AzimuthVisualizerCard( currentOrientation: OrientationData, targetParameters: OptimalPanelParameters?, modifier: Modifier = Modifier, debugFakeAlignmentActive: Boolean = false, )</ID>
     <ID>LongMethod:GuidanceComposables.kt$@Composable fun GuidanceCard( currentOrientation: OrientationData, targetParameters: OptimalPanelParameters?, modifier: Modifier = Modifier, debugFakeAlignmentActive: Boolean = false, // New parameter with default )</ID>
-    <ID>LongMethod:SolPanScreen.kt$@OptIn( ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class, ) @Composable fun SolPanScreen( viewModel: SolPanViewModel, modifier: Modifier = Modifier, onNavigateToAboutLibraries: () -&gt; Unit = {}, )</ID>
+    <ID>LongMethod:SolPanScreen.kt$@OptIn( ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class, ) @Composable fun SolPanScreen( viewModel: SolPanViewModel, modifier: Modifier = Modifier, onNavigateToAboutLibraries: () -&gt; Unit = {}, )</ID>
     <ID>LongMethod:TargetParametersCard.kt$@Composable fun TargetParametersCard( optimalParams: OptimalPanelParameters?, currentLocation: LocationData?, hasLocationPermission: Boolean, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:AzimuthAwareBubbleLevel.kt$0.01f</ID>
     <ID>MagicNumber:AzimuthAwareBubbleLevel.kt$10</ID>

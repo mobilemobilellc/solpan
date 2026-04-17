@@ -25,9 +25,8 @@ import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDe
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
-import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import app.mobilemobile.solpan.SolPanViewModel
 import app.mobilemobile.solpan.data.TiltMode
 import app.mobilemobile.solpan.ui.aboutlibraries.AboutLibrariesScreen
@@ -71,8 +70,7 @@ fun SolPanApp(modifier: Modifier = Modifier) {
         NavDisplay(
             entryDecorators =
                 listOf(
-                    rememberSceneSetupNavEntryDecorator(),
-                    rememberSavedStateNavEntryDecorator(),
+                    rememberSaveableStateHolderNavEntryDecorator(),
                     rememberViewModelStoreNavEntryDecorator(),
                 ),
             backStack = backStack,

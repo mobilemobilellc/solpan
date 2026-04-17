@@ -15,7 +15,6 @@
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
     alias(libs.plugins.google.firebase.crashlytics)
@@ -28,12 +27,12 @@ plugins {
 
 android {
     namespace = "app.mobilemobile.solpan"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "app.mobilemobile.solpan"
         minSdk = 26
-        targetSdk = 36
+        targetSdk = 37
         versionCode = (findProperty("appVersionCode") as String? ?: "1").toInt()
         versionName = findProperty("appVersionName") as String? ?: "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -160,4 +159,9 @@ detekt {
     baseline = file("../configs/detekt/detekt-baseline.xml")
     ignoredBuildTypes = listOf("release")
     enableCompilerPlugin.set(true)
+}
+
+// Guard: skip if already applied via init script (e.g. android-cli describe)
+if (project.tasks.names.none { it == "dumpModels" }) {
+    apply<DumpModelsPlugin>()
 }

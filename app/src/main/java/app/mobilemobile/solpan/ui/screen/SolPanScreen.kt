@@ -30,7 +30,6 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -82,7 +81,6 @@ import com.google.firebase.analytics.logEvent
 @OptIn(
     ExperimentalPermissionsApi::class,
     ExperimentalMaterial3Api::class,
-    ExperimentalMaterial3ExpressiveApi::class,
 )
 @Composable
 fun SolPanScreen(
@@ -124,7 +122,10 @@ fun SolPanScreen(
 
     val locationPermissionsState =
         rememberMultiplePermissionsState(
-            listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+            listOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+            ),
         )
 
     val deviceLocationController =
@@ -150,13 +151,13 @@ fun SolPanScreen(
         topBar = {
             TopAppBar(
                 scrollBehavior = scrollBehavior,
-                title = { Text(stringResource(id = R.string.solar_app_screen_title)) },
-                subtitle = {
+                title = {
                     Text(
                         stringResource(
-                            id = R.string.solar_app_screen_subtitle_tilt_mode,
+                            id = R.string.solar_app_screen_title,
+                        ) +
+                            " — " +
                             currentSelectedMode.displayName(),
-                        ),
                     )
                 },
                 colors =

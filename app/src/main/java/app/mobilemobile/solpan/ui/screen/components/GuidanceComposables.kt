@@ -246,7 +246,8 @@ fun GuidanceCard(
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(horizontal = 8.dp),
         )
-        if (targetParameters.targetMagneticAzimuth == null &&
+        if (
+            targetParameters.targetMagneticAzimuth == null &&
             targetParameters.magneticDeclination != null
         ) {
             Text(

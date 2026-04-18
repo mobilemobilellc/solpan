@@ -59,6 +59,8 @@ import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
+import kotlin.math.toRadians
+import kotlin.random.Random
 
 private val PARTICLE_CHARACTERS = listOf("☀️", "🌞", "⚡️", "😎️", "🌟")
 
@@ -92,11 +94,13 @@ private fun ShootingSunsEffect(
                 List(particleCountPerWave) {
                     SunParticle(
                         character = PARTICLE_CHARACTERS.random(),
-                        initialAngle = (Math.random() * 360).toFloat(),
-                        size = ((Math.random() * (maxSizeSp - minSizeSp)) + minSizeSp).toInt().sp,
+                        initialAngle = Random.nextFloat() * 360f,
+                        size = ((Random.nextFloat() * (maxSizeSp - minSizeSp)) + minSizeSp).toInt().sp,
                         particleAnimationDurationMillis =
-                            ((Math.random() * (maxDurationMillis - minDurationMillis)) + minDurationMillis)
-                                .toLong(),
+                            (
+                                (Random.nextFloat() * (maxDurationMillis - minDurationMillis)) +
+                                    minDurationMillis
+                            ).toLong(),
                     )
                 }
             particles = (particles + newWave).takeLast(particleCountPerWave * 10)
@@ -148,18 +152,14 @@ private fun ShootingSunsEffect(
                         Modifier.offset(
                             x =
                                 with(density) {
-                                    (
-                                        cos(Math.toRadians(particle.initialAngle.toDouble())) *
-                                            currentDistancePx
-                                    ).toFloat()
+                                    (cos(toRadians(particle.initialAngle.toDouble())) * currentDistancePx)
+                                        .toFloat()
                                         .toDp()
                                 },
                             y =
                                 with(density) {
-                                    (
-                                        sin(Math.toRadians(particle.initialAngle.toDouble())) *
-                                            currentDistancePx
-                                    ).toFloat()
+                                    (sin(toRadians(particle.initialAngle.toDouble())) * currentDistancePx)
+                                        .toFloat()
                                         .toDp()
                                 },
                         ),
@@ -264,7 +264,7 @@ fun AzimuthAwareBubbleLevel(
             val textRadius = fullRadiusPx - azimuthRingWidthPx / 2f
 
             cardinalDirections.zip(cardinalAzimuths).forEach { (direction, azimuth) ->
-                val drawingAngleRad = Math.toRadians(azimuth - 90.0).toFloat()
+                val drawingAngleRad = toRadians(azimuth - 90.0).toFloat()
                 val textX = center.x + textRadius * cos(drawingAngleRad)
                 val textY = center.y + textRadius * sin(drawingAngleRad)
 
@@ -274,7 +274,7 @@ fun AzimuthAwareBubbleLevel(
                 drawContext.canvas.nativeCanvas.drawText(direction, textX, adjustedTextY, textPaint)
             }
 
-            val targetAzimuthAngleRad = Math.toRadians((targetAzimuth - 90.0)).toFloat()
+            val targetAzimuthAngleRad = toRadians((targetAzimuth - 90.0)).toFloat()
             val targetIndicatorRadius = fullRadiusPx - azimuthRingWidthPx / 2f
             val targetIndicatorCenter =
                 Offset(
@@ -292,7 +292,7 @@ fun AzimuthAwareBubbleLevel(
                 center = targetIndicatorCenter,
             )
 
-            val currentAzimuthAngleRad = Math.toRadians((currentAzimuth - 90.0)).toFloat()
+            val currentAzimuthAngleRad = toRadians((currentAzimuth - 90.0)).toFloat()
             val lineStartRadius = pitchRollHousingRadiusPx + housingStrokeWidthPx
             val lineEndRadius = fullRadiusPx - housingStrokeWidthPx / 2
             drawLine(

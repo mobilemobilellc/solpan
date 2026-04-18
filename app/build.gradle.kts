@@ -130,6 +130,7 @@ dependencies {
     implementation(libs.datastore.preferences)
     implementation(libs.kotlinx.serialization.core)
     implementation(libs.play.services.location)
+    implementation(libs.androidx.profileinstaller)
     implementation(platform(libs.androidx.compose.bom))
     implementation(platform(libs.firebase.bom))
     testImplementation(libs.junit)

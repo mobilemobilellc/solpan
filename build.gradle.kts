@@ -24,4 +24,6 @@ plugins {
   alias(libs.plugins.jetbrains.kotlin.serialization) apply false
   alias(libs.plugins.spotless) apply false
   alias(libs.plugins.detekt) apply false
+  alias(libs.plugins.androidx.baselineprofile) apply false
+  alias(libs.plugins.android.test) apply false
 }

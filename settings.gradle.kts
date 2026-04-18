@@ -36,6 +36,7 @@ dependencyResolutionManagement {
 rootProject.name = "SolPan"
 
 include(":app")
+// include(":baselineprofile")
 
 plugins {
     id("org.gradle.toolchains.foojay-resolver") version "1.0.0"

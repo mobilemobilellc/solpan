@@ -37,6 +37,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -51,6 +52,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.window.core.layout.WindowSizeClass
 import app.mobilemobile.solpan.BuildConfig
 import app.mobilemobile.solpan.R
 import app.mobilemobile.solpan.SolPanViewModel
@@ -167,7 +169,10 @@ fun SolPanScreen(
                     }
                     Box {
                         IconButton(onClick = { showOverflowMenu = !showOverflowMenu }) {
-                            Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "More options")
+                            Icon(
+                                imageVector = Icons.Filled.MoreVert,
+                                contentDescription = stringResource(id = R.string.menu_more_options),
+                            )
                         }
                         DropdownMenu(
                             expanded = showOverflowMenu,
@@ -175,7 +180,7 @@ fun SolPanScreen(
                         ) {
                             if (BuildConfig.DEBUG) {
                                 DropdownMenuItem(
-                                    text = { Text("Toggle Fake Alignment") },
+                                    text = { Text(stringResource(id = R.string.debug_toggle_fake_alignment)) },
                                     onClick = {
                                         viewModel.toggleDebugFakeAlignment()
                                         showOverflowMenu = false
@@ -183,7 +188,8 @@ fun SolPanScreen(
                                     leadingIcon = {
                                         Icon(
                                             imageVector = Icons.Filled.BugReport,
-                                            contentDescription = "Toggle Fake Alignment",
+                                            contentDescription =
+                                                stringResource(id = R.string.debug_toggle_fake_alignment),
                                             tint =
                                                 if (debugFakeAlignmentActive) {
                                                     MaterialTheme.colorScheme.error
@@ -231,9 +237,25 @@ private fun SolPanScreenContent(
 ) {
     val hasLocationPermission = locationPermissionsState?.allPermissionsGranted != false
 
+    val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
+    val columns =
+        when {
+            windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND) -> {
+                StaggeredGridCells.Fixed(3)
+            }
+
+            windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND) -> {
+                StaggeredGridCells.Fixed(2)
+            }
+
+            else -> {
+                StaggeredGridCells.Fixed(1)
+            }
+        }
+
     LazyVerticalStaggeredGrid(
         modifier = modifier.fillMaxSize().padding(contentPadding),
-        columns = StaggeredGridCells.Adaptive(240.dp),
+        columns = columns,
         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
         verticalItemSpacing = 8.dp,
         horizontalArrangement = spacedBy(8.dp),

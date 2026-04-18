@@ -81,6 +81,11 @@
     <string name="help_dialog_title_default">Help &amp; Guidance</string>
     <string name="help_dialog_button_dismiss">Got it!</string>
 
+    <string name="bubble_level_aligned">Device is perfectly aligned</string>
+    <string name="bubble_level_rotate_clockwise">Rotate device clockwise to align azimuth</string>
+    <string name="bubble_level_rotate_counter_clockwise">Rotate device counter-clockwise to align azimuth</string>
+    <string name="bubble_level_adjust_tilt">Adjust tilt and level</string>
+
     <string name="sensor_accuracy_high">High</string>
     <string name="sensor_accuracy_medium">Medium</string>
     <string name="sensor_accuracy_low">Low</string>
@@ -95,4 +100,10 @@
     <string name="about_libraries">About Libraries</string>
     <string name="back">Back</string>
     <string name="buy_me_a_coffee">Buy Me a Coffee ☕️</string>
+
+    <string name="menu_more_options">More options</string>
+    <string name="debug_toggle_fake_alignment">Toggle Fake Alignment</string>
+    <string name="url_website">https://mobilemobile.app</string>
+    <string name="url_github">https://github.com/mobilemobilellc/</string>
+    <string name="url_buy_me_a_coffee">https://buymeacoffee.com/mobilemobile</string>
 </resources>

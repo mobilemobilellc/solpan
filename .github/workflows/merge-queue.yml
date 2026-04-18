@@ -28,7 +28,7 @@ jobs:
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
@@ -37,7 +37,18 @@ jobs:
           cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
 
       - name: Run checks and build debug APK
-        run: ./gradlew :app:testDebugUnitTest :app:assembleDebug --parallel --continue --scan
+        run: ./gradlew app:detekt app:spotlessCheck :app:testDebugUnitTest :app:assembleDebug --parallel --continue --scan
+
+      - name: Validate Screenshot Tests
+        run: ./gradlew :app:validateDebugScreenshotTest --parallel --continue --no-configuration-cache
+
+      - name: Upload Screenshot Diffs
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: screenshot-diffs
+          path: app/build/outputs/screenshotTest/debug/preview/diffs/
+          if-no-files-found: ignore
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v5

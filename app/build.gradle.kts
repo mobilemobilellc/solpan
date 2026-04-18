@@ -55,7 +55,6 @@ android {
         }
     }
 
-    @Suppress("UnstableApiUsage")
     androidResources {
         generateLocaleConfig = true
         localeFilters.addAll(

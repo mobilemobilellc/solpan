@@ -24,6 +24,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.mobilemobile.solpan.R
@@ -66,7 +68,10 @@ fun AzimuthVisualizerCard(
         Text(
             text = stringResource(id = R.string.guidance_level_device_title),
             style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(bottom = 8.dp).align(Alignment.CenterHorizontally),
+            modifier =
+                Modifier.padding(bottom = 8.dp).align(Alignment.CenterHorizontally).semantics {
+                    heading()
+                },
         )
 
         AzimuthAwareBubbleLevel(

@@ -237,7 +237,7 @@ private fun SolPanScreenContent(
 ) {
     val hasLocationPermission = locationPermissionsState?.allPermissionsGranted != false
 
-    val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
+    val windowSizeClass = currentWindowAdaptiveInfo(supportLargeAndXLargeWidth = true).windowSizeClass
     val columns =
         when {
             windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND) -> {

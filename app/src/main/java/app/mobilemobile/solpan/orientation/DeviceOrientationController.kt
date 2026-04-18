@@ -28,7 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import app.mobilemobile.solpan.data.OrientationData
 import app.mobilemobile.solpan.util.roundTo
-import kotlin.math.toDegrees
+import kotlin.math.PI
 
 @Composable
 fun rememberDeviceOrientationController(): DeviceOrientationController {
@@ -91,13 +91,13 @@ class DeviceOrientationController(
         SensorManager.getRotationMatrixFromVector(rotationMatrix, event.values)
         SensorManager.getOrientation(rotationMatrix, orientationAnglesOutput)
 
-        var azimuthInDegrees = toDegrees(orientationAnglesOutput[0].toDouble()).toFloat()
+        var azimuthInDegrees = (orientationAnglesOutput[0].toDouble() * (180.0 / PI)).toFloat()
         if (azimuthInDegrees < 0) {
             azimuthInDegrees += 360f
         }
 
-        val pitchInDegrees = toDegrees(orientationAnglesOutput[1].toDouble()).toFloat()
-        val rollInDegrees = toDegrees(orientationAnglesOutput[2].toDouble()).toFloat()
+        val pitchInDegrees = (orientationAnglesOutput[1].toDouble() * (180.0 / PI)).toFloat()
+        val rollInDegrees = (orientationAnglesOutput[2].toDouble() * (180.0 / PI)).toFloat()
 
         _orientation.value =
             OrientationData(

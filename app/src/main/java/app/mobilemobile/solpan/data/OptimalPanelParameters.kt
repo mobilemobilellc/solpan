@@ -14,6 +14,8 @@
  */
 package app.mobilemobile.solpan.data
 
+import androidx.compose.runtime.Immutable
+
 /**
  * @property targetTrueAzimuth
  * @property targetMagneticAzimuth
@@ -21,6 +23,7 @@ package app.mobilemobile.solpan.data
  * @property mode
  * @property magneticDeclination
  */
+@Immutable
 data class OptimalPanelParameters(
     val targetTrueAzimuth: Double,
     val targetMagneticAzimuth: Double?,

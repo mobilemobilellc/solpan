@@ -14,10 +14,13 @@
  */
 package app.mobilemobile.solpan.data
 
+import androidx.compose.runtime.Immutable
+
 /**
  * @property azimuth
  * @property altitude
  */
+@Immutable
 data class SolarPosition(
     val azimuth: Double,
     val altitude: Double,

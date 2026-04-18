@@ -14,9 +14,11 @@
  */
 package app.mobilemobile.solpan.data
 
+import androidx.compose.runtime.Immutable
 import app.mobilemobile.solpan.solar.SolarCalculator
 import kotlin.math.abs
 
+@Immutable
 data class AlignmentState(
     val phoneTargetAzimuth: Double,
     val targetTilt: Double,

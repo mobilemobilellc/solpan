@@ -14,12 +14,15 @@
  */
 package app.mobilemobile.solpan.data
 
+import androidx.compose.runtime.Immutable
+
 /**
  * @property latitude
  * @property longitude
  * @property altitude
  * @property accuracy
  */
+@Immutable
 data class LocationData(
     val latitude: Double,
     val longitude: Double,

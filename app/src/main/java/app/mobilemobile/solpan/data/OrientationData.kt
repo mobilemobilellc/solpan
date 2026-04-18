@@ -14,12 +14,15 @@
  */
 package app.mobilemobile.solpan.data
 
+import androidx.compose.runtime.Immutable
+
 /**
  * @property azimuth
  * @property pitch
  * @property roll
  * @property sensorAccuracy
  */
+@Immutable
 data class OrientationData(
     val azimuth: Float = 0f,
     val pitch: Float = 0f,

@@ -91,13 +91,16 @@ class DeviceOrientationController(
         SensorManager.getRotationMatrixFromVector(rotationMatrix, event.values)
         SensorManager.getOrientation(rotationMatrix, orientationAnglesOutput)
 
-        var azimuthInDegrees = (orientationAnglesOutput[0].toDouble() * (180.0 / PI)).toFloat()
+        var azimuthInDegrees =
+            (orientationAnglesOutput[ORIENTATION_INDEX_AZIMUTH].toDouble() * (180.0 / PI)).toFloat()
         if (azimuthInDegrees < 0) {
             azimuthInDegrees += 360f
         }
 
-        val pitchInDegrees = (orientationAnglesOutput[1].toDouble() * (180.0 / PI)).toFloat()
-        val rollInDegrees = (orientationAnglesOutput[2].toDouble() * (180.0 / PI)).toFloat()
+        val pitchInDegrees =
+            (orientationAnglesOutput[ORIENTATION_INDEX_PITCH].toDouble() * (180.0 / PI)).toFloat()
+        val rollInDegrees =
+            (orientationAnglesOutput[ORIENTATION_INDEX_ROLL].toDouble() * (180.0 / PI)).toFloat()
 
         _orientation.value =
             OrientationData(
@@ -126,5 +129,11 @@ class DeviceOrientationController(
             "DeviceOrientationController",
             "Accuracy for ${sensor?.name ?: "Unknown Sensor"} changed to: $accuracyDescription",
         )
+    }
+
+    companion object {
+        private const val ORIENTATION_INDEX_AZIMUTH = 0
+        private const val ORIENTATION_INDEX_PITCH = 1
+        private const val ORIENTATION_INDEX_ROLL = 2
     }
 }

@@ -45,6 +45,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -73,9 +74,6 @@ import app.mobilemobile.solpan.util.displayName
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.google.firebase.Firebase
-import com.google.firebase.analytics.analytics
-import com.google.firebase.analytics.logEvent
 
 @OptIn(
     ExperimentalPermissionsApi::class,
@@ -96,12 +94,10 @@ fun SolPanScreen(
     val deviceOrientationController = rememberDeviceOrientationController()
     val currentOrientation by deviceOrientationController.orientation
 
-    val analytics = remember { Firebase.analytics }
-
     if (showHelpDialog) {
         HelpGuidanceDialog {
             viewModel.dismissTutorial()
-            analytics.logEvent("end_tutorial", null)
+            viewModel.onTutorialEnded()
         }
     }
 
@@ -121,13 +117,12 @@ fun SolPanScreen(
     val deviceLocationController =
         rememberDeviceLocationController(onLocationUpdate = viewModel::updateLocation)
 
+    var hasRequestedPermissions by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(locationPermissionsState.allPermissionsGranted) {
-        val permissionGranted = locationPermissionsState.allPermissionsGranted
-        analytics.logEvent("permission_request_response") {
-            param("permission_type", "location")
-            param("permission_granted", permissionGranted.toString())
+        if (hasRequestedPermissions) {
+            viewModel.onPermissionResult(locationPermissionsState.allPermissionsGranted)
         }
-        if (permissionGranted) {
+        if (locationPermissionsState.allPermissionsGranted) {
             deviceLocationController.startLocationUpdates()
         } else {
             deviceLocationController.stopLocationUpdates()
@@ -144,10 +139,10 @@ fun SolPanScreen(
                 title = {
                     Text(
                         stringResource(
-                            id = R.string.solar_app_screen_title,
-                        ) +
-                            " — " +
+                            R.string.solar_app_screen_title_with_mode,
+                            stringResource(R.string.solar_app_screen_title),
                             currentSelectedMode.displayName(),
+                        ),
                     )
                 },
                 colors =
@@ -159,7 +154,7 @@ fun SolPanScreen(
                     IconButton(
                         onClick = {
                             viewModel.requestTutorial()
-                            analytics.logEvent("start_tutorial", null)
+                            viewModel.onTutorialStarted()
                         },
                     ) {
                         Icon(
@@ -216,6 +211,7 @@ fun SolPanScreen(
         SolPanScreenContent(
             contentPadding = contentPadding,
             locationPermissionsState = locationPermissionsState,
+            onPermissionRequest = { hasRequestedPermissions = true },
             currentOrientation = currentOrientation,
             optimalParams = optimalParams,
             debugFakeAlignmentActive = debugFakeAlignmentActive,
@@ -234,6 +230,7 @@ private fun SolPanScreenContent(
     debugFakeAlignmentActive: Boolean,
     vmLocation: LocationData?,
     modifier: Modifier = Modifier,
+    onPermissionRequest: () -> Unit = {},
 ) {
     val hasLocationPermission = locationPermissionsState?.allPermissionsGranted != false
 
@@ -262,7 +259,11 @@ private fun SolPanScreenContent(
     ) {
         if (locationPermissionsState != null && !locationPermissionsState.allPermissionsGranted) {
             item(key = "permission") {
-                PermissionRequestCard(locationPermissionsState, Modifier.animateItem())
+                PermissionRequestCard(
+                    locationPermissionsState,
+                    Modifier.animateItem(),
+                    onPermissionRequest = onPermissionRequest,
+                )
             }
         }
 

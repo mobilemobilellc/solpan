@@ -19,6 +19,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import app.mobilemobile.solpan.analytics.AnalyticsTracker
+import app.mobilemobile.solpan.analytics.FirebaseAnalyticsTracker
 import app.mobilemobile.solpan.data.LocationData
 import app.mobilemobile.solpan.data.OptimalPanelParameters
 import app.mobilemobile.solpan.data.TiltMode
@@ -49,6 +51,7 @@ private const val REALTIME_TICK_INTERVAL_MS = 30_000L
 class SolPanViewModel(
     key: SolPan,
     private val preferencesRepository: UserPreferencesRepository,
+    private val analytics: AnalyticsTracker = FirebaseAnalyticsTracker(),
 ) : ViewModel() {
     companion object {
         fun factory(
@@ -56,6 +59,12 @@ class SolPanViewModel(
             preferencesRepository: UserPreferencesRepository,
         ) = viewModelFactory { initializer { SolPanViewModel(key, preferencesRepository) } }
     }
+
+    fun onTutorialStarted() = analytics.logTutorialStarted()
+
+    fun onTutorialEnded() = analytics.logTutorialEnded()
+
+    fun onPermissionResult(granted: Boolean) = analytics.logPermissionResult(granted)
 
     private val _currentLocation = MutableStateFlow<LocationData?>(null)
     val currentLocation: StateFlow<LocationData?> = _currentLocation.asStateFlow()
@@ -162,12 +171,9 @@ class SolPanViewModel(
                 targetTilt = (kotlin.math.abs(lat) - EARTH_AXIAL_TILT).coerceIn(0.0, 90.0)
             }
 
-            TiltMode.SPRING_AUTUMN -> {
-                targetTrueAzimuth = fixedTrueAzimuthEquator
-                targetTilt = kotlin.math.abs(lat).coerceIn(0.0, 90.0)
-            }
-
-            TiltMode.YEAR_ROUND -> {
+            TiltMode.SPRING_AUTUMN,
+            TiltMode.YEAR_ROUND,
+            -> {
                 targetTrueAzimuth = fixedTrueAzimuthEquator
                 targetTilt = kotlin.math.abs(lat).coerceIn(0.0, 90.0)
             }

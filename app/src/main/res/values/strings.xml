@@ -70,6 +70,7 @@
     <string name="guidance_row_target_value">Target: %s</string>
 
     <string name="solar_app_screen_title">Solar Panel Optimizer</string>
+    <string name="solar_app_screen_title_with_mode">%1$s \u2014 %2$s</string>
     <string name="solar_app_screen_subtitle_tilt_mode">Tilt Mode: %s</string>
 
     <string name="help_dialog_title">Panel Alignment Help</string>

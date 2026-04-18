@@ -47,6 +47,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 fun PermissionRequestCard(
     locationPermissionsState: MultiplePermissionsState,
     modifier: Modifier = Modifier,
+    onPermissionRequest: () -> Unit = {},
 ) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
@@ -76,7 +77,10 @@ fun PermissionRequestCard(
                 textAlign = TextAlign.Center,
             )
             Button(
-                onClick = { locationPermissionsState.launchMultiplePermissionRequest() },
+                onClick = {
+                    onPermissionRequest()
+                    locationPermissionsState.launchMultiplePermissionRequest()
+                },
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.onError),
             ) {
                 Text(

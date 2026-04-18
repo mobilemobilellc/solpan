@@ -19,6 +19,8 @@ import app.mobilemobile.solpan.analytics.AnalyticsTracker
 /** No-op implementation of AnalyticsTracker for unit tests. */
 class FakeAnalyticsTracker : AnalyticsTracker {
     override fun logTutorialStarted() = Unit
+
     override fun logTutorialEnded() = Unit
+
     override fun logPermissionResult(granted: Boolean) = Unit
 }

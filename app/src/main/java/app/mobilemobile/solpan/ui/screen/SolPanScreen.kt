@@ -222,7 +222,7 @@ fun SolPanScreen(
 
 @Composable
 @OptIn(ExperimentalPermissionsApi::class)
-private fun SolPanScreenContent(
+internal fun SolPanScreenContent(
     contentPadding: PaddingValues,
     locationPermissionsState: MultiplePermissionsState?,
     currentOrientation: OrientationData,
@@ -260,9 +260,12 @@ private fun SolPanScreenContent(
         if (locationPermissionsState != null && !locationPermissionsState.allPermissionsGranted) {
             item(key = "permission") {
                 PermissionRequestCard(
-                    locationPermissionsState,
-                    Modifier.animateItem(),
-                    onPermissionRequest = onPermissionRequest,
+                    shouldShowRationale = locationPermissionsState.shouldShowRationale,
+                    onRequestPermission = {
+                        onPermissionRequest()
+                        locationPermissionsState.launchMultiplePermissionRequest()
+                    },
+                    modifier = Modifier.animateItem(),
                 )
             }
         }

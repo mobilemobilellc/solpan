@@ -23,6 +23,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.serialization)
     alias(libs.plugins.spotless)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.screenshot)
 }
 
 android {
@@ -106,6 +107,7 @@ android {
         compose = true
         buildConfig = true
     }
+    experimentalProperties["android.experimental.enableScreenshotTest"] = true
     testOptions { unitTests.isReturnDefaultValues = true }
 }
 
@@ -137,6 +139,9 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     detektPlugins(libs.detekt.formatting)
     detektPlugins(libs.detekt.compose.rules)
+    screenshotTestImplementation(platform(libs.androidx.compose.bom))
+    screenshotTestImplementation(libs.screenshot.validation.api)
+    screenshotTestImplementation(libs.androidx.ui.tooling)
 }
 
 // spotless { // if you are using build.gradle.kts, instead of 'spotless {' use:

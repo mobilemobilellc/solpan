@@ -45,8 +45,7 @@ class TutorialFlowTest {
         Dispatchers.resetMain()
     }
 
-    private fun createViewModel() =
-        SolPanViewModel(SolPan(TiltMode.YEAR_ROUND), fakePrefs, FakeAnalyticsTracker())
+    private fun createViewModel() = SolPanViewModel(SolPan(TiltMode.YEAR_ROUND), fakePrefs, FakeAnalyticsTracker())
 
     @Test
     fun `showTutorial is true initially when tutorial not seen`() =

@@ -30,8 +30,9 @@ import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.Cached
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -315,7 +316,8 @@ fun GuidanceRow(
             modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = 2.dp, bottom = 4.dp),
         )
 
-        LinearProgressIndicator(
+        @OptIn(ExperimentalMaterial3ExpressiveApi::class)
+        LinearWavyProgressIndicator(
             progress = { if (isCorrect) 1.0f else progress },
             modifier = Modifier.fillMaxWidth().padding(top = 6.dp),
             color = MaterialTheme.colorScheme.primary,

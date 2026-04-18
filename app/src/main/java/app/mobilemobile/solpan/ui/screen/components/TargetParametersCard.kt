@@ -23,8 +23,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.WbSunny
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -99,7 +100,8 @@ fun TargetParametersCard(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                @OptIn(ExperimentalMaterial3ExpressiveApi::class)
+                LoadingIndicator(modifier = Modifier.size(24.dp))
                 Spacer(Modifier.width(12.dp))
                 Text(
                     text = stringResource(id = R.string.target_param_waiting_location_text),

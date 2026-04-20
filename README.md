@@ -50,6 +50,7 @@ SolPan follows a straightforward single-screen architecture with a clear separat
 - [SECURITY.md](SECURITY.md) — Security practices and data protection
 - [TESTING.md](TESTING.md) — Testing strategies and benchmarking
 - [CONTRIBUTING.md](CONTRIBUTING.md) — Development workflow and project structure
+- [RELEASE.md](RELEASE.md) — Semantic versioning, automated release workflow, changelog management
 
 ## 🛠️ Building from Source
 

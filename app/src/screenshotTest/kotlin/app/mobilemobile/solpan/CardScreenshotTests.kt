@@ -27,7 +27,7 @@ class CardScreenshotTests {
     @PreviewTest
     @Preview(name = "Target Parameters Card", showBackground = true)
     @Composable
-    fun TargetParametersCardPreview() {
+    private fun TargetParametersCardPreview() {
         SolPanTheme {
             TargetParametersCard(
                 params =

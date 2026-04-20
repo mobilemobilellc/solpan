@@ -34,7 +34,7 @@ class SolPanScreenshotTests {
     @Preview(name = "SolPan Screen", showBackground = true)
     @Composable
     @OptIn(ExperimentalPermissionsApi::class)
-    fun SolPanScreenPreview() {
+    private fun SolPanScreenPreview() {
         SolPanTheme {
             SolPanScreenContent(
                 contentPadding = PaddingValues(0.dp),

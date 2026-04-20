@@ -50,3 +50,111 @@ We welcome pull requests! If you'd like to contribute code, please follow these 
 8.  **Create a pull request** from your fork to the main SolPan repository. Please provide a clear description of the changes you've made.
 
 We will review your pull request as soon as possible and provide feedback. Thank you for your contribution!
+
+## Project Structure
+
+SolPan has been modernized with a multi-module architecture using Android Gradle Plugin 9.0:
+
+### Modules
+
+- **`:app`** - Main application module with UI and entry point
+- **`:feature:optimizer`** - Feature module containing SolPan ViewModel and business logic
+- **`:core:model`** - Core data models (TiltMode, LocationData, OptimalPanelParameters, etc.)
+- **`:core:data`** - Repository implementations and data layer
+- **`:core:analytics`** - Analytics abstraction and Firebase integration
+- **`:core:designsystem`** - Reusable UI components, themes, and design tokens
+- **`:core:solar`** - Solar calculation logic (SolarCalculator)
+- **`:build-logic`** - Gradle convention plugins for shared build configuration
+
+### Build System
+
+The project uses:
+- **AGP 9.0** with new DSL interfaces and built-in Kotlin support
+- **Gradle 9.1.0+** for compatibility with AGP 9
+- **Kotlin 2.3.20+** for full AGP 9 support
+- **Convention plugins** in `build-logic/` for consistent module configuration
+
+## Development Commands
+
+### Building
+
+```bash
+# Assemble debug APK
+./gradlew :app:assembleDebug
+
+# Assemble release APK
+./gradlew :app:assembleRelease
+```
+
+### Testing
+
+```bash
+# Run all unit tests
+./gradlew :app:testDebugUnitTest
+
+# Run a specific test class
+./gradlew :app:testDebugUnitTest --tests "app.mobilemobile.solpan.SolPanViewModelTest"
+```
+
+### Code Quality
+
+```bash
+# Format code with Spotless (ktlint + ktfmt)
+./gradlew app:spotlessApply
+
+# Check formatting without applying
+./gradlew app:spotlessCheck
+
+# Run Detekt static analysis
+./gradlew app:detekt
+
+# Full CI check (same as CI pipeline)
+./gradlew app:detekt app:spotlessCheck :app:testDebugUnitTest :app:assembleDebug --parallel
+```
+
+### Screenshot Tests
+
+```bash
+# Generate/update screenshot reference images
+./gradlew :app:updateDebugScreenshotTest
+
+# Validate screenshots against references
+./gradlew :app:validateDebugScreenshotTest
+```
+
+## Architecture Highlights
+
+### State Management
+
+- **ViewModel + StateFlow**: `SolPanViewModel` exposes UI state as immutable `StateFlow`
+- **Reactive**: All data flows (location, orientation, location preferences) are combined reactively
+- **No DI Framework**: Dependencies are wired via constructor injection and Compose's `remember {}`
+
+### Testing Strategy
+
+- **Unit Tests**: Test business logic in ViewModel, repositories, and utilities
+- **Mocking**: Use Fake implementations (e.g., `FakeMagneticDeclinationProvider`) for testable abstractions
+- **Dependency Extraction**: Platform-specific code (like `GeomagneticField`) is abstracted behind interfaces
+
+### Code Quality Standards
+
+- **Apache 2.0 License Headers**: Required on all Kotlin and Gradle files
+- **ktlint with Compose Rules**: Official Kotlin style with no star imports
+- **Detekt**: Static analysis with baseline configuration (max issues: 0)
+- **Format on Save**: Configure IDE to run `spotlessApply` on save for convenience
+
+## Key Classes and Packages
+
+- `app.mobilemobile.solpan.optimizer.SolPanViewModel` - Main state container
+- `app.mobilemobile.solpan.solar.SolarCalculator` - Sun position calculations
+- `app.mobilemobile.solpan.orientation.DeviceOrientationController` - Sensor fusion (accelerometer + magnetometer)
+- `app.mobilemobile.solpan.location.DeviceLocationManager` - GPS location updates
+- `app.mobilemobile.solpan.ui.screen.SolPanScreen` - Main UI composable with Navigation
+- `app.mobilemobile.solpan.designsystem.theme.SolPanTheme` - Material 3 Expressive theming
+
+## Questions?
+
+If you have any questions or need help, feel free to:
+- Open a GitHub Discussion
+- Check existing Issues for similar questions
+- Review the project README for architectural diagrams

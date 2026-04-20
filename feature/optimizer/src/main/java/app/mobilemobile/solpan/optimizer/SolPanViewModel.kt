@@ -76,7 +76,7 @@ private const val REALTIME_TICK_INTERVAL_MS = 30_000L
  * @param magneticDeclinationProvider Magnetic declination calculator (injectable for testing)
  */
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-class SolPanViewModel(
+public class SolPanViewModel(
     val initialMode: TiltMode,
     private val preferencesRepository: UserPreferencesRepository,
     private val locationRepository: LocationRepository,

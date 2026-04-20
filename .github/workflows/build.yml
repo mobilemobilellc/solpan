@@ -46,6 +46,23 @@ jobs:
       - name: Run checks and build debug APK
         run: ./gradlew app:detekt app:spotlessCheck :app:testDebugUnitTest :app:assembleDebug --parallel --continue --scan
 
+      - name: Generate Dokka Documentation
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          rm -rf docs/
+          ./gradlew dokkaHtmlMultiModule --no-configuration-cache -q
+          mkdir -p docs && cp -r build/dokka/html/* docs/
+          touch docs/.nojekyll
+
+      - name: Commit Documentation Updates
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add docs/
+          git diff --cached --quiet || git commit -m "docs: update Dokka API documentation [skip ci]"
+          git push
+
       - name: Validate Screenshot Tests
         run: ./gradlew :app:validateDebugScreenshotTest --parallel --continue --no-configuration-cache
 

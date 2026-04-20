@@ -43,6 +43,14 @@ SolPan follows a straightforward single-screen architecture with a clear separat
 - **Clean Analytics Abstraction** — All event tracking is routed through a testable `AnalyticsTracker` interface, decoupling the UI from any specific analytics backend.
 - **Adaptive Layout** — The staggered grid automatically adjusts column count based on available window width, providing a polished experience on phones and tablets alike.
 
+📖 **For detailed architecture, design decisions, performance tuning, security hardening, and testing strategies, see:**
+- [**API Documentation**](https://mobilemobilellc.github.io/solpan/) - Dokka-generated reference for all public APIs
+- [ARCHITECTURE.md](ARCHITECTURE.md) — Deep dive into modular design patterns
+- [PERFORMANCE.md](PERFORMANCE.md) — Baseline metrics and optimization strategies
+- [SECURITY.md](SECURITY.md) — Security practices and data protection
+- [TESTING.md](TESTING.md) — Testing strategies and benchmarking
+- [CONTRIBUTING.md](CONTRIBUTING.md) — Development workflow and project structure
+
 ## 🛠️ Building from Source
 
 To build and run the project, you'll need:

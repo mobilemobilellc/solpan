@@ -27,4 +27,11 @@ plugins {
   alias(libs.plugins.androidx.baselineprofile) apply false
   alias(libs.plugins.android.test) apply false
   alias(libs.plugins.screenshot) apply false
+  alias(libs.plugins.dokka)
+}
+
+tasks.dokkaHtmlMultiModule {
+  moduleName.set("SolPan")
+  moduleVersion.set("1.0.0")
+  outputDirectory.set(layout.buildDirectory.dir("dokka/html"))
 }

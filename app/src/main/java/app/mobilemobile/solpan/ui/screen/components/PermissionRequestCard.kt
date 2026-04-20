@@ -36,7 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.mobilemobile.solpan.R
-import app.mobilemobile.solpan.ui.theme.SolPanTheme
+import app.mobilemobile.solpan.designsystem.theme.SolPanTheme
 
 @Composable
 fun PermissionRequestCard(

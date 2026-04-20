@@ -14,125 +14,65 @@
  */
 package app.mobilemobile.solpan.ui.screen.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.WbSunny
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.LoadingIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import app.mobilemobile.solpan.R
-import app.mobilemobile.solpan.data.LocationData
-import app.mobilemobile.solpan.data.OptimalPanelParameters
-import app.mobilemobile.solpan.util.displayName
+import app.mobilemobile.solpan.designsystem.components.InfoCard
+import app.mobilemobile.solpan.designsystem.components.InfoRow
+import app.mobilemobile.solpan.model.LocationData
+import app.mobilemobile.solpan.model.OptimalPanelParameters
 import app.mobilemobile.solpan.util.format
 
 @Composable
 fun TargetParametersCard(
-    optimalParams: OptimalPanelParameters?,
-    currentLocation: LocationData?,
-    hasLocationPermission: Boolean,
+    params: OptimalPanelParameters?,
+    location: LocationData?,
     modifier: Modifier = Modifier,
 ) {
     InfoCard(
         title = stringResource(id = R.string.target_param_card_title),
-        icon = Icons.Filled.WbSunny,
+        icon = Icons.Filled.Info,
         modifier = modifier,
     ) {
-        if (optimalParams != null) {
+        if (params == null) {
             InfoRow(
-                label = stringResource(id = R.string.target_param_mode_label),
-                value =
-                    optimalParams.mode
-                        .displayName(), // TiltMode.displayName could also use string resources
+                label = stringResource(id = R.string.calculating_text),
+                value = stringResource(id = R.string.target_param_waiting_location_text),
             )
+        } else {
             InfoRow(
                 label = stringResource(id = R.string.target_param_true_azimuth_label),
                 value =
                     stringResource(
                         id = R.string.target_param_value_degree_unit,
-                        optimalParams.targetTrueAzimuth,
+                        params.targetTrueAzimuth,
                     ),
             )
-            optimalParams.targetMagneticAzimuth?.let { magAzimuth ->
+            params.targetMagneticAzimuth?.let {
                 InfoRow(
                     label = stringResource(id = R.string.target_param_magnetic_azimuth_label),
-                    value = stringResource(id = R.string.target_param_value_degree_aim_unit, magAzimuth),
+                    value = stringResource(id = R.string.target_param_value_degree_unit, it),
                 )
             }
-                ?: InfoRow(
-                    label = stringResource(id = R.string.target_param_magnetic_azimuth_calculating_label),
-                    value = stringResource(id = R.string.calculating_text),
-                )
             InfoRow(
                 label = stringResource(id = R.string.target_param_tilt_label),
-                value =
-                    stringResource(
-                        id = R.string.target_param_value_degree_horizontal_unit,
-                        optimalParams.targetTilt,
-                    ),
-            )
-            optimalParams.magneticDeclination?.let {
-                InfoRow(
-                    label = stringResource(id = R.string.target_param_declination_label),
-                    value = stringResource(id = R.string.target_param_value_degree_unit, it),
-                    labelStyle = MaterialTheme.typography.bodySmall,
-                    valueStyle = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Normal),
-                )
-            }
-        } else if (hasLocationPermission) {
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                @OptIn(ExperimentalMaterial3ExpressiveApi::class)
-                LoadingIndicator(modifier = Modifier.size(24.dp))
-                Spacer(Modifier.width(12.dp))
-                Text(
-                    text = stringResource(id = R.string.target_param_waiting_location_text),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
-        } else {
-            Text(
-                text = stringResource(id = R.string.target_param_grant_permission_text),
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(16.dp),
-                textAlign = TextAlign.Center,
+                value = stringResource(id = R.string.target_param_value_degree_unit, params.targetTilt),
             )
         }
 
-        currentLocation?.let {
-            HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp, horizontal = 0.dp))
-            Text(
-                text = stringResource(id = R.string.target_param_current_location_label),
-                style = MaterialTheme.typography.titleSmall,
-                modifier = Modifier.padding(bottom = 6.dp),
-            )
+        location?.let { loc ->
             InfoRow(
                 label = stringResource(id = R.string.target_param_latitude_label),
-                value = it.latitude.format(4), // formatting for lat/lon is specific
+                value = loc.latitude.format(4),
             )
             InfoRow(
                 label = stringResource(id = R.string.target_param_longitude_label),
-                value = it.longitude.format(4), // formatting for lat/lon is specific
+                value = loc.longitude.format(4),
             )
-            it.accuracy?.let { acc ->
+            loc.accuracy?.let { acc ->
                 InfoRow(
                     label = stringResource(id = R.string.target_param_accuracy_label),
                     value = stringResource(id = R.string.target_param_value_meter_unit, acc),

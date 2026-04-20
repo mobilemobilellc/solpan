@@ -44,7 +44,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -55,12 +54,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowSizeClass
 import app.mobilemobile.solpan.BuildConfig
 import app.mobilemobile.solpan.R
-import app.mobilemobile.solpan.SolPanViewModel
-import app.mobilemobile.solpan.data.LocationData
-import app.mobilemobile.solpan.data.OptimalPanelParameters
-import app.mobilemobile.solpan.data.OrientationData
-import app.mobilemobile.solpan.data.TiltMode
+import app.mobilemobile.solpan.designsystem.theme.SolPanTheme
 import app.mobilemobile.solpan.location.rememberDeviceLocationController
+import app.mobilemobile.solpan.model.LocationData
+import app.mobilemobile.solpan.model.OptimalPanelParameters
+import app.mobilemobile.solpan.model.OrientationData
+import app.mobilemobile.solpan.model.TiltMode
+import app.mobilemobile.solpan.optimizer.SolPanUiState
+import app.mobilemobile.solpan.optimizer.SolPanViewModel
 import app.mobilemobile.solpan.orientation.rememberDeviceOrientationController
 import app.mobilemobile.solpan.ui.components.HelpGuidanceDialog
 import app.mobilemobile.solpan.ui.screen.components.AzimuthVisualizerCard
@@ -68,7 +69,6 @@ import app.mobilemobile.solpan.ui.screen.components.CurrentOrientationCard
 import app.mobilemobile.solpan.ui.screen.components.GuidanceCard
 import app.mobilemobile.solpan.ui.screen.components.PermissionRequestCard
 import app.mobilemobile.solpan.ui.screen.components.TargetParametersCard
-import app.mobilemobile.solpan.ui.theme.SolPanTheme
 import app.mobilemobile.solpan.util.displayName
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
@@ -81,16 +81,14 @@ fun SolPanScreen(
     modifier: Modifier = Modifier,
     onNavigateToAboutLibraries: () -> Unit = {},
 ) {
-    val optimalParams by viewModel.optimalPanelParameters.collectAsStateWithLifecycle()
-    val currentSelectedMode by viewModel.selectedTiltModeFlow.collectAsStateWithLifecycle()
-    val vmLocation by viewModel.currentLocation.collectAsStateWithLifecycle()
-    val debugFakeAlignmentActive by viewModel.debugFakeAlignmentActive.collectAsStateWithLifecycle()
-    val showHelpDialog by viewModel.showTutorial.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val deviceOrientationController = rememberDeviceOrientationController()
     val currentOrientation by deviceOrientationController.orientation
 
-    if (showHelpDialog) {
+    LaunchedEffect(currentOrientation) { viewModel.updateOrientation(currentOrientation) }
+
+    if (uiState.showTutorial) {
         HelpGuidanceDialog {
             viewModel.dismissTutorial()
             viewModel.onTutorialEnded()
@@ -98,120 +96,46 @@ fun SolPanScreen(
     }
 
     DisposableEffect(Unit) {
-        deviceOrientationController.startListening()
-        onDispose { deviceOrientationController.stopListening() }
+        viewModel.onTutorialStarted()
+        onDispose {}
     }
 
     val locationPermissionsState =
         rememberMultiplePermissionsState(
             listOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
             ),
         )
 
     val deviceLocationController =
-        rememberDeviceLocationController(onLocationUpdate = viewModel::updateLocation)
-
-    var hasRequestedPermissions by rememberSaveable { mutableStateOf(false) }
-    LaunchedEffect(locationPermissionsState.allPermissionsGranted) {
-        if (hasRequestedPermissions) {
-            viewModel.onPermissionResult(locationPermissionsState.allPermissionsGranted)
+        rememberDeviceLocationController { newLocation ->
+            viewModel.updateLocation(newLocation)
         }
+
+    LaunchedEffect(locationPermissionsState.allPermissionsGranted) {
         if (locationPermissionsState.allPermissionsGranted) {
             deviceLocationController.startLocationUpdates()
-        } else {
-            deviceLocationController.stopLocationUpdates()
-            viewModel.updateLocation(null)
         }
     }
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-    var showOverflowMenu by remember { mutableStateOf(false) }
+
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                scrollBehavior = scrollBehavior,
-                title = {
-                    Text(
-                        stringResource(
-                            R.string.solar_app_screen_title_with_mode,
-                            stringResource(R.string.solar_app_screen_title),
-                            currentSelectedMode.displayName(),
-                        ),
-                    )
-                },
-                colors =
-                    TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    ),
-                actions = {
-                    IconButton(
-                        onClick = {
-                            viewModel.requestTutorial()
-                            viewModel.onTutorialStarted()
-                        },
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.HelpOutline,
-                            contentDescription = stringResource(id = R.string.help_dialog_title),
-                        )
-                    }
-                    Box {
-                        IconButton(onClick = { showOverflowMenu = !showOverflowMenu }) {
-                            Icon(
-                                imageVector = Icons.Filled.MoreVert,
-                                contentDescription = stringResource(id = R.string.menu_more_options),
-                            )
-                        }
-                        DropdownMenu(
-                            expanded = showOverflowMenu,
-                            onDismissRequest = { showOverflowMenu = false },
-                        ) {
-                            if (BuildConfig.DEBUG) {
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(id = R.string.debug_toggle_fake_alignment)) },
-                                    onClick = {
-                                        viewModel.toggleDebugFakeAlignment()
-                                        showOverflowMenu = false
-                                    },
-                                    leadingIcon = {
-                                        Icon(
-                                            imageVector = Icons.Filled.BugReport,
-                                            contentDescription =
-                                                stringResource(id = R.string.debug_toggle_fake_alignment),
-                                            tint =
-                                                if (debugFakeAlignmentActive) {
-                                                    MaterialTheme.colorScheme.error
-                                                } else {
-                                                    MaterialTheme.colorScheme.onSurfaceVariant
-                                                },
-                                        )
-                                    },
-                                )
-                            }
-                            DropdownMenuItem(
-                                text = { Text(stringResource(id = R.string.about_libraries)) },
-                                onClick = {
-                                    onNavigateToAboutLibraries()
-                                    showOverflowMenu = false
-                                },
-                            )
-                        }
-                    }
-                },
+            SolPanTopBar(
+                selectedMode = uiState.selectedMode,
+                onShowTutorial = { viewModel.requestTutorial() },
+                onToggleDebug = { viewModel.toggleDebugFakeAlignment() },
+                onNavigateToAboutLibraries = onNavigateToAboutLibraries,
             )
         },
     ) { contentPadding ->
         SolPanScreenContent(
             contentPadding = contentPadding,
             locationPermissionsState = locationPermissionsState,
-            onPermissionRequest = { hasRequestedPermissions = true },
-            currentOrientation = currentOrientation,
-            optimalParams = optimalParams,
-            debugFakeAlignmentActive = debugFakeAlignmentActive,
-            vmLocation = vmLocation,
+            uiState = uiState,
+            onPermissionRequest = { locationPermissionsState.launchMultiplePermissionRequest() },
         )
     }
 }
@@ -221,16 +145,13 @@ fun SolPanScreen(
 internal fun SolPanScreenContent(
     contentPadding: PaddingValues,
     locationPermissionsState: MultiplePermissionsState?,
-    currentOrientation: OrientationData,
-    optimalParams: OptimalPanelParameters?,
-    debugFakeAlignmentActive: Boolean,
-    vmLocation: LocationData?,
+    uiState: SolPanUiState,
     modifier: Modifier = Modifier,
     onPermissionRequest: () -> Unit = {},
 ) {
     val hasLocationPermission = locationPermissionsState?.allPermissionsGranted != false
 
-    val windowSizeClass = currentWindowAdaptiveInfo(supportLargeAndXLargeWidth = true).windowSizeClass
+    val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
     val columns =
         when {
             windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND) -> {
@@ -249,96 +170,120 @@ internal fun SolPanScreenContent(
     LazyVerticalStaggeredGrid(
         modifier = modifier.fillMaxSize().padding(contentPadding),
         columns = columns,
-        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
-        verticalItemSpacing = 8.dp,
-        horizontalArrangement = spacedBy(8.dp),
+        contentPadding = PaddingValues(16.dp),
+        horizontalArrangement = spacedBy(16.dp),
+        verticalItemSpacing = 16.dp,
     ) {
-        if (locationPermissionsState != null && !locationPermissionsState.allPermissionsGranted) {
-            item(key = "permission") {
+        if (!hasLocationPermission) {
+            item {
                 PermissionRequestCard(
-                    shouldShowRationale = locationPermissionsState.shouldShowRationale,
-                    onRequestPermission = {
-                        onPermissionRequest()
-                        locationPermissionsState.launchMultiplePermissionRequest()
-                    },
-                    modifier = Modifier.animateItem(),
+                    shouldShowRationale = locationPermissionsState?.shouldShowRationale != false,
+                    onRequestPermission = onPermissionRequest,
                 )
             }
         }
 
-        item(key = "azimuth") {
-            AzimuthVisualizerCard(
-                currentOrientation = currentOrientation,
-                targetParameters = optimalParams,
-                debugFakeAlignmentActive = debugFakeAlignmentActive,
-                modifier = Modifier.animateItem(),
-            )
-        }
-
-        item(key = "guidance") {
+        item {
             GuidanceCard(
-                currentOrientation = currentOrientation,
-                targetParameters = optimalParams,
-                debugFakeAlignmentActive = debugFakeAlignmentActive,
-                modifier = Modifier.animateItem(),
+                currentOrientation = uiState.currentOrientation,
+                targetParameters = uiState.optimalParams,
+                debugFakeAlignmentActive = uiState.isDebugFakeAlignmentActive,
             )
         }
 
-        item(key = "orientation") { CurrentOrientationCard(currentOrientation, Modifier.animateItem()) }
-
-        item(key = "target") {
-            TargetParametersCard(
-                optimalParams,
-                vmLocation,
-                hasLocationPermission,
-                modifier = Modifier.animateItem(),
+        item {
+            AzimuthVisualizerCard(
+                currentOrientation = uiState.currentOrientation,
+                targetParameters = uiState.optimalParams,
+                debugFakeAlignmentActive = uiState.isDebugFakeAlignmentActive,
             )
         }
+
+        item {
+            TargetParametersCard(params = uiState.optimalParams, location = uiState.currentLocation)
+        }
+
+        item { CurrentOrientationCard(orientation = uiState.currentOrientation) }
     }
 }
 
-@OptIn(ExperimentalPermissionsApi::class)
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
-private fun SolarAppScreenDarkPreview() {
+private fun SolPanTopBar(
+    selectedMode: TiltMode,
+    onShowTutorial: () -> Unit,
+    onToggleDebug: () -> Unit,
+    onNavigateToAboutLibraries: () -> Unit,
+) {
+    var showMenu by remember { mutableStateOf(false) }
+
+    TopAppBar(
+        title = {
+            Text(
+                text = stringResource(id = R.string.app_name) + " - " + selectedMode.displayName(),
+                style = MaterialTheme.typography.titleLarge,
+            )
+        },
+        actions = {
+            IconButton(onClick = onShowTutorial) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.HelpOutline,
+                    contentDescription = stringResource(id = R.string.action_help),
+                )
+            }
+            Box {
+                IconButton(onClick = { showMenu = true }) {
+                    Icon(
+                        imageVector = Icons.Default.MoreVert,
+                        contentDescription = stringResource(id = R.string.action_more),
+                    )
+                }
+                DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
+                    if (BuildConfig.DEBUG) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(id = R.string.action_toggle_debug)) },
+                            onClick = {
+                                onToggleDebug()
+                                showMenu = false
+                            },
+                            leadingIcon = { Icon(Icons.Default.BugReport, contentDescription = null) },
+                        )
+                    }
+                    DropdownMenuItem(
+                        text = { Text(stringResource(id = R.string.action_about_libraries)) },
+                        onClick = {
+                            onNavigateToAboutLibraries()
+                            showMenu = false
+                        },
+                    )
+                }
+            }
+        },
+    )
+}
+
+@OptIn(ExperimentalPermissionsApi::class)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Composable
+private fun SolPanScreenPreview() {
     SolPanTheme {
         SolPanScreenContent(
             contentPadding = PaddingValues(0.dp),
             locationPermissionsState = null,
-            currentOrientation = OrientationData(azimuth = 178f, pitch = -13f, roll = 1f),
-            optimalParams =
-                OptimalPanelParameters(
-                    targetTrueAzimuth = 180.0,
-                    targetMagneticAzimuth = 178.0,
-                    targetTilt = 35.0,
-                    mode = TiltMode.YEAR_ROUND,
-                    magneticDeclination = -2.0f,
+            uiState =
+                SolPanUiState(
+                    selectedMode = TiltMode.SUMMER,
+                    currentLocation = LocationData(latitude = 36.1627, longitude = -86.7816),
+                    currentOrientation = OrientationData(azimuth = 150f, pitch = -25f, roll = 10f),
+                    optimalParams =
+                        OptimalPanelParameters(
+                            targetTrueAzimuth = 180.0,
+                            targetMagneticAzimuth = 178.0,
+                            targetTilt = 35.0,
+                            mode = TiltMode.SUMMER,
+                            magneticDeclination = -2.0f,
+                        ),
                 ),
-            debugFakeAlignmentActive = false,
-            vmLocation = LocationData(latitude = 36.1627, longitude = -86.7816),
-        )
-    }
-}
-
-@OptIn(ExperimentalPermissionsApi::class)
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO, name = "Light Mode")
-@Composable
-private fun SolarAppScreenLightPreview() {
-    SolPanTheme {
-        SolPanScreenContent(
-            contentPadding = PaddingValues(0.dp),
-            locationPermissionsState = null,
-            currentOrientation = OrientationData(azimuth = 150f, pitch = -25f, roll = 10f),
-            optimalParams =
-                OptimalPanelParameters(
-                    targetTrueAzimuth = 180.0,
-                    targetMagneticAzimuth = 178.0,
-                    targetTilt = 35.0,
-                    mode = TiltMode.SUMMER,
-                    magneticDeclination = -2.0f,
-                ),
-            debugFakeAlignmentActive = false,
-            vmLocation = LocationData(latitude = 36.1627, longitude = -86.7816),
         )
     }
 }

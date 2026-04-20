@@ -104,6 +104,10 @@
 
     <string name="menu_more_options">More options</string>
     <string name="debug_toggle_fake_alignment">Toggle Fake Alignment</string>
+    <string name="action_help">Help</string>
+    <string name="action_more">More</string>
+    <string name="action_toggle_debug">Toggle Debug</string>
+    <string name="action_about_libraries">About Libraries</string>
     <string name="url_website">https://mobilemobile.app</string>
     <string name="url_github">https://github.com/mobilemobilellc/</string>
     <string name="url_buy_me_a_coffee">https://buymeacoffee.com/mobilemobile</string>

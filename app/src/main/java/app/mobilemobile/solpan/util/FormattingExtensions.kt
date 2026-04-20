@@ -16,7 +16,8 @@ package app.mobilemobile.solpan.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import app.mobilemobile.solpan.data.TiltMode
+import app.mobilemobile.solpan.model.TiltMode
+import app.mobilemobile.solpan.ui.util.titleRes
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.Locale
@@ -45,4 +46,4 @@ fun Float.roundTo(decimalPlaces: Int): Float {
 }
 
 // Extension function for a more readable display name for TiltMode
-@Composable fun TiltMode.displayName(): String = stringResource(id = titleRes)
+@Composable fun TiltMode.displayName(): String = stringResource(id = this.titleRes)

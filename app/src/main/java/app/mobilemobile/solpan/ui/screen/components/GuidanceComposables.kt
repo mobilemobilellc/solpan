@@ -34,7 +34,6 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -44,14 +43,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.mobilemobile.solpan.R
-import app.mobilemobile.solpan.data.AlignmentState
-import app.mobilemobile.solpan.data.OptimalPanelParameters
-import app.mobilemobile.solpan.data.OrientationData
-import app.mobilemobile.solpan.data.TiltMode
-import app.mobilemobile.solpan.ui.theme.SolPanTheme
+import app.mobilemobile.solpan.designsystem.components.InfoCard
+import app.mobilemobile.solpan.model.AlignmentState
+import app.mobilemobile.solpan.model.OptimalPanelParameters
+import app.mobilemobile.solpan.model.OrientationData
+import app.mobilemobile.solpan.solar.SolarCalculator
 import app.mobilemobile.solpan.util.format
 import kotlin.math.abs
 
@@ -60,7 +58,7 @@ fun GuidanceCard(
     currentOrientation: OrientationData,
     targetParameters: OptimalPanelParameters?,
     modifier: Modifier = Modifier,
-    debugFakeAlignmentActive: Boolean = false, // New parameter with default
+    debugFakeAlignmentActive: Boolean = false,
 ) {
     if (targetParameters == null) {
         InfoCard(
@@ -79,7 +77,12 @@ fun GuidanceCard(
     }
 
     val alignment =
-        AlignmentState.calculate(currentOrientation, targetParameters, debugFakeAlignmentActive)
+        AlignmentState.calculate(
+            currentOrientation,
+            targetParameters,
+            debugFakeAlignmentActive,
+            SolarCalculator::calculateAzimuthDifference,
+        )
 
     val azimuthInstruction: String
     var azimuthIconRotation: Float
@@ -192,8 +195,13 @@ fun GuidanceCard(
     ) {
         GuidanceRow(
             label = stringResource(id = R.string.guidance_label_device_azimuth),
-            currentValue = "${alignment.currentAzimuth.format(1)}°",
-            targetValue = "${alignment.phoneTargetAzimuth.format(1)}°",
+            currentValue =
+                stringResource(id = R.string.target_param_value_degree_unit, alignment.currentAzimuth),
+            targetValue =
+                stringResource(
+                    id = R.string.target_param_value_degree_unit,
+                    alignment.phoneTargetAzimuth,
+                ),
             instruction = azimuthInstruction,
             icon = if (alignment.isAzimuthCorrect) Icons.Filled.CheckCircle else Icons.Filled.Cached,
             isCorrect = alignment.isAzimuthCorrect,
@@ -205,8 +213,10 @@ fun GuidanceCard(
 
         GuidanceRow(
             label = stringResource(id = R.string.guidance_label_device_tilt),
-            currentValue = "${alignment.currentPitch.format(1)}°",
-            targetValue = "${alignment.targetTilt.format(1)}°",
+            currentValue =
+                stringResource(id = R.string.target_param_value_degree_unit, alignment.currentPitch),
+            targetValue =
+                stringResource(id = R.string.target_param_value_degree_unit, alignment.targetTilt),
             instruction = tiltInstruction,
             icon = tiltIcon,
             isCorrect = alignment.isTiltCorrect,
@@ -216,8 +226,10 @@ fun GuidanceCard(
         Spacer(modifier = Modifier.height(12.dp))
         GuidanceRow(
             label = stringResource(id = R.string.guidance_label_device_roll),
-            currentValue = "${alignment.currentRoll.format(1)}°",
-            targetValue = "${alignment.targetRoll.format(1)}°",
+            currentValue =
+                stringResource(id = R.string.target_param_value_degree_unit, alignment.currentRoll),
+            targetValue =
+                stringResource(id = R.string.target_param_value_degree_unit, alignment.targetRoll),
             instruction = rollInstruction,
             icon = rollIcon,
             isCorrect = alignment.isRollCorrect,
@@ -231,15 +243,13 @@ fun GuidanceCard(
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(horizontal = 8.dp),
         )
-        if (
-            targetParameters.targetMagneticAzimuth == null &&
-            targetParameters.magneticDeclination != null
-        ) {
+        val declination = targetParameters.magneticDeclination
+        if (targetParameters.targetMagneticAzimuth == null && declination != null) {
             Text(
                 text =
                     stringResource(
                         id = R.string.guidance_footer_true_north_declination,
-                        targetParameters.magneticDeclination.format(1),
+                        declination.format(1),
                     ),
                 style = MaterialTheme.typography.labelSmall,
                 textAlign = TextAlign.Center,
@@ -323,61 +333,5 @@ fun GuidanceRow(
             color = MaterialTheme.colorScheme.primary,
             trackColor = MaterialTheme.colorScheme.surfaceVariant,
         )
-    }
-}
-
-@Preview(showBackground = true, name = "GuidanceCard Preview (Aligned)")
-@Composable
-private fun GuidanceCardAlignedPreview() {
-    SolPanTheme {
-        Surface {
-            // Panel target magnetic azimuth is 178.0. Phone's top should point to 178.0 for
-            // alignment.
-            val sampleOrientation = OrientationData(azimuth = 178f, pitch = -13f, roll = 1f)
-            val sampleTarget =
-                OptimalPanelParameters(
-                    targetTrueAzimuth = 180.0,
-                    targetMagneticAzimuth = 178.0, // Panel target magnetic azimuth
-                    targetTilt = 12.0,
-                    mode = TiltMode.SUMMER,
-                    magneticDeclination = -2.0f,
-                )
-            GuidanceCard(
-                currentOrientation = sampleOrientation,
-                targetParameters = sampleTarget,
-                debugFakeAlignmentActive = true,
-            )
-        }
-    }
-}
-
-@Preview(showBackground = true, name = "GuidanceCard Preview (Misaligned)")
-@Composable
-private fun GuidanceCardMisalignedPreview() {
-    SolPanTheme {
-        Surface {
-            // Panel target magnetic azimuth is 178.0. Phone is currently pointing to 150f.
-            val sampleOrientation = OrientationData(azimuth = 150f, pitch = -25f, roll = 10f)
-            val sampleTarget =
-                OptimalPanelParameters(
-                    targetTrueAzimuth = 180.0,
-                    targetMagneticAzimuth = 178.0, // Panel target magnetic azimuth
-                    targetTilt = 12.0,
-                    mode = TiltMode.SUMMER,
-                    magneticDeclination = -2.0f,
-                )
-            GuidanceCard(currentOrientation = sampleOrientation, targetParameters = sampleTarget)
-        }
-    }
-}
-
-@Preview(showBackground = true, name = "GuidanceCard Preview (No Target)")
-@Composable
-private fun GuidanceCardNoTargetPreview() {
-    SolPanTheme {
-        Surface {
-            val sampleOrientation = OrientationData(azimuth = 150f, pitch = -25f, roll = 10f)
-            GuidanceCard(currentOrientation = sampleOrientation, targetParameters = null)
-        }
     }
 }

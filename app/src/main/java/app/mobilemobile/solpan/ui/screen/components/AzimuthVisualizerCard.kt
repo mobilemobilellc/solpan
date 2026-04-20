@@ -29,9 +29,11 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.mobilemobile.solpan.R
-import app.mobilemobile.solpan.data.AlignmentState
-import app.mobilemobile.solpan.data.OptimalPanelParameters
-import app.mobilemobile.solpan.data.OrientationData
+import app.mobilemobile.solpan.designsystem.components.InfoCard
+import app.mobilemobile.solpan.model.AlignmentState
+import app.mobilemobile.solpan.model.OptimalPanelParameters
+import app.mobilemobile.solpan.model.OrientationData
+import app.mobilemobile.solpan.solar.SolarCalculator
 import app.mobilemobile.solpan.ui.components.AzimuthAwareBubbleLevel
 
 @Composable
@@ -58,7 +60,12 @@ fun AzimuthVisualizerCard(
     }
 
     val alignment =
-        AlignmentState.calculate(currentOrientation, targetParameters, debugFakeAlignmentActive)
+        AlignmentState.calculate(
+            currentOrientation,
+            targetParameters,
+            debugFakeAlignmentActive,
+            SolarCalculator::calculateAzimuthDifference,
+        )
 
     InfoCard(
         title = stringResource(id = R.string.azimuth_visualizer_card_title),

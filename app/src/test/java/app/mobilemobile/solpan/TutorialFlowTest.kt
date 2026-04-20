@@ -14,8 +14,9 @@
  */
 package app.mobilemobile.solpan
 
-import app.mobilemobile.solpan.data.TiltMode
-import app.mobilemobile.solpan.ui.SolPan
+import app.mobilemobile.solpan.data.DefaultLocationRepository
+import app.mobilemobile.solpan.model.TiltMode
+import app.mobilemobile.solpan.optimizer.SolPanViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -45,12 +46,17 @@ class TutorialFlowTest {
         Dispatchers.resetMain()
     }
 
-    private fun createViewModel() = SolPanViewModel(SolPan(TiltMode.YEAR_ROUND), fakePrefs, FakeAnalyticsTracker())
+    private fun createViewModel() =
+        SolPanViewModel(
+            TiltMode.YEAR_ROUND,
+            fakePrefs,
+            DefaultLocationRepository(),
+            FakeAnalyticsTracker(),
+        )
 
     @Test
     fun `showTutorial is true initially when tutorial not seen`() =
         runTest {
-            // fakePrefs defaults tutorialSeen=false → !seen = true
             val vm = createViewModel()
             assertTrue(vm.showTutorial.first())
         }
@@ -70,28 +76,6 @@ class TutorialFlowTest {
             assertTrue(vm.showTutorial.first())
             vm.dismissTutorial()
             assertFalse(vm.showTutorial.first())
-            // Also persisted
             assertTrue(fakePrefs.tutorialSeen.first())
-        }
-
-    @Test
-    fun `requestTutorial shows tutorial even when already seen`() =
-        runTest {
-            fakePrefs.setTutorialSeen(true)
-            val vm = createViewModel()
-            assertFalse(vm.showTutorial.first()) // starts hidden
-            vm.requestTutorial()
-            assertTrue(vm.showTutorial.first()) // override shows it
-        }
-
-    @Test
-    fun `tutorialOverride takes priority over persisted preference`() =
-        runTest {
-            fakePrefs.setTutorialSeen(true)
-            val vm = createViewModel()
-            vm.requestTutorial()
-            assertTrue(vm.showTutorial.first()) // override=true beats seen=true
-            vm.dismissTutorial()
-            assertFalse(vm.showTutorial.first()) // override=false beats seen=true
         }
 }

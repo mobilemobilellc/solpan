@@ -14,11 +14,8 @@
  */
 
 plugins {
-    alias(libs.plugins.android.application)
+    id("solpan.android.application")
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.google.gms.google.services)
-    alias(libs.plugins.google.firebase.crashlytics)
-    alias(libs.plugins.google.firebase.perf)
     alias(libs.plugins.aboutlibraries)
     alias(libs.plugins.jetbrains.kotlin.serialization)
     alias(libs.plugins.spotless)
@@ -28,16 +25,8 @@ plugins {
 
 android {
     namespace = "app.mobilemobile.solpan"
-    compileSdk = 37
 
-    defaultConfig {
-        applicationId = "app.mobilemobile.solpan"
-        minSdk = 26
-        targetSdk = 37
-        versionCode = (findProperty("appVersionCode") as String? ?: "1").toInt()
-        versionName = findProperty("appVersionName") as String? ?: "1.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
+    defaultConfig { applicationId = "app.mobilemobile.solpan" }
 
     signingConfigs {
         create("release") {
@@ -92,27 +81,19 @@ android {
         )
     }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
-            signingConfig = signingConfigs.getByName("release")
-        }
-    }
-    buildFeatures {
-        compose = true
-        buildConfig = true
-    }
+    buildTypes { release { signingConfig = signingConfigs.getByName("release") } }
+
     experimentalProperties["android.experimental.enableScreenshotTest"] = true
-    testOptions { unitTests.isReturnDefaultValues = true }
 }
 
-kotlin { jvmToolchain(21) }
-
 dependencies {
+    implementation(project(":feature:optimizer"))
+    implementation(project(":core:model"))
+    implementation(project(":core:data"))
+    implementation(project(":core:analytics"))
+    implementation(project(":core:solar"))
+    implementation(project(":core:designsystem"))
+
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.bundles.test)
     debugImplementation(libs.androidx.ui.test.manifest)
@@ -126,14 +107,9 @@ dependencies {
     implementation(libs.bundles.androidxMaterial)
     implementation(libs.bundles.androidxNavigation)
     implementation(libs.bundles.androidxUi)
-    implementation(libs.bundles.firebase)
-    implementation(libs.commons.suncalc)
-    implementation(libs.datastore.preferences)
-    implementation(libs.kotlinx.serialization.core)
     implementation(libs.play.services.location)
     implementation(libs.androidx.profileinstaller)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(platform(libs.firebase.bom))
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     detektPlugins(libs.detekt.formatting)
@@ -143,7 +119,6 @@ dependencies {
     screenshotTestImplementation(libs.androidx.ui.tooling)
 }
 
-// spotless { // if you are using build.gradle.kts, instead of 'spotless {' use:
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     kotlin {
         target("src/*/kotlin/**/*.kt", "src/*/java/**/*.kt")
@@ -167,9 +142,4 @@ detekt {
     baseline = file("../configs/detekt/detekt-baseline.xml")
     ignoredBuildTypes = listOf("release")
     enableCompilerPlugin.set(true)
-}
-
-// Guard: skip if already applied via init script (e.g. android-cli describe)
-if (project.tasks.names.none { it == "dumpModels" }) {
-    apply<DumpModelsPlugin>()
 }

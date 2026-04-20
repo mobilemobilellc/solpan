@@ -21,8 +21,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.mobilemobile.solpan.R
-import app.mobilemobile.solpan.data.OrientationData
-import app.mobilemobile.solpan.util.format
+import app.mobilemobile.solpan.designsystem.components.InfoCard
+import app.mobilemobile.solpan.designsystem.components.InfoRow
+import app.mobilemobile.solpan.model.OrientationData
 
 @Composable
 fun CurrentOrientationCard(
@@ -36,15 +37,15 @@ fun CurrentOrientationCard(
     ) {
         InfoRow(
             label = stringResource(id = R.string.current_orientation_azimuth_label),
-            value = "${orientation.azimuth.format(1)}°",
+            value = stringResource(id = R.string.target_param_value_degree_unit, orientation.azimuth),
         )
         InfoRow(
             label = stringResource(id = R.string.current_orientation_pitch_label),
-            value = "${orientation.pitch.format(1)}°",
+            value = stringResource(id = R.string.target_param_value_degree_unit, orientation.pitch),
         )
         InfoRow(
             label = stringResource(id = R.string.current_orientation_roll_label),
-            value = "${orientation.roll.format(1)}°",
+            value = stringResource(id = R.string.target_param_value_degree_unit, orientation.roll),
         )
         orientation.sensorAccuracy?.let {
             InfoRow(

@@ -20,16 +20,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
+import app.mobilemobile.solpan.designsystem.theme.SolPanTheme
 import app.mobilemobile.solpan.ui.SolPanApp
-import app.mobilemobile.solpan.ui.theme.SolPanTheme
-import com.google.firebase.analytics.FirebaseAnalytics
 
 class SolPanActivity : ComponentActivity() {
-    private lateinit var analytics: FirebaseAnalytics
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        analytics = FirebaseAnalytics.getInstance(this)
         enableEdgeToEdge()
         setContent { SolPanTheme { SolPanApp(modifier = Modifier.fillMaxSize()) } }
     }

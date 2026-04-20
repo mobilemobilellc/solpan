@@ -26,7 +26,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import app.mobilemobile.solpan.data.OrientationData
+import app.mobilemobile.solpan.model.OrientationData
 import app.mobilemobile.solpan.util.roundTo
 import kotlin.math.PI
 

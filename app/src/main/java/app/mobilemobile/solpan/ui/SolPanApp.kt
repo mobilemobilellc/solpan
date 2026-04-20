@@ -30,11 +30,15 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import app.mobilemobile.solpan.SolPanViewModel
+import app.mobilemobile.solpan.analytics.FirebaseAnalyticsTracker
 import app.mobilemobile.solpan.data.DataStoreUserPreferencesRepository
-import app.mobilemobile.solpan.data.TiltMode
+import app.mobilemobile.solpan.data.DefaultLocationRepository
+import app.mobilemobile.solpan.model.TiltMode
+import app.mobilemobile.solpan.optimizer.SolPanViewModel
 import app.mobilemobile.solpan.ui.aboutlibraries.AboutLibrariesScreen
 import app.mobilemobile.solpan.ui.screen.SolPanScreen
+import app.mobilemobile.solpan.ui.util.icon
+import app.mobilemobile.solpan.ui.util.titleRes
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -48,6 +52,11 @@ data class SolPan(
 fun SolPanApp(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val preferencesRepository = remember { DataStoreUserPreferencesRepository(context) }
+    val locationRepository =
+        remember {
+            app.mobilemobile.solpan.data
+                .DefaultLocationRepository()
+        }
     val backStack = rememberNavBackStack(SolPan(TiltMode.YEAR_ROUND))
     NavigationSuiteScaffold(
         modifier = modifier,
@@ -86,7 +95,15 @@ fun SolPanApp(modifier: Modifier = Modifier) {
                     entry<SolPan> { key ->
                         SolPanScreen(
                             viewModel =
-                                viewModel(factory = SolPanViewModel.factory(key, preferencesRepository)),
+                                viewModel(
+                                    factory =
+                                        SolPanViewModel.factory(
+                                            key.mode,
+                                            preferencesRepository,
+                                            locationRepository,
+                                            remember { FirebaseAnalyticsTracker() },
+                                        ),
+                                ),
                             onNavigateToAboutLibraries =
                                 dropUnlessResumed {
                                     if (backStack.lastOrNull() !is AboutLibraries) {

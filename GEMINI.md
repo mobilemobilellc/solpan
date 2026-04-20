@@ -9,7 +9,7 @@ SolPan is a modern Android application designed to provide essential information
 - **Architecture:**
     - **Single-Screen Focused:** Uses `NavigationSuiteScaffold` for top-level navigation (switching modes) and `NavDisplay` for screen content.
     - **ViewModel + StateFlow:** UI state is centralized in `SolPanViewModel` and exposed via `StateFlow`.
-    - **Clean Abstractions:** Analytics are decoupled via the `AnalyticsTracker` interface.
+    - **Clean Abstractions:** Analytics are decoupled via the `AnalyticsTracker` interface. Location state is managed via `LocationRepository` to persist across mode switches.
     - **Adaptive Layout:** Utilizes a staggered grid that adjusts column counts for phone and tablet screens.
     - **Solar Logic:** Core calculations are handled in the `app.mobilemobile.solpan.solar` package.
 

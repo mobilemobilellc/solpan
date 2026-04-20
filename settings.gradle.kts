@@ -14,6 +14,7 @@
  */
 
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -37,6 +38,12 @@ rootProject.name = "SolPan"
 
 include(":app")
 include(":baselineprofile")
+include(":core:model")
+include(":core:analytics")
+include(":core:solar")
+include(":core:data")
+include(":core:designsystem")
+include(":feature:optimizer")
 
 plugins {
     id("org.gradle.toolchains.foojay-resolver") version "1.0.0"

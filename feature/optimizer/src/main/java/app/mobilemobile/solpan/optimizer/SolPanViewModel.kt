@@ -42,6 +42,39 @@ import kotlin.math.abs
 private const val EARTH_AXIAL_TILT = 23.5
 private const val REALTIME_TICK_INTERVAL_MS = 30_000L
 
+/**
+ * Main state management ViewModel for SolPan.
+ *
+ * Combines multiple reactive streams (location, orientation, magnetic declination, preferences)
+ * to produce a unified [uiState] that the UI observes. All state updates are reactive and
+ * observable via StateFlow, ensuring the UI always reflects the current system state.
+ *
+ * ## Reactive Architecture
+ *
+ * The ViewModel follows a reactive architecture pattern:
+ * - **Location updates** are debounced (300ms) to avoid excessive recomputation
+ * - **Magnetic declination** is computed lazily from location changes
+ * - **Solar calculations** are recomputed when tilt mode or location changes
+ * - **Realtime mode** ticks every 30 seconds to update sun position
+ * - **UI state** combines all streams with [WhileSubscribed(5000)] to auto-cleanup when UI is backgrounded
+ *
+ * ## Key Flows
+ *
+ * - [optimalPanelParameters]: Combines location, declination, mode, and realtime ticks
+ * - [uiState]: Master state object combining all UI-relevant data
+ * - [showTutorial]: Combines user preferences with manual tutorial overrides
+ *
+ * ## Thread Safety
+ *
+ * All state flows are thread-safe and backed by coroutines. Updates from sensors/location
+ * providers are marshalled through the [viewModelScope] dispatcher.
+ *
+ * @param initialMode The starting tilt mode (typically [TiltMode.REALTIME])
+ * @param preferencesRepository User preferences (tutorial state, saved settings)
+ * @param locationRepository Location stream and persistence
+ * @param analytics Analytics event tracking
+ * @param magneticDeclinationProvider Magnetic declination calculator (injectable for testing)
+ */
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class SolPanViewModel(
     val initialMode: TiltMode,
@@ -52,6 +85,15 @@ class SolPanViewModel(
         AndroidMagneticDeclinationProvider(),
 ) : ViewModel() {
     companion object {
+        /**
+         * Factory for creating [SolPanViewModel] instances with dependency injection.
+         *
+         * @param mode The initial tilt mode for this ViewModel instance
+         * @param preferencesRepository Repository for user preferences
+         * @param locationRepository Repository for location updates
+         * @param analytics Analytics tracker instance
+         * @return A ViewModel factory that creates properly-injected SolPanViewModel instances
+         */
         fun factory(
             mode: TiltMode,
             preferencesRepository: UserPreferencesRepository,
@@ -70,13 +112,29 @@ class SolPanViewModel(
     private val tutorialOverride = MutableStateFlow<Boolean?>(null)
     private val _currentOrientation = MutableStateFlow(OrientationData())
 
+    /**
+     * Updates the current device orientation from sensors.
+     *
+     * Called by [DeviceOrientationController] when accelerometer/magnetometer data is ready.
+     * Updates trigger [uiState] recomposition if the orientation data changed.
+     *
+     * @param orientation The latest device orientation (pitch, roll, azimuth)
+     */
     fun updateOrientation(orientation: OrientationData) {
         _currentOrientation.value = orientation
     }
 
+    /** Current user location from GPS or fused location provider. Null if permission not granted. */
     val currentLocation: StateFlow<LocationData?> = locationRepository.currentLocation
 
-    private val magneticDeclinationFlow: StateFlow<Float?> =
+    /**
+     * Magnetic declination (angle between true north and magnetic north) at current location.
+     *
+     * Used to convert between true azimuth (calculated from sun position) and magnetic azimuth
+     * (what compass reads). Computed lazily as location changes. Null until location is available.
+     *
+     * Range: -180° to +180° (negative = magnetic north is west of true north)
+     */
         locationRepository.currentLocation
             .map { location ->
                 location?.let {
@@ -155,24 +213,70 @@ class SolPanViewModel(
     fun onTutorialEnded() = with(analytics) { logTutorialEnded() }
     fun onPermissionResult(granted: Boolean) = with(analytics) { logPermissionResult(granted) }
 
+    /**
+     * Toggles debug mode for testing panel alignment without GPS lock.
+     *
+     * When enabled, the UI displays a fake "aligned" state even if the device
+     * isn't actually aligned to the target azimuth. Useful for UI testing and screenshots.
+     *
+     * This is a debug-only feature and should not appear in production builds.
+     */
     fun toggleDebugFakeAlignment() {
         _debugFakeAlignmentActive.update { !it }
     }
 
+    /**
+     * Dismisses the tutorial overlay and marks it as seen.
+     *
+     * Persists the state to [preferencesRepository] so the tutorial doesn't appear
+     * on next app launch. Can be overridden by [requestTutorial].
+     */
     fun dismissTutorial() {
         tutorialOverride.value = false
         viewModelScope.launch { preferencesRepository.setTutorialSeen(true) }
     }
 
+    /**
+     * Manually requests to show the tutorial overlay.
+     *
+     * Overrides the persisted "tutorial seen" state. Used when user wants to re-watch
+     * the onboarding flow. Call [dismissTutorial] to close it.
+     */
     fun requestTutorial() {
         tutorialOverride.value = true
     }
 
+    /**
+     * Updates the current location for optimization calculations.
+     *
+     * Typically called by [DeviceLocationManager] when location updates are available.
+     * Updates trigger:
+     * - Magnetic declination recalculation
+     * - Solar position recalculation
+     * - [uiState] recomposition
+     *
+     * @param newLocation The new location, or null to clear location
+     */
     fun updateLocation(newLocation: LocationData?) {
         locationRepository.updateLocation(newLocation)
     }
 
-    private fun calculateOptimalParameters(
+    /**
+     * Calculates optimal solar panel parameters for a given mode and location.
+     *
+     * Computation varies by tilt mode:
+     * - **REALTIME**: Uses current sun position from ephemeris
+     * - **SUMMER**: Uses summer solstice approximation (lat ± 23.5°)
+     * - **WINTER**: Uses winter solstice approximation (lat ± 23.5°)
+     * - **SPRING_AUTUMN/YEAR_ROUND**: Uses latitude directly (average annual)
+     *
+     * The true azimuth is converted to magnetic azimuth using declination if available.
+     *
+     * @param location The current location, or null to return null
+     * @param declination Magnetic declination in degrees, or null to omit magnetic azimuth
+     * @param mode The tilt mode determining calculation strategy
+     * @return [OptimalPanelParameters] with target azimuth and tilt, or null if location unavailable
+     */
         location: LocationData?,
         declination: Float?,
         mode: TiltMode,

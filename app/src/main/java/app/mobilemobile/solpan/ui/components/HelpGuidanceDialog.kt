@@ -45,9 +45,9 @@ data class LinkInfo(
 fun HelpGuidanceDialog(onDismissRequest: () -> Unit) {
     val links =
         listOf(
-            LinkInfo("Buy Me a Coffee ☕", "https://buymeacoffee.com/mobilemobile"),
-            LinkInfo("View on GitHub", "https://github.com/mobilemobilellc/"),
-            LinkInfo("mobilemobile.app", "https://mobilemobile.app"),
+            LinkInfo("Buy Me a Coffee ☕", stringResource(id = R.string.url_buy_me_a_coffee)),
+            LinkInfo("View on GitHub", stringResource(id = R.string.url_github)),
+            LinkInfo("mobilemobile.app", stringResource(id = R.string.url_website)),
         )
     AlertDialog(
         onDismissRequest = onDismissRequest,

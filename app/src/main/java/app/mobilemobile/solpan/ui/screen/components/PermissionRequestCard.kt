@@ -14,7 +14,6 @@
  */
 package app.mobilemobile.solpan.ui.screen.components
 
-import android.Manifest
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,15 +36,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.mobilemobile.solpan.R
-import app.mobilemobile.solpan.ui.theme.SolPanTheme
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.MultiplePermissionsState
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import app.mobilemobile.solpan.designsystem.theme.SolPanTheme
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun PermissionRequestCard(
-    locationPermissionsState: MultiplePermissionsState,
+    shouldShowRationale: Boolean,
+    onRequestPermission: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -66,7 +62,7 @@ fun PermissionRequestCard(
             )
             Text(
                 text =
-                    if (locationPermissionsState.shouldShowRationale) {
+                    if (shouldShowRationale) {
                         stringResource(R.string.permission_card_rationale_text)
                     } else {
                         stringResource(R.string.permission_card_essential_text)
@@ -76,7 +72,7 @@ fun PermissionRequestCard(
                 textAlign = TextAlign.Center,
             )
             Button(
-                onClick = { locationPermissionsState.launchMultiplePermissionRequest() },
+                onClick = onRequestPermission,
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.onError),
             ) {
                 Text(
@@ -88,15 +84,13 @@ fun PermissionRequestCard(
     }
 }
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Preview(showBackground = true)
 @Composable
 private fun PermissionRequestCardPreview() {
     SolPanTheme {
-        val dummyPermissionsState =
-            rememberMultiplePermissionsState(
-                permissions = listOf(Manifest.permission.ACCESS_FINE_LOCATION),
-            )
-        PermissionRequestCard(locationPermissionsState = dummyPermissionsState)
+        PermissionRequestCard(
+            shouldShowRationale = false,
+            onRequestPermission = {},
+        )
     }
 }

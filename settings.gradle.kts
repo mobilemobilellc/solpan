@@ -14,6 +14,7 @@
  */
 
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -24,22 +25,25 @@ pluginManagement {
         }
         mavenCentral()
         gradlePluginPortal()
-        maven {
-            url = uri("https://androidx.dev/snapshots/builds/13836674/artifacts/repository")
-        }
     }
 }
 dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("https://androidx.dev/snapshots/builds/13836674/artifacts/repository") }
     }
 }
 
 rootProject.name = "SolPan"
 
 include(":app")
+include(":baselineprofile")
+include(":core:model")
+include(":core:analytics")
+include(":core:solar")
+include(":core:data")
+include(":core:designsystem")
+include(":feature:optimizer")
 
 plugins {
     id("org.gradle.toolchains.foojay-resolver") version "1.0.0"

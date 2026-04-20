@@ -39,6 +39,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
         with:
@@ -73,7 +78,7 @@ jobs:
         run: echo "APP_VERSION_NAME=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV # Removes 'v' prefix from tag for version name
 
       - name: Build Release Artifacts (AAB and APK)
-        run: ./gradlew :app:bundleRelease :app:assembleRelease -PappVersionName=${{ env.APP_VERSION_NAME }} -PappVersionCode=${{ github.run_number }} --parallel --continue --scan
+        run: ./gradlew :app:bundleRelease :app:assembleRelease -PappVersionName=${{ env.APP_VERSION_NAME }} -PappVersionCode=${{ github.run_number }} --parallel --continue --scan --no-configuration-cache
         env:
           ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release.keystore
           ANDROID_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}

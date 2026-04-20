@@ -14,19 +14,14 @@
  */
 package app.mobilemobile.solpan.location
 
-import android.Manifest
 import android.content.Context
 import android.os.Looper
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import app.mobilemobile.solpan.data.LocationData
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.MultiplePermissionsState
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import app.mobilemobile.solpan.model.LocationData
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -40,39 +35,16 @@ interface DeviceLocationController {
     fun stopLocationUpdates()
 }
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun rememberDeviceLocationController(onLocationUpdate: (LocationData?) -> Unit): DeviceLocationController {
     val context = LocalContext.current
-    val locationPermissionsState =
-        rememberMultiplePermissionsState(
-            listOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-            ),
-        )
-
-    val deviceLocationManager =
-        remember {
-            DeviceLocationManager(context, locationPermissionsState, onLocationUpdate)
-        }
-
-    LaunchedEffect(locationPermissionsState.allPermissionsGranted) {
-        if (locationPermissionsState.allPermissionsGranted) {
-            deviceLocationManager.startLocationUpdatesInternal()
-        } else {
-            deviceLocationManager.stopLocationUpdates()
-        }
-    }
-
-    DisposableEffect(Unit) { onDispose { deviceLocationManager.stopLocationUpdates() } }
-    return deviceLocationManager
+    val controller = remember { DeviceLocationManager(context, onLocationUpdate) }
+    DisposableEffect(Unit) { onDispose { controller.stopLocationUpdates() } }
+    return controller
 }
 
-@OptIn(ExperimentalPermissionsApi::class)
 class DeviceLocationManager(
     context: Context,
-    private val permissionsState: MultiplePermissionsState,
     private val onLocationUpdate: (LocationData?) -> Unit,
 ) : DeviceLocationController {
     private val fusedLocationClient: FusedLocationProviderClient =
@@ -107,21 +79,7 @@ class DeviceLocationManager(
         }
 
     override fun startLocationUpdates() {
-        if (!permissionsState.allPermissionsGranted) {
-            onLocationUpdate(null)
-            return
-        }
-        startLocationUpdatesInternal()
-    }
-
-    internal fun startLocationUpdatesInternal() {
         if (isRequestingLocationUpdates) return
-
-        if (!permissionsState.allPermissionsGranted) {
-            stopLocationUpdates()
-            onLocationUpdate(null)
-            return
-        }
 
         val locationRequest =
             LocationRequest

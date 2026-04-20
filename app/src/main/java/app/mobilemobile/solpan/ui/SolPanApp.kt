@@ -18,20 +18,27 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
-import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
-import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
-import app.mobilemobile.solpan.SolPanViewModel
-import app.mobilemobile.solpan.data.TiltMode
+import app.mobilemobile.solpan.analytics.FirebaseAnalyticsTracker
+import app.mobilemobile.solpan.data.DataStoreUserPreferencesRepository
+import app.mobilemobile.solpan.data.DefaultLocationRepository
+import app.mobilemobile.solpan.model.TiltMode
+import app.mobilemobile.solpan.optimizer.SolPanViewModel
 import app.mobilemobile.solpan.ui.aboutlibraries.AboutLibrariesScreen
 import app.mobilemobile.solpan.ui.screen.SolPanScreen
+import app.mobilemobile.solpan.ui.util.icon
+import app.mobilemobile.solpan.ui.util.titleRes
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -43,6 +50,13 @@ data class SolPan(
 
 @Composable
 fun SolPanApp(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val preferencesRepository = remember { DataStoreUserPreferencesRepository(context) }
+    val locationRepository =
+        remember {
+            app.mobilemobile.solpan.data
+                .DefaultLocationRepository()
+        }
     val backStack = rememberNavBackStack(SolPan(TiltMode.YEAR_ROUND))
     NavigationSuiteScaffold(
         modifier = modifier,
@@ -71,34 +85,39 @@ fun SolPanApp(modifier: Modifier = Modifier) {
         NavDisplay(
             entryDecorators =
                 listOf(
-                    rememberSceneSetupNavEntryDecorator(),
-                    rememberSavedStateNavEntryDecorator(),
+                    rememberSaveableStateHolderNavEntryDecorator(),
                     rememberViewModelStoreNavEntryDecorator(),
                 ),
             backStack = backStack,
             onBack = { backStack.removeLastOrNull() },
-            entryProvider = { key ->
-                when (key) {
-                    is SolPan -> {
-                        NavEntry(key) {
-                            SolPanScreen(
-                                viewModel = viewModel(factory = SolPanViewModel.Factory(key)),
-                                onNavigateToAboutLibraries = { backStack.add(AboutLibraries) },
-                            )
-                        }
+            entryProvider =
+                entryProvider {
+                    entry<SolPan> { key ->
+                        SolPanScreen(
+                            viewModel =
+                                viewModel(
+                                    factory =
+                                        SolPanViewModel.factory(
+                                            key.mode,
+                                            preferencesRepository,
+                                            locationRepository,
+                                            remember { FirebaseAnalyticsTracker() },
+                                        ),
+                                ),
+                            onNavigateToAboutLibraries =
+                                dropUnlessResumed {
+                                    if (backStack.lastOrNull() !is AboutLibraries) {
+                                        backStack.add(AboutLibraries)
+                                    }
+                                },
+                        )
                     }
-
-                    is AboutLibraries -> {
-                        NavEntry(key) {
-                            AboutLibrariesScreen(onNavigateBack = { backStack.removeLastOrNull() })
-                        }
+                    entry<AboutLibraries> {
+                        AboutLibrariesScreen(
+                            onNavigateBack = dropUnlessResumed { backStack.removeLastOrNull() },
+                        )
                     }
-
-                    else -> {
-                        NavEntry(key) { error("Unknown key: $key") }
-                    }
-                }
-            },
+                },
         )
     }
 }

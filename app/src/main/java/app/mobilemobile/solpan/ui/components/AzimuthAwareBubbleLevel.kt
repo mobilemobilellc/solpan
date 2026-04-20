@@ -47,11 +47,17 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import app.mobilemobile.solpan.R
 import app.mobilemobile.solpan.solar.SolarCalculator
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -59,6 +65,7 @@ import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
+import kotlin.random.Random
 
 private val PARTICLE_CHARACTERS = listOf("☀️", "🌞", "⚡️", "😎️", "🌟")
 
@@ -92,11 +99,13 @@ private fun ShootingSunsEffect(
                 List(particleCountPerWave) {
                     SunParticle(
                         character = PARTICLE_CHARACTERS.random(),
-                        initialAngle = (Math.random() * 360).toFloat(),
-                        size = ((Math.random() * (maxSizeSp - minSizeSp)) + minSizeSp).toInt().sp,
+                        initialAngle = Random.nextFloat() * 360f,
+                        size = ((Random.nextFloat() * (maxSizeSp - minSizeSp)) + minSizeSp).toInt().sp,
                         particleAnimationDurationMillis =
-                            ((Math.random() * (maxDurationMillis - minDurationMillis)) + minDurationMillis)
-                                .toLong(),
+                            (
+                                (Random.nextFloat() * (maxDurationMillis - minDurationMillis)) +
+                                    minDurationMillis
+                            ).toLong(),
                     )
                 }
             particles = (particles + newWave).takeLast(particleCountPerWave * 10)
@@ -229,9 +238,8 @@ fun AzimuthAwareBubbleLevel(
         val isRollCorrect = abs(rollDeviation) <= rollAlignmentThresholdDeg
         val isPitchRollInTarget = isPitchCorrect && isRollCorrect
 
-        val isAzimuthInTarget =
-            abs(SolarCalculator.calculateAzimuthDifference(currentAzimuth, targetAzimuth)) <=
-                azimuthAlignmentThresholdDeg
+        val azimuthDiff = SolarCalculator.calculateAzimuthDifference(currentAzimuth, targetAzimuth)
+        val isAzimuthInTarget = abs(azimuthDiff) <= azimuthAlignmentThresholdDeg
 
         val isPerfectlyAligned by
             remember(isPitchRollInTarget, isAzimuthInTarget) {
@@ -239,6 +247,29 @@ fun AzimuthAwareBubbleLevel(
             }
 
         val currentBubbleColor = if (isPitchRollInTarget) inTargetPitchRollBubbleColor else bubbleColor
+
+        val alignedDesc = stringResource(R.string.bubble_level_aligned)
+        val rotateClockwiseDesc = stringResource(R.string.bubble_level_rotate_clockwise)
+        val rotateCounterClockwiseDesc = stringResource(R.string.bubble_level_rotate_counter_clockwise)
+        val adjustTiltDesc = stringResource(R.string.bubble_level_adjust_tilt)
+        val semanticContentDescription =
+            buildString {
+                if (isPerfectlyAligned) {
+                    append(alignedDesc)
+                } else {
+                    if (!isAzimuthInTarget) {
+                        if (azimuthDiff > 0) {
+                            append(rotateCounterClockwiseDesc)
+                        } else {
+                            append(rotateClockwiseDesc)
+                        }
+                    }
+                    if (!isPitchRollInTarget) {
+                        if (isNotEmpty()) append(". ")
+                        append(adjustTiltDesc)
+                    }
+                }
+            }
 
         val textPaint =
             remember {
@@ -251,102 +282,110 @@ fun AzimuthAwareBubbleLevel(
                 }
             }
 
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            drawCircle(
-                color = azimuthRingColor,
-                radius = fullRadiusPx - azimuthRingWidthPx / 2f,
-                center = center,
-                style = Stroke(width = azimuthRingWidthPx),
-            )
-
-            val cardinalDirections = listOf("N", "E", "S", "W")
-            val cardinalAzimuths = listOf(0.0, 90.0, 180.0, 270.0)
-            val textRadius = fullRadiusPx - azimuthRingWidthPx / 2f
-
-            cardinalDirections.zip(cardinalAzimuths).forEach { (direction, azimuth) ->
-                val drawingAngleRad = Math.toRadians(azimuth - 90.0).toFloat()
-                val textX = center.x + textRadius * cos(drawingAngleRad)
-                val textY = center.y + textRadius * sin(drawingAngleRad)
-
-                val fontMetrics = textPaint.fontMetrics
-                val adjustedTextY = textY - (fontMetrics.ascent + fontMetrics.descent) / 2f
-
-                drawContext.canvas.nativeCanvas.drawText(direction, textX, adjustedTextY, textPaint)
-            }
-
-            val targetAzimuthAngleRad = Math.toRadians((targetAzimuth - 90.0)).toFloat()
-            val targetIndicatorRadius = fullRadiusPx - azimuthRingWidthPx / 2f
-            val targetIndicatorCenter =
-                Offset(
-                    center.x + targetIndicatorRadius * cos(targetAzimuthAngleRad),
-                    center.y + targetIndicatorRadius * sin(targetAzimuthAngleRad),
+        Box(
+            modifier =
+                Modifier.fillMaxSize().semantics {
+                    contentDescription = semanticContentDescription
+                    liveRegion = LiveRegionMode.Polite
+                },
+        ) {
+            Canvas(modifier = Modifier.fillMaxSize()) {
+                drawCircle(
+                    color = azimuthRingColor,
+                    radius = fullRadiusPx - azimuthRingWidthPx / 2f,
+                    center = center,
+                    style = Stroke(width = azimuthRingWidthPx),
                 )
-            drawCircle(
-                color =
-                    if (isAzimuthInTarget) {
-                        targetAzimuthIndicatorColor.copy(alpha = 0.5f)
-                    } else {
-                        targetAzimuthIndicatorColor
-                    },
-                radius = azimuthIndicatorSizePx / 1.5f,
-                center = targetIndicatorCenter,
-            )
 
-            val currentAzimuthAngleRad = Math.toRadians((currentAzimuth - 90.0)).toFloat()
-            val lineStartRadius = pitchRollHousingRadiusPx + housingStrokeWidthPx
-            val lineEndRadius = fullRadiusPx - housingStrokeWidthPx / 2
-            drawLine(
-                color = currentAzimuthIndicatorColor,
-                start =
+                val cardinalDirections = listOf("N", "E", "S", "W")
+                val cardinalAzimuths = listOf(0.0, 90.0, 180.0, 270.0)
+                val textRadius = fullRadiusPx - azimuthRingWidthPx / 2f
+
+                cardinalDirections.zip(cardinalAzimuths).forEach { (direction, azimuth) ->
+                    val drawingAngleRad = Math.toRadians(azimuth - 90.0).toFloat()
+                    val textX = center.x + textRadius * cos(drawingAngleRad)
+                    val textY = center.y + textRadius * sin(drawingAngleRad)
+
+                    val fontMetrics = textPaint.fontMetrics
+                    val adjustedTextY = textY - (fontMetrics.ascent + fontMetrics.descent) / 2f
+
+                    drawContext.canvas.nativeCanvas.drawText(direction, textX, adjustedTextY, textPaint)
+                }
+
+                val targetAzimuthAngleRad = Math.toRadians((targetAzimuth - 90.0)).toFloat()
+                val targetIndicatorRadius = fullRadiusPx - azimuthRingWidthPx / 2f
+                val targetIndicatorCenter =
                     Offset(
-                        center.x + lineStartRadius * cos(currentAzimuthAngleRad),
-                        center.y + lineStartRadius * sin(currentAzimuthAngleRad),
-                    ),
-                end =
-                    Offset(
-                        center.x + lineEndRadius * cos(currentAzimuthAngleRad),
-                        center.y + lineEndRadius * sin(currentAzimuthAngleRad),
-                    ),
-                strokeWidth = housingStrokeWidthPx * 1.5f,
-                cap = StrokeCap.Round,
-            )
+                        center.x + targetIndicatorRadius * cos(targetAzimuthAngleRad),
+                        center.y + targetIndicatorRadius * sin(targetAzimuthAngleRad),
+                    )
+                drawCircle(
+                    color =
+                        if (isAzimuthInTarget) {
+                            targetAzimuthIndicatorColor.copy(alpha = 0.5f)
+                        } else {
+                            targetAzimuthIndicatorColor
+                        },
+                    radius = azimuthIndicatorSizePx / 1.5f,
+                    center = targetIndicatorCenter,
+                )
 
-            drawCircle(
-                color = housingColor,
-                radius = pitchRollHousingRadiusPx - housingStrokeWidthPx / 2,
-                center = center,
-                style = Stroke(width = housingStrokeWidthPx),
-            )
+                val currentAzimuthAngleRad = Math.toRadians((currentAzimuth - 90.0)).toFloat()
+                val lineStartRadius = pitchRollHousingRadiusPx + housingStrokeWidthPx
+                val lineEndRadius = fullRadiusPx - housingStrokeWidthPx / 2
+                drawLine(
+                    color = currentAzimuthIndicatorColor,
+                    start =
+                        Offset(
+                            center.x + lineStartRadius * cos(currentAzimuthAngleRad),
+                            center.y + lineStartRadius * sin(currentAzimuthAngleRad),
+                        ),
+                    end =
+                        Offset(
+                            center.x + lineEndRadius * cos(currentAzimuthAngleRad),
+                            center.y + lineEndRadius * sin(currentAzimuthAngleRad),
+                        ),
+                    strokeWidth = housingStrokeWidthPx * 1.5f,
+                    cap = StrokeCap.Round,
+                )
 
-            drawCircle(
-                color =
-                    if (isPitchRollInTarget) {
-                        targetPitchRollColor.copy(alpha = 0.5f)
-                    } else {
-                        targetPitchRollColor.copy(alpha = 0.2f)
-                    },
-                radius = visualTargetRadiusPx,
-                center = center,
-                style = Stroke(housingStrokeWidthPx / 2),
-            )
+                drawCircle(
+                    color = housingColor,
+                    radius = pitchRollHousingRadiusPx - housingStrokeWidthPx / 2,
+                    center = center,
+                    style = Stroke(width = housingStrokeWidthPx),
+                )
 
-            if (!isPerfectlyAligned) {
-                drawCircle(color = currentBubbleColor, radius = bubbleRadiusPx, center = bubbleCenter)
+                drawCircle(
+                    color =
+                        if (isPitchRollInTarget) {
+                            targetPitchRollColor.copy(alpha = 0.5f)
+                        } else {
+                            targetPitchRollColor.copy(alpha = 0.2f)
+                        },
+                    radius = visualTargetRadiusPx,
+                    center = center,
+                    style = Stroke(housingStrokeWidthPx / 2),
+                )
+
+                if (!isPerfectlyAligned) {
+                    drawCircle(color = currentBubbleColor, radius = bubbleRadiusPx, center = bubbleCenter)
+                }
             }
-        }
 
-        if (isPerfectlyAligned) {
-            ShootingSunsEffect(
-                modifier = Modifier.fillMaxSize().align(Alignment.Center),
-                shootDistance = fullRadiusPx * 0.7f,
-                particleCountPerWave = 2,
-                waveDelayMillis = 100L,
-                minSizeSp = 15,
-                maxSizeSp = 28,
-                minDurationMillis = 400L,
-                maxDurationMillis = 800L,
-            )
-        }
+            if (isPerfectlyAligned) {
+                ShootingSunsEffect(
+                    modifier = Modifier.fillMaxSize().align(Alignment.Center),
+                    shootDistance = fullRadiusPx * 0.7f,
+                    particleCountPerWave = 2,
+                    waveDelayMillis = 100L,
+                    minSizeSp = 15,
+                    maxSizeSp = 28,
+                    minDurationMillis = 400L,
+                    maxDurationMillis = 800L,
+                )
+            }
+        } // end semantics Box
     }
 }
 

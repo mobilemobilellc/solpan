@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "android": {
+      "type": "stdio",
+      "command": "android",
+      "args": []
+    }
+  }
+}

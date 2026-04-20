@@ -44,7 +44,7 @@ jobs:
           dependency-graph: generate-and-submit
 
       - name: Run checks and build debug APK
-        run: ./gradlew app:detekt app:spotlessCheck :app:testDebugUnitTest :app:assembleDebug --parallel --continue --scan
+        run: ./gradlew app:detekt app:spotlessCheck :app:testDebugUnitTest :app:assembleDebug app:jacocoTestReport --parallel --continue --scan
 
       - name: Generate Dokka Documentation
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -85,6 +85,39 @@ jobs:
         if: success() || failure()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Coverage Reports
+        uses: actions/upload-artifact@v4
+        if: success() || failure()
+        with:
+          name: coverage-reports
+          path: app/build/reports/jacoco/
+          if-no-files-found: ignore
+
+      - name: Comment Coverage Report
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request' && (success() || failure())
+        with:
+          script: |
+            const fs = require('fs');
+            const jacocoCsv = 'app/build/reports/jacoco/jacoco.csv';
+            if (fs.existsSync(jacocoCsv)) {
+              const lines = fs.readFileSync(jacocoCsv, 'utf8').split('\n');
+              if (lines.length > 1) {
+                const header = lines[0].split(',');
+                const data = lines[1].split(',');
+                const linesCovered = data[header.indexOf('LINE_MISSED')] ? parseInt(data[header.indexOf('LINE_COVERED')]) : 0;
+                const linesMissed = data[header.indexOf('LINE_MISSED')] ? parseInt(data[header.indexOf('LINE_MISSED')]) : 0;
+                const coverage = linesCovered + linesMissed > 0 ? ((linesCovered / (linesCovered + linesMissed)) * 100).toFixed(2) : 0;
+                const body = `## Code Coverage Report\n\n📊 **Line Coverage: ${coverage}%**\n\n- Lines Covered: ${linesCovered}\n- Lines Missed: ${linesMissed}`;
+                github.rest.issues.createComment({
+                  issue_number: context.issue.number,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: body
+                });
+              }
+            }
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4

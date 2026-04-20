@@ -15,6 +15,7 @@
 
 plugins {
     id("solpan.android.application")
+    id("solpan.jacoco.report")
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.aboutlibraries)
     alias(libs.plugins.jetbrains.kotlin.serialization)
@@ -82,7 +83,10 @@ android {
         )
     }
 
-    buildTypes { release { signingConfig = signingConfigs.getByName("release") } }
+    buildTypes {
+        release { signingConfig = signingConfigs.getByName("release") }
+        debug { enableUnitTestCoverage = true }
+    }
 
     experimentalProperties["android.experimental.enableScreenshotTest"] = true
 }

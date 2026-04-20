@@ -25,5 +25,9 @@ gradlePlugin {
             id = "solpan.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
+        register("jacocoReport") {
+            id = "solpan.jacoco.report"
+            implementationClass = "JacocoReportConventionPlugin"
+        }
     }
 }

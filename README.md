@@ -49,8 +49,8 @@ SolPan follows a straightforward single-screen architecture with a clear separat
 - [PERFORMANCE.md](PERFORMANCE.md) — Baseline metrics and optimization strategies
 - [SECURITY.md](SECURITY.md) — Security practices and data protection
 - [TESTING.md](TESTING.md) — Testing strategies and benchmarking
-- [CONTRIBUTING.md](CONTRIBUTING.md) — Development workflow and project structure
 - [RELEASE.md](RELEASE.md) — Semantic versioning, automated release workflow, changelog management
+- [CODE_COVERAGE.md](CODE_COVERAGE.md) — Code coverage metrics, quality gates, and CI/CD reporting
 
 ## 🛠️ Building from Source
 

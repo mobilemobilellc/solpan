@@ -15,13 +15,17 @@
 package app.mobilemobile.solpan
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import app.mobilemobile.solpan.designsystem.theme.SolPanTheme
 import app.mobilemobile.solpan.model.LocationData
 import app.mobilemobile.solpan.model.OptimalPanelParameters
 import app.mobilemobile.solpan.model.TiltMode
 import app.mobilemobile.solpan.ui.screen.components.TargetParametersCard
+import com.android.tools.screenshot.PreviewTest
 
 class CardScreenshotTests {
+    @PreviewTest
+    @Preview(name = "Target Parameters Card", showBackground = true)
     @Composable
     fun TargetParametersCardPreview() {
         SolPanTheme {

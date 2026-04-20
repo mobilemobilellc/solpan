@@ -16,6 +16,7 @@ package app.mobilemobile.solpan
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.mobilemobile.solpan.designsystem.theme.SolPanTheme
 import app.mobilemobile.solpan.model.LocationData
@@ -24,10 +25,13 @@ import app.mobilemobile.solpan.model.OrientationData
 import app.mobilemobile.solpan.model.TiltMode
 import app.mobilemobile.solpan.optimizer.SolPanUiState
 import app.mobilemobile.solpan.ui.screen.SolPanScreenContent
+import com.android.tools.screenshot.PreviewTest
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlin.OptIn
 
 class SolPanScreenshotTests {
+    @PreviewTest
+    @Preview(name = "SolPan Screen", showBackground = true)
     @Composable
     @OptIn(ExperimentalPermissionsApi::class)
     fun SolPanScreenPreview() {

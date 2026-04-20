@@ -135,6 +135,7 @@ class SolPanViewModel(
      *
      * Range: -180° to +180° (negative = magnetic north is west of true north)
      */
+    private val magneticDeclinationFlow: StateFlow<Float?> =
         locationRepository.currentLocation
             .map { location ->
                 location?.let {
@@ -277,6 +278,7 @@ class SolPanViewModel(
      * @param mode The tilt mode determining calculation strategy
      * @return [OptimalPanelParameters] with target azimuth and tilt, or null if location unavailable
      */
+    private fun calculateOptimalParameters(
         location: LocationData?,
         declination: Float?,
         mode: TiltMode,

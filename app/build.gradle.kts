@@ -21,6 +21,7 @@ plugins {
     alias(libs.plugins.spotless)
     alias(libs.plugins.detekt)
     alias(libs.plugins.screenshot)
+    alias(libs.plugins.dokka)
 }
 
 android {

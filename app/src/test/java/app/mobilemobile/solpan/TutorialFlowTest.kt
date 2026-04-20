@@ -16,6 +16,7 @@ package app.mobilemobile.solpan
 
 import app.mobilemobile.solpan.data.DefaultLocationRepository
 import app.mobilemobile.solpan.model.TiltMode
+import app.mobilemobile.solpan.optimizer.FakeMagneticDeclinationProvider
 import app.mobilemobile.solpan.optimizer.SolPanViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -52,6 +53,7 @@ class TutorialFlowTest {
             fakePrefs,
             DefaultLocationRepository(),
             FakeAnalyticsTracker(),
+            FakeMagneticDeclinationProvider(),
         )
 
     @Test

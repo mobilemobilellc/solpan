@@ -3,7 +3,6 @@
  */
 package app.mobilemobile.solpan.optimizer
 
-import android.hardware.GeomagneticField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
@@ -49,6 +48,8 @@ class SolPanViewModel(
     private val preferencesRepository: UserPreferencesRepository,
     private val locationRepository: LocationRepository,
     private val analytics: AnalyticsTracker,
+    private val magneticDeclinationProvider: MagneticDeclinationProvider =
+        AndroidMagneticDeclinationProvider(),
 ) : ViewModel() {
     companion object {
         fun factory(
@@ -79,12 +80,12 @@ class SolPanViewModel(
         locationRepository.currentLocation
             .map { location ->
                 location?.let {
-                    GeomagneticField(
+                    magneticDeclinationProvider.getMagneticDeclination(
                         it.latitude.toFloat(),
                         it.longitude.toFloat(),
                         it.altitude ?: 0f,
                         System.currentTimeMillis(),
-                    ).declination
+                    )
                 }
             }.stateIn(
                 scope = viewModelScope,

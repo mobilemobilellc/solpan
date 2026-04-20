@@ -151,6 +151,7 @@ internal fun SolPanScreenContent(
 ) {
     val hasLocationPermission = locationPermissionsState?.allPermissionsGranted != false
 
+    @Suppress("DEPRECATION")
     val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
     val columns =
         when {
@@ -177,7 +178,7 @@ internal fun SolPanScreenContent(
         if (!hasLocationPermission) {
             item {
                 PermissionRequestCard(
-                    shouldShowRationale = locationPermissionsState?.shouldShowRationale != false,
+                    shouldShowRationale = locationPermissionsState?.shouldShowRationale ?: true,
                     onRequestPermission = onPermissionRequest,
                 )
             }

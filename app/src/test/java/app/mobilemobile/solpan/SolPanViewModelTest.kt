@@ -39,6 +39,7 @@ class SolPanViewModelTest {
     private lateinit var fakePrefs: FakeUserPreferencesRepository
     private lateinit var locationRepository: DefaultLocationRepository
     private lateinit var fakeAnalytics: FakeAnalyticsTracker
+    private lateinit var fakeMagneticProvider: FakeMagneticDeclinationProvider
 
     @Before
     fun setup() {
@@ -46,6 +47,7 @@ class SolPanViewModelTest {
         fakePrefs = FakeUserPreferencesRepository()
         locationRepository = DefaultLocationRepository()
         fakeAnalytics = FakeAnalyticsTracker()
+        fakeMagneticProvider = FakeMagneticDeclinationProvider()
     }
 
     @After
@@ -53,7 +55,8 @@ class SolPanViewModelTest {
         Dispatchers.resetMain()
     }
 
-    private fun createViewModel(mode: TiltMode = TiltMode.YEAR_ROUND) = SolPanViewModel(mode, fakePrefs, locationRepository, fakeAnalytics)
+    private fun createViewModel(mode: TiltMode = TiltMode.YEAR_ROUND) =
+        SolPanViewModel(mode, fakePrefs, locationRepository, fakeAnalytics, fakeMagneticProvider)
 
     @Test
     fun `initial state has null location and parameters`() =

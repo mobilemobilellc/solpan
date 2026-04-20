@@ -16,6 +16,10 @@ package app.mobilemobile.solpan
 
 import androidx.compose.runtime.Composable
 import app.mobilemobile.solpan.designsystem.theme.SolPanTheme
+import app.mobilemobile.solpan.model.LocationData
+import app.mobilemobile.solpan.model.OptimalPanelParameters
+import app.mobilemobile.solpan.model.TiltMode
+import app.mobilemobile.solpan.ui.screen.components.TargetParametersCard
 
 class CardScreenshotTests {
     @Composable

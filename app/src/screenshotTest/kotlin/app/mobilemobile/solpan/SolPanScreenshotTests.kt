@@ -19,25 +19,37 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import app.mobilemobile.solpan.designsystem.theme.SolPanTheme
 import app.mobilemobile.solpan.model.LocationData
+import app.mobilemobile.solpan.model.OptimalPanelParameters
+import app.mobilemobile.solpan.model.OrientationData
+import app.mobilemobile.solpan.model.TiltMode
+import app.mobilemobile.solpan.optimizer.SolPanUiState
+import app.mobilemobile.solpan.ui.screen.SolPanScreenContent
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import kotlin.OptIn
 
 class SolPanScreenshotTests {
     @Composable
+    @OptIn(ExperimentalPermissionsApi::class)
     fun SolPanScreenPreview() {
         SolPanTheme {
             SolPanScreenContent(
                 contentPadding = PaddingValues(0.dp),
                 locationPermissionsState = null,
-                currentOrientation = OrientationData(azimuth = 150f, pitch = -25f, roll = 10f),
-                optimalParams =
-                    OptimalPanelParameters(
-                        targetTrueAzimuth = 180.0,
-                        targetMagneticAzimuth = 178.0,
-                        targetTilt = 35.0,
-                        mode = TiltMode.YEAR_ROUND,
-                        magneticDeclination = -2.0f,
+                uiState =
+                    SolPanUiState(
+                        selectedMode = TiltMode.YEAR_ROUND,
+                        currentLocation = LocationData(latitude = 36.1627, longitude = -86.7816),
+                        currentOrientation = OrientationData(azimuth = 150f, pitch = -25f, roll = 10f),
+                        optimalParams =
+                            OptimalPanelParameters(
+                                targetTrueAzimuth = 180.0,
+                                targetMagneticAzimuth = 178.0,
+                                targetTilt = 35.0,
+                                mode = TiltMode.YEAR_ROUND,
+                                magneticDeclination = -2.0f,
+                            ),
+                        isDebugFakeAlignmentActive = false,
                     ),
-                debugFakeAlignmentActive = false,
-                vmLocation = LocationData(latitude = 36.1627, longitude = -86.7816),
             )
         }
     }

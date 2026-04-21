@@ -81,7 +81,7 @@ jobs:
           sarif_file: app/build/reports/detekt/detekt.sarif
 
       - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v5
+        uses: mikepenz/action-junit-report@v6
         if: success() || failure()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

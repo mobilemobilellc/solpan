@@ -38,12 +38,13 @@
   "packages": {
     ".": {
       "changelog-path": "CHANGELOG.md",
-      "release-type": "android",
-      "version-file": "version.properties",
-      "initial-version": "1.0.0",
+      "release-type": "simple",
       "prerelease-type": "alpha",
       "include-component-in-tag": false,
-      "component": "solpan"
+      "component": "solpan",
+      "extra-files": [
+        "gradle.properties"
+      ]
     }
   }
 }

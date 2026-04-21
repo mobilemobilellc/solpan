@@ -144,7 +144,7 @@ jobs:
           fi
 
       - name: Attest Build Provenance
-        uses: actions/attest-build-provenance@v3
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: 'app/build/outputs/apk/debug/app-debug.apk'
 

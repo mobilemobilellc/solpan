@@ -15,6 +15,8 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 apply("org.jetbrains.dokka")
             }
 
+            configureSpotless()
+
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroidLibrary(this)
             }

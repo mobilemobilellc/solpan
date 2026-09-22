@@ -1,14 +1,25 @@
 /*
  * Copyright 2025 MobileMobile LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
 package app.mobilemobile.solpan.optimizer
 
 /**
  * Provides magnetic declination values for a given location and time.
  *
- * Magnetic declination is the angle between true north and magnetic north at a specific
- * geographic location. This abstraction allows for testability and future extensions
- * (e.g., caching, model updates, alternative data sources).
+ * Magnetic declination is the angle between true north and magnetic north at a specific geographic
+ * location. This abstraction allows for testability and future extensions (e.g., caching, model
+ * updates, alternative data sources).
  *
  * **Typical values:** -20° to +20° depending on location (varies ~6° per 1000 km).
  */
@@ -20,8 +31,8 @@ public interface MagneticDeclinationProvider {
      * @param longitude Longitude in degrees (-180 to +180)
      * @param altitude Altitude in meters above sea level (optional, defaults to 0)
      * @param timeMillis Timestamp in milliseconds since Unix epoch (UTC)
-     * @return Magnetic declination in degrees (-180 to +180), or null if calculation fails
-     *   (e.g., location outside modeled region, time too far in past/future)
+     * @return Magnetic declination in degrees (-180 to +180), or null if calculation fails (e.g.,
+     *   location outside modeled region, time too far in past/future)
      */
     public fun getMagneticDeclination(
         latitude: Float,
@@ -34,8 +45,8 @@ public interface MagneticDeclinationProvider {
 /**
  * Default implementation using Android's GeomagneticField API.
  *
- * Wraps the IGRF-13 (International Geomagnetic Reference Field) model provided
- * by Android hardware APIs. Handles exceptions gracefully for invalid inputs.
+ * Wraps the IGRF-13 (International Geomagnetic Reference Field) model provided by Android hardware
+ * APIs. Handles exceptions gracefully for invalid inputs.
  */
 public class AndroidMagneticDeclinationProvider : MagneticDeclinationProvider {
     override fun getMagneticDeclination(
@@ -43,10 +54,11 @@ public class AndroidMagneticDeclinationProvider : MagneticDeclinationProvider {
         longitude: Float,
         altitude: Float,
         timeMillis: Long,
-    ): Float? = try {
-        android.hardware.GeomagneticField(latitude, longitude, altitude, timeMillis).declination
-    } catch (e: RuntimeException) {
-        // GeomagneticField throws RuntimeException on invalid input or missing geomagnetic model
-        null
-    }
+    ): Float? =
+        try {
+            android.hardware.GeomagneticField(latitude, longitude, altitude, timeMillis).declination
+        } catch (e: RuntimeException) {
+            // GeomagneticField throws RuntimeException on invalid input or missing geomagnetic model
+            null
+        }
 }

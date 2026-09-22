@@ -14,7 +14,7 @@
  */
 package app.mobilemobile.solpan.security
 
-/**
+/*
  * Security best practices for SolPan.
  *
  * Following OWASP Mobile Security Guidelines and Android Security & Privacy documentation.
@@ -24,7 +24,8 @@ package app.mobilemobile.solpan.security
  * Sensitive data handling guidelines.
  *
  * Rules:
- * - Location data: Only stored in DataStore with encryption, transmitted only to Google Play Services
+ * - Location data: Only stored in DataStore with encryption, transmitted only to Google Play
+ *   Services
  * - Sensor data: Processed locally, never persisted
  * - User preferences: Stored encrypted in DataStore
  * - API keys: Stored in BuildConfig or secure storage (not in code)
@@ -33,10 +34,10 @@ package app.mobilemobile.solpan.security
 object SensitiveDataPolicy {
     // Location data is only collected when user grants permission
     const val LOCATION_MIN_TIME_MS = 10_000L // Minimum time between updates
-    const val LOCATION_MIN_DISTANCE_M = 10f  // Minimum distance for update
+    const val LOCATION_MIN_DISTANCE_M = 10f // Minimum distance for update
 
     // Sensor data is transient and not logged
-    const val SENSOR_DATA_RETENTION_MS = 0L   // No retention
+    const val SENSOR_DATA_RETENTION_MS = 0L // No retention
 
     // Clear sensitive data on app background
     const val CLEAR_ON_PAUSE = true
@@ -53,21 +54,23 @@ object SensitiveDataPolicy {
  * All location access is with user's explicit runtime permission.
  */
 object PermissionSecurityModel {
-    val REQUIRED_PERMISSIONS = listOf(
-        "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.ACCESS_COARSE_LOCATION",
-    )
+    val REQUIRED_PERMISSIONS =
+        listOf(
+            "android.permission.ACCESS_FINE_LOCATION",
+            "android.permission.ACCESS_COARSE_LOCATION",
+        )
 
-    val OPTIONAL_PERMISSIONS = listOf(
-        "android.permission.VIBRATE",
-    )
+    val OPTIONAL_PERMISSIONS =
+        listOf(
+            "android.permission.VIBRATE",
+        )
 }
 
 /**
  * Network security configuration.
  *
- * Although SolPan doesn't make direct network calls (uses Google Play Services),
- * we follow best practices:
+ * Although SolPan doesn't make direct network calls (uses Google Play Services), we follow best
+ * practices:
  * - Certificate pinning for any third-party APIs
  * - HTTPS only
  * - TLS 1.2+ minimum

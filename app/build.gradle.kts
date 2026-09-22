@@ -19,7 +19,6 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.aboutlibraries)
     alias(libs.plugins.jetbrains.kotlin.serialization)
-    alias(libs.plugins.spotless)
     alias(libs.plugins.detekt)
     alias(libs.plugins.screenshot)
     alias(libs.plugins.dokka)
@@ -122,28 +121,6 @@ dependencies {
     screenshotTestImplementation(platform(libs.androidx.compose.bom))
     screenshotTestImplementation(libs.screenshot.validation.api)
     screenshotTestImplementation(libs.androidx.ui.tooling)
-}
-
-configure<com.diffplug.gradle.spotless.SpotlessExtension> {
-    kotlin {
-        target("src/*/kotlin/**/*.kt", "src/*/java/**/*.kt")
-        ktfmt()
-        ktlint(libs.versions.ktlint.get())
-            .setEditorConfigPath("../configs/spotless/.editorconfig")
-            .customRuleSets(
-                listOf("io.nlopez.compose.rules:ktlint:${libs.versions.ktlintCompose.get()}"),
-            )
-        licenseHeaderFile(rootProject.file("configs/spotless/copyright.kt"))
-    }
-    kotlinGradle {
-        target("*.gradle.kts")
-        ktfmt()
-        ktlint(libs.versions.ktlint.get())
-            .setEditorConfigPath("../configs/spotless/.editorconfig")
-            .customRuleSets(
-                listOf("io.nlopez.compose.rules:ktlint:${libs.versions.ktlintCompose.get()}"),
-            )
-    }
 }
 
 detekt {

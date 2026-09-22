@@ -1,5 +1,16 @@
 /*
  * Copyright 2025 MobileMobile LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
 package app.mobilemobile.solpan.solar
 
@@ -10,8 +21,8 @@ import org.shredzone.commons.suncalc.SunPosition as ShredzoneApiSunPosition
 /**
  * Core solar position calculations using NOAA algorithms from commons-suncalc.
  *
- * Provides solar azimuth/altitude at any geographic location and time,
- * plus utility methods for computing angular differences normalized to ±180°.
+ * Provides solar azimuth/altitude at any geographic location and time, plus utility methods for
+ * computing angular differences normalized to ±180°.
  *
  * **Thread-safe**: All methods are stateless and can be called concurrently.
  */
@@ -19,14 +30,14 @@ public object SolarCalculator {
     /**
      * Calculate the sun's position in the sky for a given location and time.
      *
-     * Uses NOAA solar position algorithms (commons-suncalc) which are accurate
-     * to within 0.01° when accounting for refraction effects.
+     * Uses NOAA solar position algorithms (commons-suncalc) which are accurate to within 0.01° when
+     * accounting for refraction effects.
      *
-     * @param dateTime The date/time and timezone for the calculation (must be ZonedDateTime to handle DST)
+     * @param dateTime The date/time and timezone for the calculation (must be ZonedDateTime to handle
+     *   DST)
      * @param latitude Latitude in decimal degrees (-90 to +90)
      * @param longitude Longitude in decimal degrees (-180 to +180)
      * @return [SolarPosition] containing azimuth (0-360°) and altitude (-90 to +90°)
-     *
      * @see SolarPosition
      */
     public fun calculateSunPosition(

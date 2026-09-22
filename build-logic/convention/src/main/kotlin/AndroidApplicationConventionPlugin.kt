@@ -14,6 +14,8 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 apply("com.android.application")
             }
 
+            configureSpotless()
+
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroidApp(this)
                 defaultConfig {

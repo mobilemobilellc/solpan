@@ -30,8 +30,18 @@ plugins {
   alias(libs.plugins.dokka)
 }
 
-tasks.dokkaHtmlMultiModule {
+dokka {
   moduleName.set("SolPan")
   moduleVersion.set("1.0.0")
-  outputDirectory.set(layout.buildDirectory.dir("dokka/html"))
+  dokkaPublications.html { outputDirectory.set(layout.buildDirectory.dir("dokka/html")) }
+}
+
+dependencies {
+  dokka(project(":app"))
+  dokka(project(":core:analytics"))
+  dokka(project(":core:data"))
+  dokka(project(":core:designsystem"))
+  dokka(project(":core:model"))
+  dokka(project(":core:solar"))
+  dokka(project(":feature:optimizer"))
 }

@@ -51,7 +51,7 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           rm -rf docs/
-          ./gradlew dokkaHtmlMultiModule --no-configuration-cache -q
+          ./gradlew :dokkaGenerate --no-configuration-cache -q
           mkdir -p docs && cp -r build/dokka/html/* docs/
           touch docs/.nojekyll
 

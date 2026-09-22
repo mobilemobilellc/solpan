@@ -47,22 +47,6 @@ jobs:
       - name: Run checks and build debug APK
         run: ./gradlew app:detekt app:spotlessCheck :app:testDebugUnitTest :app:assembleDebug app:jacocoTestReport --parallel --continue --scan
 
-      - name: Generate Dokka Documentation
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          rm -rf docs/
-          ./gradlew :dokkaGenerate --no-configuration-cache -q
-          mkdir -p docs && cp -r build/dokka/html/* docs/
-          touch docs/.nojekyll
-
-      - name: Upload Dokka Documentation
-        uses: actions/upload-artifact@v7
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        with:
-          name: dokka-html
-          path: docs/
-          if-no-files-found: error
-
       - name: Validate Screenshot Tests
         run: ./gradlew :app:validateDebugScreenshotTest --parallel --continue --no-configuration-cache
 

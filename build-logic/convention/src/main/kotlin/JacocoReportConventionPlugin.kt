@@ -40,33 +40,48 @@ class JacocoReportConventionPlugin : Plugin<Project> {
                     xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/jacoco.xml"))
                 }
 
-                val debugTree = fileTree(
-                    mapOf(
-                        "dir" to "${layout.buildDirectory}/tmp/kotlin-classes/debug",
-                        "excludes" to setOf(
-                            "**/R.class",
-                            "**/R${'$'}*.class",
-                            "**/BuildConfig.*",
-                            "**/Manifest*.*",
-                            "**/*Test*.*",
-                            "**/databinding/**",
-                            "**/generated/**"
-                        )
+                val excludes =
+                    setOf(
+                        "**/R.class",
+                        "**/R${'$'}*.class",
+                        "**/BuildConfig.*",
+                        "**/Manifest*.*",
+                        "**/*Test*.*",
+                        "**/databinding/**",
+                        "**/generated/**",
                     )
-                )
 
-                classDirectories.setFrom(debugTree)
+                // The unit tests live in :app but exercise code that #95 moved out into the
+                // core and feature modules, so the report has to span every module or it
+                // measures the wrong classes.
+                val modules = rootProject.subprojects.filter { it.name != "baselineprofile" }
+
+                classDirectories.setFrom(
+                    modules.flatMap { module ->
+                        listOf(
+                            "intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes",
+                            "intermediates/javac/debug/compileDebugJavaWithJavac/classes",
+                        ).map { path ->
+                            module.layout.buildDirectory.dir(path).map {
+                                fileTree(it) { setExcludes(excludes) }
+                            }
+                        }
+                    },
+                )
 
                 sourceDirectories.setFrom(
-                    fileTree(mapOf("dir" to "src/main", "includes" to setOf("java/**", "kotlin/**")))
+                    modules.flatMap { module ->
+                        listOf("src/main/java", "src/main/kotlin").map { module.file(it) }
+                    },
                 )
 
-                executionData.setFrom(fileTree(
-                    mapOf(
-                        "dir" to "${layout.buildDirectory}/outputs/unit_test_code_coverage/debugUnitTest",
-                        "includes" to setOf("*.exec")
-                    )
-                ))
+                executionData.setFrom(
+                    modules.map { module ->
+                        module.layout.buildDirectory
+                            .dir("outputs/unit_test_code_coverage/debugUnitTest")
+                            .map { fileTree(it) { setIncludes(setOf("*.exec")) } }
+                    },
+                )
             }
         }
     }

@@ -25,6 +25,10 @@ The release workflow operates on two levels:
 1. **Automated Release PR Creation** — `release-please` monitors commits to `main`, detects conventional commits, and opens a Release PR with bumped version numbers and generated changelog
 2. **Automated Tag & Release Creation** — When a Release PR is merged, `release-please` creates a git tag, which triggers the `release.yml` workflow to build, sign, and upload release artifacts to GitHub Releases and Google Play
 
+> **Version numbering is currently inconsistent.** `.release-please-manifest.json` and `gradle.properties` both say `1.0.0`, but the newest tag is `v0.1.1` and no `v1.0.0` exists. The first release PR therefore proposes 1.1.0 with a changelog covering the whole project history. See [ROADMAP.md](ROADMAP.md).
+>
+> This flow depends on the organisation setting **Allow GitHub Actions to create and approve pull requests**. With it off, release-please fails with `GitHub Actions is not permitted to create or approve pull requests` and no release PR appears.
+
 ## Conventional Commits
 
 All commits to `main` must follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
@@ -231,18 +235,23 @@ Example:
 
 ## Pre-release Versions
 
-For alpha/beta testing:
+`release.yml` picks the Google Play track from the tag name:
 
-1. **Push commit with pre-release tag:**
-   ```bash
-   git tag -a v1.1.0-alpha.1 -m "v1.1.0-alpha.1"
-   git push origin v1.1.0-alpha.1
-   ```
+| Tag contains | Track |
+|---|---|
+| `-alpha` | alpha |
+| `-beta` | beta |
+| `-test.` | internal |
+| anything else | production |
 
-2. **Automated workflow will:**
-   - Create GitHub Release marked as pre-release
-   - Upload to Google Play Track: **Internal**
-   - Tag draft as α/β indicator
+So a pre-release is just a tag:
+
+```bash
+git tag -a v1.1.0-alpha.1 -m "v1.1.0-alpha.1"
+git push origin v1.1.0-alpha.1
+```
+
+The workflow then builds and signs, publishes a GitHub Release marked pre-release, and uploads to the matching track with the generated notes.
 
 ## Troubleshooting
 

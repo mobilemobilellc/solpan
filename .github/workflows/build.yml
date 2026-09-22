@@ -85,22 +85,33 @@ jobs:
           script: |
             const fs = require('fs');
             const jacocoCsv = 'app/build/reports/jacoco/jacoco.csv';
-            if (fs.existsSync(jacocoCsv)) {
-              const lines = fs.readFileSync(jacocoCsv, 'utf8').split('\n');
-              if (lines.length > 1) {
-                const header = lines[0].split(',');
-                const data = lines[1].split(',');
-                const linesCovered = data[header.indexOf('LINE_MISSED')] ? parseInt(data[header.indexOf('LINE_COVERED')]) : 0;
-                const linesMissed = data[header.indexOf('LINE_MISSED')] ? parseInt(data[header.indexOf('LINE_MISSED')]) : 0;
-                const coverage = linesCovered + linesMissed > 0 ? ((linesCovered / (linesCovered + linesMissed)) * 100).toFixed(2) : 0;
-                const body = `## Code Coverage Report\n\n📊 **Line Coverage: ${coverage}%**\n\n- Lines Covered: ${linesCovered}\n- Lines Missed: ${linesMissed}`;
-                github.rest.issues.createComment({
-                  issue_number: context.issue.number,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: body
-                });
-              }
+            if (!fs.existsSync(jacocoCsv)) {
+              core.warning(`No coverage report at ${jacocoCsv}`);
+              return;
+            }
+            const rows = fs.readFileSync(jacocoCsv, 'utf8').trim().split('\n');
+            if (rows.length < 2) {
+              core.warning('Coverage report has no data rows');
+              return;
+            }
+            const header = rows[0].split(',');
+            const coveredAt = header.indexOf('LINE_COVERED');
+            const missedAt = header.indexOf('LINE_MISSED');
+            let covered = 0;
+            let missed = 0;
+            for (const row of rows.slice(1)) {
+              const cells = row.split(',');
+              covered += parseInt(cells[coveredAt], 10) || 0;
+              missed += parseInt(cells[missedAt], 10) || 0;
+            }
+            const total = covered + missed;
+            const coverage = total > 0 ? ((covered / total) * 100).toFixed(2) : '0.00';
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## Code Coverage Report\n\n📊 **Line Coverage: ${coverage}%**\n\n- Lines Covered: ${covered}\n- Lines Missed: ${missed}\n- Total Lines: ${total}`
+            });
             }
 
       - name: Upload Debug APK

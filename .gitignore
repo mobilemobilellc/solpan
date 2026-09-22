@@ -34,3 +34,6 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Dokka output is built in CI and published to Pages
+docs/

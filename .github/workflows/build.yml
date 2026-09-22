@@ -12,6 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
+  contents: read
   checks: write
   id-token: write
   attestations: write
@@ -54,14 +55,13 @@ jobs:
           mkdir -p docs && cp -r build/dokka/html/* docs/
           touch docs/.nojekyll
 
-      - name: Commit Documentation Updates
+      - name: Upload Dokka Documentation
+        uses: actions/upload-artifact@v7
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add docs/
-          git diff --cached --quiet || git commit -m "docs: update Dokka API documentation [skip ci]"
-          git push
+        with:
+          name: dokka-html
+          path: docs/
+          if-no-files-found: error
 
       - name: Validate Screenshot Tests
         run: ./gradlew :app:validateDebugScreenshotTest --parallel --continue --no-configuration-cache

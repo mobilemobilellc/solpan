@@ -45,7 +45,7 @@ jobs:
           dependency-graph: generate-and-submit
 
       - name: Run checks and build debug APK
-        run: ./gradlew app:detekt app:spotlessCheck :app:testDebugUnitTest :app:assembleDebug app:jacocoTestReport --parallel --continue --scan
+        run: ./gradlew app:detekt spotlessCheck :app:testDebugUnitTest :app:assembleDebug app:jacocoTestReport --parallel --continue --scan
 
       - name: Validate Screenshot Tests
         run: ./gradlew :app:validateDebugScreenshotTest --parallel --continue --no-configuration-cache

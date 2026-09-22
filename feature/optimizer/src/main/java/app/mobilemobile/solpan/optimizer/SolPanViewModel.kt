@@ -1,5 +1,16 @@
 /*
  * Copyright 2025 MobileMobile LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
 package app.mobilemobile.solpan.optimizer
 
@@ -24,7 +35,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -35,7 +45,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import java.time.ZonedDateTime
 import kotlin.math.abs
 
@@ -45,9 +54,9 @@ private const val REALTIME_TICK_INTERVAL_MS = 30_000L
 /**
  * Main state management ViewModel for SolPan.
  *
- * Combines multiple reactive streams (location, orientation, magnetic declination, preferences)
- * to produce a unified [uiState] that the UI observes. All state updates are reactive and
- * observable via StateFlow, ensuring the UI always reflects the current system state.
+ * Combines multiple reactive streams (location, orientation, magnetic declination, preferences) to
+ * produce a unified [uiState] that the UI observes. All state updates are reactive and observable
+ * via StateFlow, ensuring the UI always reflects the current system state.
  *
  * ## Reactive Architecture
  *
@@ -56,7 +65,8 @@ private const val REALTIME_TICK_INTERVAL_MS = 30_000L
  * - **Magnetic declination** is computed lazily from location changes
  * - **Solar calculations** are recomputed when tilt mode or location changes
  * - **Realtime mode** ticks every 30 seconds to update sun position
- * - **UI state** combines all streams with [WhileSubscribed(5000)] to auto-cleanup when UI is backgrounded
+ * - **UI state** combines all streams with [WhileSubscribed(5000)] to auto-cleanup when UI is
+ *   backgrounded
  *
  * ## Key Flows
  *
@@ -66,8 +76,8 @@ private const val REALTIME_TICK_INTERVAL_MS = 30_000L
  *
  * ## Thread Safety
  *
- * All state flows are thread-safe and backed by coroutines. Updates from sensors/location
- * providers are marshalled through the [viewModelScope] dispatcher.
+ * All state flows are thread-safe and backed by coroutines. Updates from sensors/location providers
+ * are marshalled through the [viewModelScope] dispatcher.
  *
  * @param initialMode The starting tilt mode (typically [TiltMode.REALTIME])
  * @param preferencesRepository User preferences (tutorial state, saved settings)
@@ -99,29 +109,28 @@ public class SolPanViewModel(
             preferencesRepository: UserPreferencesRepository,
             locationRepository: LocationRepository,
             analytics: AnalyticsTracker,
-        ) =
-            viewModelFactory {
-                initializer {
-                    SolPanViewModel(mode, preferencesRepository, locationRepository, analytics)
-                }
+        ) = viewModelFactory {
+            initializer {
+                SolPanViewModel(mode, preferencesRepository, locationRepository, analytics)
             }
+        }
     }
 
-    private val _selectedTiltModeFlow = MutableStateFlow(initialMode)
-    private val _debugFakeAlignmentActive = MutableStateFlow(false)
+    private val selectedTiltModeFlow = MutableStateFlow(initialMode)
+    private val debugFakeAlignmentActive = MutableStateFlow(false)
     private val tutorialOverride = MutableStateFlow<Boolean?>(null)
-    private val _currentOrientation = MutableStateFlow(OrientationData())
+    private val currentOrientation = MutableStateFlow(OrientationData())
 
     /**
      * Updates the current device orientation from sensors.
      *
-     * Called by [DeviceOrientationController] when accelerometer/magnetometer data is ready.
-     * Updates trigger [uiState] recomposition if the orientation data changed.
+     * Called by [DeviceOrientationController] when accelerometer/magnetometer data is ready. Updates
+     * trigger [uiState] recomposition if the orientation data changed.
      *
      * @param orientation The latest device orientation (pitch, roll, azimuth)
      */
     fun updateOrientation(orientation: OrientationData) {
-        _currentOrientation.value = orientation
+        currentOrientation.value = orientation
     }
 
     /** Current user location from GPS or fused location provider. Null if permission not granted. */
@@ -130,8 +139,8 @@ public class SolPanViewModel(
     /**
      * Magnetic declination (angle between true north and magnetic north) at current location.
      *
-     * Used to convert between true azimuth (calculated from sun position) and magnetic azimuth
-     * (what compass reads). Computed lazily as location changes. Null until location is available.
+     * Used to convert between true azimuth (calculated from sun position) and magnetic azimuth (what
+     * compass reads). Computed lazily as location changes. Null until location is available.
      *
      * Range: -180° to +180° (negative = magnetic north is west of true north)
      */
@@ -156,8 +165,8 @@ public class SolPanViewModel(
         combine(
             locationRepository.currentLocation.debounce(300),
             magneticDeclinationFlow,
-            _selectedTiltModeFlow,
-            realtimeTickerFlow(_selectedTiltModeFlow),
+            selectedTiltModeFlow,
+            realtimeTickerFlow(selectedTiltModeFlow),
         ) { location, declination, mode, _ ->
             calculateOptimalParameters(location, declination, mode)
         }.distinctUntilChanged()
@@ -176,16 +185,16 @@ public class SolPanViewModel(
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
     /**
-     * The single source of truth for the UI.
-     * Masterclass Architecture: Unifying multiple streams into one immutable state object.
+     * The single source of truth for the UI. Masterclass Architecture: Unifying multiple streams into
+     * one immutable state object.
      */
     val uiState: StateFlow<SolPanUiState> =
         combine(
-            _selectedTiltModeFlow,
+            selectedTiltModeFlow,
             locationRepository.currentLocation,
-            _currentOrientation,
+            currentOrientation,
             optimalPanelParameters,
-            _debugFakeAlignmentActive,
+            debugFakeAlignmentActive,
             showTutorial,
         ) { flows ->
             val mode = flows[0] as TiltMode
@@ -211,26 +220,28 @@ public class SolPanViewModel(
         )
 
     fun onTutorialStarted() = with(analytics) { logTutorialStarted() }
+
     fun onTutorialEnded() = with(analytics) { logTutorialEnded() }
+
     fun onPermissionResult(granted: Boolean) = with(analytics) { logPermissionResult(granted) }
 
     /**
      * Toggles debug mode for testing panel alignment without GPS lock.
      *
-     * When enabled, the UI displays a fake "aligned" state even if the device
-     * isn't actually aligned to the target azimuth. Useful for UI testing and screenshots.
+     * When enabled, the UI displays a fake "aligned" state even if the device isn't actually aligned
+     * to the target azimuth. Useful for UI testing and screenshots.
      *
      * This is a debug-only feature and should not appear in production builds.
      */
     fun toggleDebugFakeAlignment() {
-        _debugFakeAlignmentActive.update { !it }
+        debugFakeAlignmentActive.update { !it }
     }
 
     /**
      * Dismisses the tutorial overlay and marks it as seen.
      *
-     * Persists the state to [preferencesRepository] so the tutorial doesn't appear
-     * on next app launch. Can be overridden by [requestTutorial].
+     * Persists the state to [preferencesRepository] so the tutorial doesn't appear on next app
+     * launch. Can be overridden by [requestTutorial].
      */
     fun dismissTutorial() {
         tutorialOverride.value = false
@@ -240,8 +251,8 @@ public class SolPanViewModel(
     /**
      * Manually requests to show the tutorial overlay.
      *
-     * Overrides the persisted "tutorial seen" state. Used when user wants to re-watch
-     * the onboarding flow. Call [dismissTutorial] to close it.
+     * Overrides the persisted "tutorial seen" state. Used when user wants to re-watch the onboarding
+     * flow. Call [dismissTutorial] to close it.
      */
     fun requestTutorial() {
         tutorialOverride.value = true
@@ -250,8 +261,8 @@ public class SolPanViewModel(
     /**
      * Updates the current location for optimization calculations.
      *
-     * Typically called by [DeviceLocationManager] when location updates are available.
-     * Updates trigger:
+     * Typically called by [DeviceLocationManager] when location updates are available. Updates
+     * trigger:
      * - Magnetic declination recalculation
      * - Solar position recalculation
      * - [uiState] recomposition
@@ -302,16 +313,20 @@ public class SolPanViewModel(
                 targetTrueAzimuth = currentSunPos.azimuth
                 targetTilt = currentSunPos.altitude.coerceIn(0.0, 90.0)
             }
+
             TiltMode.WINTER -> {
                 targetTrueAzimuth = fixedTrueAzimuthEquator
                 targetTilt = (abs(lat) + EARTH_AXIAL_TILT).coerceIn(0.0, 90.0)
             }
+
             TiltMode.SUMMER -> {
                 targetTrueAzimuth = fixedTrueAzimuthEquator
                 targetTilt = (abs(lat) - EARTH_AXIAL_TILT).coerceIn(0.0, 90.0)
             }
+
             TiltMode.SPRING_AUTUMN,
-            TiltMode.YEAR_ROUND -> {
+            TiltMode.YEAR_ROUND,
+            -> {
                 targetTrueAzimuth = fixedTrueAzimuthEquator
                 targetTilt = abs(lat).coerceIn(0.0, 90.0)
             }

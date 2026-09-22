@@ -141,7 +141,9 @@ private fun ShootingSunsEffect(
 
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         val activeParticles =
-            particles.filter { it.animatableAlpha.value > 0.01f && it.animatableProgress.value < 1f }
+            particles.filter {
+                it.animatableAlpha.value > 0.01f && it.animatableProgress.value < 1f
+            }
 
         activeParticles.forEach { particle ->
             val progress = particle.animatableProgress.value

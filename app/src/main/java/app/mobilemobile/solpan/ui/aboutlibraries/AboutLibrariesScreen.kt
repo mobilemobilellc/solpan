@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import app.mobilemobile.solpan.R
 import com.mikepenz.aboutlibraries.ui.compose.android.produceLibraries
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
+import com.mikepenz.aboutlibraries.ui.compose.variant.LibraryBadges
 
 @Composable
 fun AboutLibrariesScreen(
@@ -68,10 +69,9 @@ fun AboutLibrariesScreen(
     ) { contentPadding ->
         LibrariesContainer(
             modifier = Modifier.fillMaxSize().padding(contentPadding),
-            showDescription = true,
-            showFundingBadges = true,
             libraries = libraries,
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
+            badges = LibraryBadges(description = true, funding = true),
         )
     }
 }

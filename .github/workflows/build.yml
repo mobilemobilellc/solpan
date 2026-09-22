@@ -9,7 +9,7 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 permissions:
   contents: read
@@ -42,7 +42,6 @@ jobs:
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
           cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
-          dependency-graph: generate-and-submit
 
       - name: Run checks and build debug APK
         run: ./gradlew app:detekt app:spotlessCheck :app:testDebugUnitTest :app:assembleDebug app:jacocoTestReport --parallel --continue --scan
@@ -119,8 +118,8 @@ jobs:
           APK_BYTES=$(stat -f%z app/build/outputs/apk/debug/app-debug.apk 2>/dev/null || stat -c%s app/build/outputs/apk/debug/app-debug.apk)
           echo "APK_BYTES=$APK_BYTES" >> $GITHUB_ENV
           
-          # Alert if APK grows beyond baseline (8MB threshold)
-          THRESHOLD_BYTES=$((8 * 1024 * 1024))
+          # Alert if APK grows beyond baseline (24MB, ~20% over the current 20.1MB)
+          THRESHOLD_BYTES=$((24 * 1024 * 1024))
           if [ "$APK_BYTES" -gt "$THRESHOLD_BYTES" ]; then
             echo "⚠️ WARNING: APK size ($APK_BYTES bytes) exceeds baseline threshold ($THRESHOLD_BYTES bytes)" >> $GITHUB_STEP_SUMMARY
           else
@@ -131,19 +130,3 @@ jobs:
         uses: actions/attest-build-provenance@v4
         with:
           subject-path: 'app/build/outputs/apk/debug/app-debug.apk'
-
-      - name: Capture Build Metrics
-        if: success()
-        run: |
-          echo "## Build Metrics ⚡" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "✓ All checks passed" >> $GITHUB_STEP_SUMMARY
-          echo "✓ Unit tests: 34/34 passing" >> $GITHUB_STEP_SUMMARY
-          echo "✓ Detekt: 0/0 issues" >> $GITHUB_STEP_SUMMARY
-          echo "✓ Spotless: 100% formatted" >> $GITHUB_STEP_SUMMARY
-          echo "✓ Screenshot tests: validated" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Optimization Stats" >> $GITHUB_STEP_SUMMARY
-          echo "- Configuration Cache: enabled" >> $GITHUB_STEP_SUMMARY
-          echo "- Parallel Execution: 4+ threads" >> $GITHUB_STEP_SUMMARY
-          echo "- Gradle Build Cache: active" >> $GITHUB_STEP_SUMMARY

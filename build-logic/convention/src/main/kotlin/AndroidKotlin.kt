@@ -13,6 +13,7 @@ internal fun Project.configureKotlinAndroidApp(
 ) {
     extension.apply {
         compileSdk = 37
+        compileSdkMinor = 1
 
         defaultConfig {
             minSdk = 26
@@ -38,6 +39,7 @@ internal fun Project.configureKotlinAndroidLibrary(
 ) {
     extension.apply {
         compileSdk = 37
+        compileSdkMinor = 1
 
         defaultConfig {
             minSdk = 26

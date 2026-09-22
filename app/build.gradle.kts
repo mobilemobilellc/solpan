@@ -128,17 +128,21 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     kotlin {
         target("src/*/kotlin/**/*.kt", "src/*/java/**/*.kt")
         ktfmt()
-        ktlint("1.7.1")
+        ktlint(libs.versions.ktlint.get())
             .setEditorConfigPath("../configs/spotless/.editorconfig")
-            .customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.4.27"))
+            .customRuleSets(
+                listOf("io.nlopez.compose.rules:ktlint:${libs.versions.ktlintCompose.get()}"),
+            )
         licenseHeaderFile(rootProject.file("configs/spotless/copyright.kt"))
     }
     kotlinGradle {
         target("*.gradle.kts")
         ktfmt()
-        ktlint("1.7.1")
+        ktlint(libs.versions.ktlint.get())
             .setEditorConfigPath("../configs/spotless/.editorconfig")
-            .customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.4.27"))
+            .customRuleSets(
+                listOf("io.nlopez.compose.rules:ktlint:${libs.versions.ktlintCompose.get()}"),
+            )
     }
 }
 

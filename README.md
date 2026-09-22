@@ -21,12 +21,9 @@
 
 ## ☀️ Features
 
-SolPan is a foundational application for understanding the sun's movement, built with a modern Android tech stack.
-
 - **Clean, Intuitive UI:** A modern interface built with Jetpack Compose and Material 3 Expressive.
-- **Solid Foundation:** A well-structured project that's easy to build upon.
 - **Solar Panel Optimization:** Use the phone sensors to orient your solar panels for maximum energy output.
-- **Adaptive Layout:** Staggered grid UI that adapts gracefully to both phone and tablet screen widths.
+- **Adaptive Layout:** Staggered grid UI that adapts to both phone and tablet screen widths.
 
 ## 📸 Screenshots
 
@@ -37,28 +34,21 @@ SolPan is a foundational application for understanding the sun's movement, built
 
 ## 🏗️ Architecture
 
-SolPan follows a straightforward single-screen architecture with a clear separation of concerns:
+State lives in a `ViewModel` and is exposed as a single `StateFlow`, so the composables stay stateless. Event tracking goes through the `AnalyticsTracker` interface rather than a Firebase call site, which is what makes it testable. The staggered grid picks its column count from the available window width.
 
-- **ViewModel + StateFlow** — UI state is managed in a single `ViewModel` and exposed as a `StateFlow`, keeping the composables stateless and easy to test.
-- **Clean Analytics Abstraction** — All event tracking is routed through a testable `AnalyticsTracker` interface, decoupling the UI from any specific analytics backend.
-- **Adaptive Layout** — The staggered grid automatically adjusts column count based on available window width, providing a polished experience on phones and tablets alike.
-
-📖 **For detailed architecture, design decisions, performance tuning, security hardening, and testing strategies, see:**
-- [**API Documentation**](https://mobilemobilellc.github.io/solpan/) - Dokka-generated reference for all public APIs
-- [ARCHITECTURE.md](ARCHITECTURE.md) — Deep dive into modular design patterns
-- [PERFORMANCE.md](PERFORMANCE.md) — Baseline metrics and optimization strategies
-- [SECURITY.md](SECURITY.md) — Security practices and data protection
-- [TESTING.md](TESTING.md) — Testing strategies and benchmarking
-- [RELEASE.md](RELEASE.md) — Semantic versioning, automated release workflow, changelog management
-- [CODE_COVERAGE.md](CODE_COVERAGE.md) — Code coverage metrics, quality gates, and CI/CD reporting
+- [**API documentation**](https://mobilemobilellc.github.io/solpan/) - Dokka reference for every module
+- [ARCHITECTURE.md](ARCHITECTURE.md) - module layout and data flow
+- [TESTING.md](TESTING.md) - test strategy and current coverage
+- [PERFORMANCE.md](PERFORMANCE.md) - what to measure and how
+- [SECURITY.md](SECURITY.md) - data handling and permissions
+- [RELEASE.md](RELEASE.md) - versioning and the release workflow
+- [ROADMAP.md](ROADMAP.md) - what is unfinished and what is planned
+- [CONTRIBUTING.md](CONTRIBUTING.md) - how to work on this
 
 ## 🛠️ Building from Source
 
-To build and run the project, you'll need:
-- [Android Studio Meerkat | 2025.1.1](https://developer.android.com/studio) or later
-- JDK 21
+You need Android Studio and a JDK. CI builds on JDK 25; JDK 21 also works.
 
-Clone the repository and open it in Android Studio:
 ```bash
 git clone https://github.com/mobilemobilellc/solpan.git
 ```
@@ -66,46 +56,51 @@ git clone https://github.com/mobilemobilellc/solpan.git
 ### Common build commands
 
 ```bash
-# Assemble a release APK
-./gradlew assembleRelease
+# Assemble a debug APK
+./gradlew :app:assembleDebug
 
-# Format code
-./gradlew app:spotlessApply
+# Format every module
+./gradlew spotlessApply
 
-# Run static analysis
+# Static analysis (:app only, see ROADMAP.md)
 ./gradlew app:detekt
 
-# Run unit tests (45 tests)
+# Unit tests (31 tests)
 ./gradlew :app:testDebugUnitTest
 
-# Regenerate screenshot reference images (after intentional UI changes)
+# Coverage report, written to app/build/reports/jacoco/
+./gradlew app:jacocoTestReport
+
+# Regenerate screenshot reference images after an intentional UI change
 ./gradlew :app:updateDebugScreenshotTest
 
-# Validate screenshots haven't changed
-./gradlew :app:validateDebugScreenshotTest
+# Build the API documentation into build/dokka/html
+./gradlew :dokkaGenerate
 ```
 
-## 💻 Tech Stack & Libraries
-
-This project is a showcase of modern Android development practices.
+## 💻 Tech Stack
 
 | Category | Library / Tool |
 |---|---|
-| Language | 100% [Kotlin](https://kotlinlang.org/) |
-| UI | [Jetpack Compose](https://developer.android.com/jetpack/compose) + [Material 3 Expressive](https://m3.material.io/) (1.5.0-alpha17) |
-| Navigation | [Navigation 3](https://developer.android.com/jetpack/androidx/releases/navigation) (nav3 1.2.0-alpha01) |
-| State management | [Lifecycle ViewModel + StateFlow](https://developer.android.com/topic/libraries/architecture/viewmodel) (2.11.0-alpha03) |
-| Async | [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) & [Flow](https://developer.android.com/kotlin/flow) |
+| Language | [Kotlin](https://kotlinlang.org/) 2.4.20 |
+| Build | AGP 9.4.1 on Gradle 9.7.1, convention plugins in `build-logic/` |
+| UI | [Jetpack Compose](https://developer.android.com/jetpack/compose) (BOM 2026.09.00) + [Material 3 Expressive](https://m3.material.io/) 1.5.0-alpha28 |
+| Navigation | [Navigation 3](https://developer.android.com/jetpack/androidx/releases/navigation) 1.2.0-rc01 |
+| State | [Lifecycle ViewModel + StateFlow](https://developer.android.com/topic/libraries/architecture/viewmodel) 2.11.0 |
+| Async | [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) and Flow |
 | Permissions | [Accompanist Permissions](https://google.github.io/accompanist/permissions/) |
 | Persistence | [DataStore Preferences](https://developer.android.com/topic/libraries/architecture/datastore) |
-| Analytics | Firebase Analytics + Crashlytics + Performance Monitoring, abstracted via `AnalyticsTracker` |
-| Screenshot testing | [Android Compose Screenshot Testing](https://developer.android.com/studio/test/screenshot-testing) (`com.android.compose.screenshot`) |
-| Code quality | [Detekt](https://detekt.dev/) + [Spotless](https://github.com/diffplug/spotless)/[ktlint](https://ktlint.github.io/) |
-| Performance | [Baseline Profiles](https://developer.android.com/topic/performance/baselineprofiles) + ProGuard/R8 |
+| Analytics | Firebase Analytics, Crashlytics and Performance, behind `AnalyticsTracker` |
+| Solar maths | [Commons Suncalc](https://shredzone.org/maven/commons-suncalc/) |
+| Screenshot tests | [Compose Screenshot Testing](https://developer.android.com/studio/test/screenshot-testing) |
+| Code quality | [Detekt](https://detekt.dev/) 1.23.8, [Spotless](https://github.com/diffplug/spotless) 8.10.2 with [ktlint](https://ktlint.github.io/) 1.8.0 |
+| API docs | [Dokka](https://kotlinlang.org/docs/dokka-introduction.html) 2.2.0, published to GitHub Pages |
+
+Exact versions live in [`gradle/libs.versions.toml`](gradle/libs.versions.toml); the table above will drift.
 
 ## 🙏 How to Contribute
 
-Contributions are welcome! Whether it's reporting a bug, suggesting a feature, or submitting a pull request, all help is appreciated. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md), and [ROADMAP.md](ROADMAP.md) for work that is already known to need doing.
 
 ---
 

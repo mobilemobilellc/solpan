@@ -112,7 +112,6 @@ jobs:
               repo: context.repo.repo,
               body: `## Code Coverage Report\n\n📊 **Line Coverage: ${coverage}%**\n\n- Lines Covered: ${covered}\n- Lines Missed: ${missed}\n- Total Lines: ${total}`
             });
-            }
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v7

@@ -29,7 +29,7 @@ Merging the release PR is the whole release. Everything after it is automated an
    - attaches both to the GitHub Release and attests their provenance,
    - publishes the AAB to Google Play with [Gradle Play Publisher](https://github.com/Triple-T/gradle-play-publisher) as a completed release, so it reaches all users after review with no Console step.
 
-release-please runs with a GitHub App token rather than `GITHUB_TOKEN`. That is what lets the release PR run CI and the tag push start `release.yml`; events made with `GITHUB_TOKEN` start no workflows.
+release-please runs with a GitHub App token when `RELEASE_APP_CLIENT_ID` is set. That is what lets the release PR run CI and the tag push start `release.yml`; events made with `GITHUB_TOKEN` start no workflows. Without the app it falls back to `GITHUB_TOKEN` and starts `release.yml` on the new tag itself, and the release PR gets no CI until someone closes and reopens it.
 
 ## Commit types
 

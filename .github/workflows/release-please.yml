@@ -6,7 +6,9 @@ on:
       - main
 
 permissions:
-  contents: read
+  actions: write
+  contents: write
+  pull-requests: write
 
 jobs:
   release-please:
@@ -14,13 +16,23 @@ jobs:
     steps:
       # An app token, unlike GITHUB_TOKEN, lets the release PR run CI and the tag push start release.yml.
       - id: app-token
+        if: vars.RELEASE_APP_CLIENT_ID != ''
         uses: actions/create-github-app-token@v3
         with:
           client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
           private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
 
-      - uses: googleapis/release-please-action@v5
+      - id: release
+        uses: googleapis/release-please-action@v5
         with:
-          token: ${{ steps.app-token.outputs.token }}
+          token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
           config-file: .release-please-config.json
           manifest-file: .release-please-manifest.json
+
+      # Without the app, the tag was pushed with GITHUB_TOKEN and starts nothing, so start the build here.
+      - name: Start the release build
+        if: steps.release.outputs.release_created && vars.RELEASE_APP_CLIENT_ID == ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release.outputs.tag_name }}
+        run: gh workflow run release.yml --repo "$GITHUB_REPOSITORY" --ref "$TAG" -f dry_run=false

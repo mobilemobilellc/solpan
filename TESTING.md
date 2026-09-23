@@ -48,7 +48,7 @@ JaCoCo, via the `solpan.jacoco.report` convention plugin. The report spans every
 
 CI runs the same task and comments the total on every pull request.
 
-Current: **15.02% line coverage**, 235 of 1565 lines. `solpan.model` and `solpan.solar` are at 100%, `solpan.data` at 86%, `solpan.optimizer` at 71%, and every `solpan.ui.*` package at 0%.
+Current: **14.98% line coverage**, 235 of 1569 lines. `solpan.model` and `solpan.solar` are at 100%, `solpan.data` at 86%, `solpan.optimizer` at 71%, and every `solpan.ui.*` package at 0%.
 
 `app:jacocoCoverageVerification` fails the build below **12%**, which CI runs on every pull request. It is a ratchet against regression rather than a target: see [ROADMAP.md](ROADMAP.md).
 

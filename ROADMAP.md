@@ -15,16 +15,16 @@ That leaves the real gap, which was always the UI:
 | `solpan.model` | 80 | 100% |
 | `solpan.optimizer` | 150 | 71% |
 | `solpan.data` | 22 | 86% |
-| `solpan.ui.screen.components` | 406 | 0% |
+| `solpan.ui.screen.components` | 410 | 0% |
 | `solpan.ui.components` | 380 | 0% |
 | `solpan.ui.screen` | 153 | 0% |
 | `solpan.orientation` | 80 | 18% |
 
-Overall 15.02%, 235 of 1565 lines. Roughly 940 of the uncovered lines are composables, where screenshot tests are a better fit than unit tests. The rest of `solpan.orientation` is the sensor listener itself, which needs a `SensorManager` fake to reach.
+Overall 14.98%, 235 of 1569 lines. Roughly 940 of the uncovered lines are composables, where screenshot tests are a better fit than unit tests. The rest of `solpan.orientation` is the sensor listener itself, which needs a `SensorManager` fake to reach.
 
 ### The coverage floor
 
-`app:jacocoCoverageVerification` runs in CI and fails the build below **12%** line coverage. Current is **15.02%**. Extracting uncovered helpers lowers the figure without removing a test, so raise the floor when coverage rises rather than leaving the headroom for the next extraction to spend.
+`app:jacocoCoverageVerification` runs in CI and fails the build below **12%** line coverage. Current is **14.98%**. Extracting uncovered helpers lowers the figure without removing a test, so raise the floor when coverage rises rather than leaving the headroom for the next extraction to spend.
 
 The gate was checked both ways, passing at 12% and failing at 50%, so it does bite. `MINIMUM_LINE_COVERAGE` lives in `JacocoReportConventionPlugin`.
 

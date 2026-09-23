@@ -5,6 +5,18 @@ All notable changes to SolPan are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1](https://github.com/mobilemobilellc/solpan/compare/v1.2.0...v1.2.1) (2026-09-23)
+
+
+### Bug Fixes
+
+* start the orientation sensor listener again ([#165](https://github.com/mobilemobilellc/solpan/issues/165)) ([bb5c0a4](https://github.com/mobilemobilellc/solpan/commit/bb5c0a4248228e1ba36d9dc529ffc77a9fe6fc37))
+
+
+### CI/CD
+
+* publish to Play with Gradle Play Publisher and release via a GitHub App ([#164](https://github.com/mobilemobilellc/solpan/issues/164)) ([d42aceb](https://github.com/mobilemobilellc/solpan/commit/d42aceb9371f3967514eeef9192cce7f5d3c9552))
+
 ## [1.2.0](https://github.com/mobilemobilellc/solpan/compare/v1.1.2...v1.2.0) (2026-09-23)
 
 

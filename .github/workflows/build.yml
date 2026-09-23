@@ -58,22 +58,42 @@ jobs:
           path: app/build/outputs/screenshotTest/debug/preview/diffs/
           if-no-files-found: ignore
 
-      - name: Collect detekt SARIF from every module
+      - name: Merge detekt SARIF from every module
         if: success() || failure()
         run: |
-          mkdir -p build/sarif
-          find . -path '*/build/reports/detekt/detekt.sarif' -print0 |
-            while IFS= read -r -d '' f; do
-              module=$(printf '%s' "$f" | sed 's#^\./##; s#/build/reports/detekt/detekt.sarif$##; s#/#-#g')
-              cp "$f" "build/sarif/detekt-${module}.sarif"
-            done
-          ls -1 build/sarif
+          python3 - <<'PY'
+          import glob, json, pathlib, sys
+
+          files = sorted(glob.glob('**/build/reports/detekt/detekt.sarif', recursive=True))
+          if not files:
+              sys.exit("no detekt SARIF found")
+
+          merged = json.load(open(files[0]))
+          baseline = [r.get('id') for r in merged['runs'][0]['tool']['driver'].get('rules', [])]
+          results = []
+          for f in files:
+              doc = json.load(open(f))
+              rules = [r.get('id') for r in doc['runs'][0]['tool']['driver'].get('rules', [])]
+              # results carry a ruleIndex into this array, so merging is only safe while the
+              # modules share one detekt config
+              if rules != baseline:
+                  sys.exit(f"{f} has a different rule set; cannot merge by index")
+              for run in doc['runs']:
+                  results.extend(run.get('results', []))
+
+          merged['runs'] = [merged['runs'][0]]
+          merged['runs'][0]['results'] = results
+          pathlib.Path('build').mkdir(exist_ok=True)
+          pathlib.Path('build/detekt-merged.sarif').write_text(json.dumps(merged))
+          print(f"merged {len(files)} modules, {len(results)} results")
+          PY
 
       - name: Upload SARIF to GitHub using the upload-sarif action
         uses: github/codeql-action/upload-sarif@v4
         if: success() || failure()
         with:
-          sarif_file: build/sarif
+          sarif_file: build/detekt-merged.sarif
+          category: detekt
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v6

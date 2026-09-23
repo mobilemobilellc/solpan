@@ -8,7 +8,7 @@ How SolPan is tested, what that currently covers, and where the holes are. For t
 |---|---|---|---|
 | `app/src/test` | 9 | CI, every push and PR | 31 JVM unit tests plus three fakes |
 | `app/src/androidTest` | 2 | never in CI | instrumented tests, need a device |
-| `app/src/screenshotTest` | 2 | CI, every push and PR | 4 `@Preview` composables, currently with no references to compare against |
+| `app/src/screenshotTest` | 2 | CI, every push and PR | 2 previews, compared against committed references |
 | `baselineprofile/` | 2 | never in CI | macrobenchmarks, need a physical device |
 
 ## Unit tests
@@ -57,7 +57,7 @@ Compose screenshot testing, four `@Preview` composables across `CardScreenshotTe
 ./gradlew :app:updateDebugScreenshotTest
 ```
 
-**No reference images are committed**, so `validateDebugScreenshotTest` currently passes without comparing anything. Run the update task and commit `app/src/screenshotTest/reference/` to turn it into a real gate.
+Two reference images are committed under `app/src/screenshotTestDebug/reference/`, one per preview, and the comparison is real: re-rendering on a different machine reproduces them byte for byte. Coverage is the limit rather than the mechanism, so adding previews is what widens it.
 
 ## Instrumented tests
 

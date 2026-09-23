@@ -41,7 +41,7 @@ jobs:
           cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
 
       - name: Generate API documentation
-        run: ./gradlew :dokkaGenerate --no-configuration-cache -q
+        run: ./gradlew :dokkaGenerate -q
 
       - name: Configure Pages
         if: github.event_name != 'pull_request'

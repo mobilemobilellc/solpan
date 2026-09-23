@@ -19,7 +19,6 @@ plugins {
   alias(libs.plugins.kotlin.compose) apply false
   alias(libs.plugins.google.gms.google.services) apply false
   alias(libs.plugins.google.firebase.crashlytics) apply false
-  alias(libs.plugins.google.firebase.perf) apply false
   alias(libs.plugins.aboutlibraries) apply false
   alias(libs.plugins.jetbrains.kotlin.serialization) apply false
   alias(libs.plugins.spotless) apply false

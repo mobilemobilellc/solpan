@@ -10,7 +10,6 @@ detekt = "1.23.8"
 espressoCore = "3.7.0"
 firebaseBom = "34.19.0"
 googleFirebaseCrashlytics = "3.0.8"
-googleFirebasePerf = "2.0.2"
 googleGmsGoogleServices = "4.5.0"
 playPublisher = "4.1.1"
 junit = "4.13.2"
@@ -74,7 +73,6 @@ detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", 
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
-firebase-perf = { group = "com.google.firebase", name = "firebase-perf" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutinesTest" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
@@ -93,7 +91,6 @@ spotless-gradlePlugin = { group = "com.diffplug.spotless", name = "spotless-plug
 detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
 
 [bundles]
-firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
 androidxUi = ["androidx-ui", "androidx-ui-graphics", "androidx-ui-tooling-preview"]
 androidxLifecycle = ["androidx-lifecycle-runtime-compose", "androidx-lifecycle-runtime-ktx", "androidx-lifecycle-viewmodel-compose", "androidx-lifecycle-viewmodel-navigation3"]
 androidxNavigation = ["androidx-navigation3-runtime", "androidx-navigation3-ui", "androidx-material3-adaptive-navigation3"]
@@ -105,7 +102,6 @@ aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "abo
 android-application = { id = "com.android.application", version.ref = "agp" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt"}
 google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "googleFirebaseCrashlytics" }
-google-firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "googleFirebasePerf" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
 play-publisher = { id = "com.github.triplet.play", version.ref = "playPublisher" }
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization"}

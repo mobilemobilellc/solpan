@@ -2,68 +2,31 @@
  * Copyright 2025 MobileMobile LLC
  */
 
-import com.android.build.api.dsl.ApplicationExtension
-import com.android.build.api.dsl.LibraryExtension
+import com.android.build.api.dsl.CommonExtension
+import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 
-internal fun Project.configureKotlinAndroidApp(
-    extension: ApplicationExtension,
-) {
+internal fun Project.configureKotlinAndroid(extension: CommonExtension) {
     extension.apply {
         compileSdk = 37
         compileSdkMinor = 1
 
-        defaultConfig {
+        defaultConfig.apply {
             minSdk = 26
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
 
         // Without this a library module emits no .exec, so its tests count for nothing in the
         // aggregate coverage report.
-        buildTypes { getByName("debug") { enableUnitTestCoverage = true } }
+        buildTypes.getByName("debug").enableUnitTestCoverage = true
 
-        compileOptions {
-            sourceCompatibility = org.gradle.api.JavaVersion.VERSION_21
-            targetCompatibility = org.gradle.api.JavaVersion.VERSION_21
+        compileOptions.apply {
+            sourceCompatibility = JavaVersion.VERSION_21
+            targetCompatibility = JavaVersion.VERSION_21
         }
     }
 
-    configure<KotlinAndroidProjectExtension> {
-        jvmToolchain(21)
-        compilerOptions {
-            freeCompilerArgs.add("-Xcontext-parameters")
-        }
-    }
-}
-
-internal fun Project.configureKotlinAndroidLibrary(
-    extension: LibraryExtension,
-) {
-    extension.apply {
-        compileSdk = 37
-        compileSdkMinor = 1
-
-        defaultConfig {
-            minSdk = 26
-            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        }
-
-        // Without this a library module emits no .exec, so its tests count for nothing in the
-        // aggregate coverage report.
-        buildTypes { getByName("debug") { enableUnitTestCoverage = true } }
-
-        compileOptions {
-            sourceCompatibility = org.gradle.api.JavaVersion.VERSION_21
-            targetCompatibility = org.gradle.api.JavaVersion.VERSION_21
-        }
-    }
-
-    configure<KotlinAndroidProjectExtension> {
-        jvmToolchain(21)
-        compilerOptions {
-            freeCompilerArgs.add("-Xcontext-parameters")
-        }
-    }
+    configure<KotlinAndroidProjectExtension> { jvmToolchain(21) }
 }

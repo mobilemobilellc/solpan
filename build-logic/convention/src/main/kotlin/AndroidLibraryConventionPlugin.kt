@@ -19,7 +19,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             configureDetekt()
 
             extensions.configure<LibraryExtension> {
-                configureKotlinAndroidLibrary(this)
+                configureKotlinAndroid(this)
             }
         }
     }

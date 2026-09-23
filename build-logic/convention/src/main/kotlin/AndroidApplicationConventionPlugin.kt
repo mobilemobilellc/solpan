@@ -18,16 +18,16 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             configureDetekt()
 
             extensions.configure<ApplicationExtension> {
-                configureKotlinAndroidApp(this)
+                configureKotlinAndroid(this)
                 defaultConfig {
                     targetSdk = 37
                     versionCode = (findProperty("appVersionCode") as String? ?: "1").toInt()
                     versionName = findProperty("appVersionName") as String? ?: "1.0"
-                    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 }
                 buildTypes {
                     release {
                         isMinifyEnabled = true
+                        isShrinkResources = true
                         proguardFiles(
                             getDefaultProguardFile("proguard-android-optimize.txt"),
                             "proguard-rules.pro",

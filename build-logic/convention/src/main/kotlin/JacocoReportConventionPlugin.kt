@@ -15,7 +15,9 @@
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.file.FileCollection
+import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.register
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import org.gradle.testing.jacoco.tasks.JacocoCoverageVerification
@@ -29,7 +31,10 @@ class JacocoReportConventionPlugin : Plugin<Project> {
         with(target) {
             pluginManager.apply("jacoco")
 
-            extensions.configure(JacocoPluginExtension::class.java) { toolVersion = "0.8.12" }
+            val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+            extensions.configure(JacocoPluginExtension::class.java) {
+                toolVersion = libs.findVersion("jacoco").get().toString()
+            }
 
             tasks.register<JacocoReport>("jacocoTestReport") {
                 // Every module's tests feed this report, so every module's test task has to have

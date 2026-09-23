@@ -131,6 +131,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
     implementation(libs.androidx.profileinstaller)
+    implementation(libs.kotlinx.serialization.core)
     implementation(platform(libs.androidx.compose.bom))
     baselineProfile(project(":baselineprofile"))
     testImplementation(libs.junit)

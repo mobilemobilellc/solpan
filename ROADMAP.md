@@ -4,19 +4,22 @@ What is unfinished, and what is planned. Everything here has been checked agains
 
 ## Unfinished
 
-### Tests sit in the wrong module
+### UI code has no tests
 
-All 31 unit tests live in `:app`, but they exercise `SolarCalculator`, `TiltMode`, `DefaultLocationRepository`, `UserPreferencesRepository` and `SolPanViewModel`, which live in `core` and `feature`. The six library modules have no tests of their own.
+Tests now live in the module they cover: `core:solar` holds the solar and alignment tests, `feature:optimizer` the ViewModel and tutorial tests with their fakes, and `:app` keeps only the formatting test. Library modules emit coverage data, and the aggregate report spans all of them.
 
-Line coverage is 12.8%, 192 of 1500 lines:
+That leaves the real gap, which was always the UI:
 
-| Package | Coverage |
-|---|---|
-| `solpan.model` | 100% |
-| `solpan.optimizer` | 68% |
-| every `solpan.ui.*` package | 0% |
+| Package | Lines | Coverage |
+|---|---|---|
+| `solpan.model` | 78 | 100% |
+| `solpan.optimizer` | 137 | 68% |
+| `solpan.ui.screen.components` | 384 | 0% |
+| `solpan.ui.components` | 364 | 0% |
+| `solpan.ui.screen` | 158 | 0% |
+| `solpan.orientation` | 66 | 0% |
 
-Moving each test next to the code it covers is the prerequisite for per-module coverage gates meaning anything. `core:solar` holds the solar maths and is the clearest gap.
+Overall 12.9%, 192 of 1493 lines. Roughly 900 of the uncovered lines are composables, where screenshot tests are a better fit than unit tests. `solpan.orientation` holds the sensor fusion and is the clearest unit-testable gap left.
 
 ### No coverage gate
 
@@ -70,7 +73,7 @@ TalkBack labels and content descriptions across the alignment UI, a large-text p
 
 ### Per-module quality gates
 
-Once tests move to their own modules, run bare `detekt spotlessCheck test` instead of the `app:`-scoped task list, and enforce coverage per module rather than in aggregate.
+`spotlessCheck` and `testDebugUnitTest` already run unscoped. `detekt` is the one still pinned to `:app`, pending the baseline decision above, and coverage is still enforced in aggregate rather than per module.
 
 ### Architecture decision records
 

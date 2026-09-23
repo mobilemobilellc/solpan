@@ -29,7 +29,9 @@ class JacocoReportConventionPlugin : Plugin<Project> {
             }
 
             tasks.register<JacocoReport>("jacocoTestReport") {
-                dependsOn("testDebugUnitTest")
+                // Every module's tests feed this report, so every module's test task has to have
+                // run first. Depending only on this project's would race the others.
+                dependsOn(coveredModules().map { "${it.path}:testDebugUnitTest" })
 
                 reports {
                     html.required.set(true)
@@ -54,7 +56,7 @@ class JacocoReportConventionPlugin : Plugin<Project> {
                 // The unit tests live in :app but exercise code that #95 moved out into the
                 // core and feature modules, so the report has to span every module or it
                 // measures the wrong classes.
-                val modules = rootProject.subprojects.filter { it.name != "baselineprofile" }
+                val modules = coveredModules()
 
                 classDirectories.setFrom(
                     modules.flatMap { module ->
@@ -86,3 +88,10 @@ class JacocoReportConventionPlugin : Plugin<Project> {
         }
     }
 }
+
+/**
+ * The modules whose tests and classes belong in the aggregate report: real modules only, so the
+ * empty `:core` and `:feature` container projects are skipped, and not the benchmark module.
+ */
+private fun Project.coveredModules() =
+    rootProject.subprojects.filter { it.buildFile.exists() && it.name != "baselineprofile" }

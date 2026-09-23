@@ -37,25 +37,20 @@
       
   <string name="target_param_card_title">Konfiguracja panelu docelowego</string>
       
-  <string name="target_param_mode_label">Tryb:</string>
       
   <string name="target_param_true_azimuth_label">Docelowy azymut rzeczywisty:</string>
       
   <string name="target_param_magnetic_azimuth_label">Azymut magnetyczny celu:</string>
       
-  <string name="target_param_magnetic_azimuth_calculating_label">Azymut magnetyczny:</string>
       
   <string name="calculating_text">Obliczenie…</string>
       
   <string name="target_param_tilt_label">Pochylenie panelu docelowego:</string>
       
-  <string name="target_param_declination_label">Deklinacja magnetyczna:</string>
       
   <string name="target_param_waiting_location_text">Obliczanie… Czekam na lokalizację…</string>
       
-  <string name="target_param_grant_permission_text">Udziel uprawnień do wyświetlania parametrów docelowych w danej lokalizacji.</string>
       
-  <string name="target_param_current_location_label">Aktualna lokalizacja</string>
       
   <string name="target_param_latitude_label">Szerokość:</string>
       
@@ -65,9 +60,7 @@
       
   <string name="target_param_value_degree_unit">%1$.1f°</string>
       
-  <string name="target_param_value_degree_aim_unit">%1$.1f° (Cel)</string>
       
-  <string name="target_param_value_degree_horizontal_unit">%1$.1f° (od poziomu)</string>
       
   <string name="target_param_value_meter_unit">%1$.1fm</string>
       
@@ -128,7 +121,6 @@
       
   <string name="solar_app_screen_title">Optymalizator paneli słonecznych</string>
       
-  <string name="solar_app_screen_subtitle_tilt_mode">Tryb pochylenia: %s</string>
       
   <string name="help_dialog_title">Pomoc dotycząca wyrównywania paneli</string>
       
@@ -142,7 +134,6 @@
       
   <string name="help_dialog_text_line4">4. Za pomocą prowadnicy pochylenia ustaw kąt nachylenia panelu tak, aby uzyskać optymalny kąt.</string>
       
-  <string name="help_dialog_title_default">Pomoc i wskazówki</string>
       
   <string name="help_dialog_button_dismiss">Zrozumiałem!</string>
       
@@ -166,10 +157,8 @@
       
   <string name="tilt_mode_realtime">W czasie rzeczywistym</string>
       
-  <string name="about_libraries">O bibliotekach</string>
       
   <string name="back">Z powrotem</string>
       
-  <string name="buy_me_a_coffee">Kup mi kawę ☕️</string>
   
 </resources>

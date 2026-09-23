@@ -12,5 +12,7 @@ android {
 dependencies {
     implementation(project(":core:model"))
     implementation(libs.commons.suncalc)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.runtime)
     testImplementation(libs.junit)
 }

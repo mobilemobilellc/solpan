@@ -19,7 +19,6 @@ import app.mobilemobile.solpan.model.LocationData
 import app.mobilemobile.solpan.model.OptimalPanelParameters
 import app.mobilemobile.solpan.model.OrientationData
 import app.mobilemobile.solpan.model.TiltMode
-import kotlinx.datetime.Instant
 
 /**
  * Complete UI state for the SolPan app, combining user inputs and calculated results.
@@ -35,7 +34,6 @@ import kotlinx.datetime.Instant
  * @property isDebugFakeAlignmentActive Debug flag: if true, use synthetic location/orientation for
  *   testing
  * @property showTutorial Whether to display the first-use tutorial overlay
- * @property lastUpdateTime Timestamp of the last state update for debugging/diagnostics
  */
 @Immutable
 public data class SolPanUiState(
@@ -45,5 +43,4 @@ public data class SolPanUiState(
     val optimalParams: OptimalPanelParameters? = null,
     val isDebugFakeAlignmentActive: Boolean = false,
     val showTutorial: Boolean = false,
-    val lastUpdateTime: Instant? = null,
 )

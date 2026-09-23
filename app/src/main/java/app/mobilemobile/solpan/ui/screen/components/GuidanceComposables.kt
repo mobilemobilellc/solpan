@@ -50,7 +50,6 @@ import app.mobilemobile.solpan.designsystem.components.InfoCard
 import app.mobilemobile.solpan.model.AlignmentState
 import app.mobilemobile.solpan.model.OptimalPanelParameters
 import app.mobilemobile.solpan.model.OrientationData
-import app.mobilemobile.solpan.solar.SolarCalculator
 import app.mobilemobile.solpan.util.format
 import kotlin.math.abs
 
@@ -93,7 +92,6 @@ fun GuidanceCard(
             currentOrientation,
             targetParameters,
             debugFakeAlignmentActive,
-            SolarCalculator::calculateAzimuthDifference,
         )
 
     val azimuth = azimuthGuidance(alignment)

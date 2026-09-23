@@ -14,7 +14,6 @@
  */
 package app.mobilemobile.solpan.model
 
-import app.mobilemobile.solpan.solar.SolarCalculator
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -37,7 +36,6 @@ class AlignmentStateTest {
             AlignmentState.calculate(
                 baseOrientation,
                 targetParams,
-                calculateAzimuthDiff = SolarCalculator::calculateAzimuthDifference,
             )
         assertTrue(state.isFullyAligned)
         assertTrue(state.isAzimuthCorrect)
@@ -52,7 +50,6 @@ class AlignmentStateTest {
             AlignmentState.calculate(
                 orientation,
                 targetParams,
-                calculateAzimuthDiff = SolarCalculator::calculateAzimuthDifference,
             )
         assertFalse(state.isAzimuthCorrect)
         assertFalse(state.isFullyAligned)
@@ -66,7 +63,6 @@ class AlignmentStateTest {
                 veryOffOrientation,
                 targetParams,
                 debugFakeAlignmentActive = true,
-                calculateAzimuthDiff = SolarCalculator::calculateAzimuthDifference,
             )
         assertTrue(state.isFullyAligned)
         assertEquals(targetParams.targetTilt, state.currentPitch, 0.1)

@@ -33,7 +33,6 @@ import app.mobilemobile.solpan.designsystem.components.InfoCard
 import app.mobilemobile.solpan.model.AlignmentState
 import app.mobilemobile.solpan.model.OptimalPanelParameters
 import app.mobilemobile.solpan.model.OrientationData
-import app.mobilemobile.solpan.solar.SolarCalculator
 import app.mobilemobile.solpan.ui.components.AzimuthAwareBubbleLevel
 
 @Composable
@@ -64,7 +63,6 @@ fun AzimuthVisualizerCard(
             currentOrientation,
             targetParameters,
             debugFakeAlignmentActive,
-            SolarCalculator::calculateAzimuthDifference,
         )
 
     InfoCard(

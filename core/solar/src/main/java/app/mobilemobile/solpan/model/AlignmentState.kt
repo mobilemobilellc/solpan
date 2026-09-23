@@ -15,6 +15,7 @@
 package app.mobilemobile.solpan.model
 
 import androidx.compose.runtime.Immutable
+import app.mobilemobile.solpan.solar.SolarCalculator
 import kotlin.math.abs
 
 @Immutable
@@ -47,7 +48,6 @@ data class AlignmentState(
             currentOrientation: OrientationData,
             targetParameters: OptimalPanelParameters,
             debugFakeAlignmentActive: Boolean = false,
-            calculateAzimuthDiff: (Double, Double) -> Double,
         ): AlignmentState {
             val actualPanelTargetAzimuth =
                 targetParameters.targetMagneticAzimuth ?: targetParameters.targetTrueAzimuth
@@ -68,7 +68,8 @@ data class AlignmentState(
                 currentRoll = currentOrientation.roll.toDouble()
             }
 
-            val azimuthDifference = calculateAzimuthDiff(currentAzimuth, phoneTargetAzimuth)
+            val azimuthDifference =
+                SolarCalculator.calculateAzimuthDifference(currentAzimuth, phoneTargetAzimuth)
             val tiltDifference = targetTilt - currentPitch
             val rollDifference = TARGET_ROLL - currentRoll
 

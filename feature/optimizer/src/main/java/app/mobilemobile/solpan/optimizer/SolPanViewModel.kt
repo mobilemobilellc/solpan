@@ -19,9 +19,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import app.mobilemobile.solpan.analytics.AnalyticsTracker
-import app.mobilemobile.solpan.analytics.logPermissionResult
-import app.mobilemobile.solpan.analytics.logTutorialEnded
-import app.mobilemobile.solpan.analytics.logTutorialStarted
 import app.mobilemobile.solpan.data.LocationRepository
 import app.mobilemobile.solpan.data.UserPreferencesRepository
 import app.mobilemobile.solpan.model.LocationData
@@ -44,7 +41,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import java.time.ZonedDateTime
 import kotlin.math.abs
 
@@ -57,15 +53,6 @@ private const val FULL_CIRCLE_DEGREES = 360.0
 
 /** Tilt is measured from horizontal, so it never exceeds vertical. */
 private const val MAX_PANEL_TILT_DEGREES = 90.0
-
-// combine() has no six-argument overload, so the flows arrive as an array. Naming the slots
-// keeps the unchecked casts below readable.
-private const val FLOW_MODE = 0
-private const val FLOW_LOCATION = 1
-private const val FLOW_ORIENTATION = 2
-private const val FLOW_PARAMS = 3
-private const val FLOW_DEBUG = 4
-private const val FLOW_TUTORIAL = 5
 
 /**
  * Main state management ViewModel for SolPan.
@@ -206,28 +193,25 @@ public class SolPanViewModel(
      */
     val uiState: StateFlow<SolPanUiState> =
         combine(
-            selectedTiltModeFlow,
+            combine(selectedTiltModeFlow, debugFakeAlignmentActive, showTutorial) {
+                mode,
+                debug,
+                tutorial,
+                ->
+                SolPanUiState(
+                    selectedMode = mode,
+                    isDebugFakeAlignmentActive = debug,
+                    showTutorial = tutorial,
+                )
+            },
             locationRepository.currentLocation,
             currentOrientation,
             optimalPanelParameters,
-            debugFakeAlignmentActive,
-            showTutorial,
-        ) { flows ->
-            val mode = flows[FLOW_MODE] as TiltMode
-            val location = flows[FLOW_LOCATION] as LocationData?
-            val orientation = flows[FLOW_ORIENTATION] as OrientationData
-            val params = flows[FLOW_PARAMS] as OptimalPanelParameters?
-            val debug = flows[FLOW_DEBUG] as Boolean
-            val showTutorial = flows[FLOW_TUTORIAL] as Boolean
-
-            SolPanUiState(
-                selectedMode = mode,
+        ) { settings, location, orientation, params ->
+            settings.copy(
                 currentLocation = location,
                 currentOrientation = orientation,
                 optimalParams = params,
-                isDebugFakeAlignmentActive = debug,
-                showTutorial = showTutorial,
-                lastUpdateTime = Clock.System.now(),
             )
         }.stateIn(
             scope = viewModelScope,
@@ -235,11 +219,11 @@ public class SolPanViewModel(
             initialValue = SolPanUiState(selectedMode = initialMode),
         )
 
-    fun onTutorialStarted() = with(analytics) { logTutorialStarted() }
+    fun onTutorialStarted() = analytics.logTutorialStarted()
 
-    fun onTutorialEnded() = with(analytics) { logTutorialEnded() }
+    fun onTutorialEnded() = analytics.logTutorialEnded()
 
-    fun onPermissionResult(granted: Boolean) = with(analytics) { logPermissionResult(granted) }
+    fun onPermissionResult(granted: Boolean) = analytics.logPermissionResult(granted)
 
     /**
      * Toggles debug mode for testing panel alignment without GPS lock.

@@ -15,7 +15,6 @@ dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:analytics"))
     implementation(project(":core:designsystem"))
-    implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.collections.immutable)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)

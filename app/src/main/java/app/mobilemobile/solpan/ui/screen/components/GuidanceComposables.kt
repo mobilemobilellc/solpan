@@ -290,18 +290,19 @@ private fun azimuthGuidance(alignment: AlignmentState): AzimuthGuidance {
             AzimuthGuidance(stringResource(id = R.string.guidance_azimuth_aligned), 0f, 1.0f)
         }
 
+        // Azimuth grows clockwise, so a positive difference means turning right.
         alignment.azimuthDifference > 0 -> {
             AzimuthGuidance(
-                stringResource(id = R.string.guidance_azimuth_rotate_left, target),
-                -AZIMUTH_ICON_ROTATION_DEGREES,
+                stringResource(id = R.string.guidance_azimuth_rotate_right, target),
+                AZIMUTH_ICON_ROTATION_DEGREES,
                 axisProgress(alignment.azimuthDifference, false, MAX_RELEVANT_AZIMUTH_DIFF_DEGREES),
             )
         }
 
         else -> {
             AzimuthGuidance(
-                stringResource(id = R.string.guidance_azimuth_rotate_right, target),
-                AZIMUTH_ICON_ROTATION_DEGREES,
+                stringResource(id = R.string.guidance_azimuth_rotate_left, target),
+                -AZIMUTH_ICON_ROTATION_DEGREES,
                 axisProgress(alignment.azimuthDifference, false, MAX_RELEVANT_AZIMUTH_DIFF_DEGREES),
             )
         }
@@ -326,18 +327,19 @@ private fun tiltGuidance(alignment: AlignmentState): AxisGuidance {
             )
         }
 
+        // Tilt is how far the top edge is raised, so below target means raise it.
         alignment.tiltDifference > 0 -> {
             AxisGuidance(
-                stringResource(id = R.string.guidance_tilt_down, target),
-                Icons.Filled.ArrowDownward,
+                stringResource(id = R.string.guidance_tilt_up, target),
+                Icons.Filled.ArrowUpward,
                 progress,
             )
         }
 
         else -> {
             AxisGuidance(
-                stringResource(id = R.string.guidance_tilt_up, target),
-                Icons.Filled.ArrowUpward,
+                stringResource(id = R.string.guidance_tilt_down, target),
+                Icons.Filled.ArrowDownward,
                 progress,
             )
         }

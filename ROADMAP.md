@@ -21,9 +21,11 @@ That leaves the real gap, which was always the UI:
 
 Overall 12.9%, 192 of 1493 lines. Roughly 900 of the uncovered lines are composables, where screenshot tests are a better fit than unit tests. `solpan.orientation` holds the sensor fusion and is the clearest unit-testable gap left.
 
-### No coverage gate
+### The coverage floor is low
 
-`app:jacocoTestReport` produces a report and CI comments the figure on every pull request, but nothing fails on a drop. There is no `jacocoTestCoverageVerification` and no `violationRules` in the build. Adding one needs a number chosen against the real 12.8%, not an aspirational one.
+`app:jacocoCoverageVerification` runs in CI and fails the build if line coverage drops below **12%**, against a current 12.86%. That is a ratchet against regression, not a target: it stops a change quietly removing tests or landing a large untested surface, and nothing more.
+
+Raise `MINIMUM_LINE_COVERAGE` in `JacocoReportConventionPlugin` as coverage rises. The gate was checked both ways, passing at 12% and failing at 50%, so it does bite.
 
 ### detekt only covers `:app`
 

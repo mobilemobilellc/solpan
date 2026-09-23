@@ -36,11 +36,6 @@ import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
 import app.mobilemobile.solpan.R
 
-data class LinkInfo(
-    val text: String,
-    val url: String,
-)
-
 @Composable
 fun HelpGuidanceDialog(onDismissRequest: () -> Unit) {
     val links =

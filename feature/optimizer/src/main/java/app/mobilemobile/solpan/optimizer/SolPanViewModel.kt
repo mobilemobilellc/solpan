@@ -51,6 +51,22 @@ import kotlin.math.abs
 private const val EARTH_AXIAL_TILT = 23.5
 private const val REALTIME_TICK_INTERVAL_MS = 30_000L
 
+/** A panel in the northern hemisphere faces due south; in the southern it faces due north. */
+private const val SOUTH_FACING_AZIMUTH = 180.0
+private const val FULL_CIRCLE_DEGREES = 360.0
+
+/** Tilt is measured from horizontal, so it never exceeds vertical. */
+private const val MAX_PANEL_TILT_DEGREES = 90.0
+
+// combine() has no six-argument overload, so the flows arrive as an array. Naming the slots
+// keeps the unchecked casts below readable.
+private const val FLOW_MODE = 0
+private const val FLOW_LOCATION = 1
+private const val FLOW_ORIENTATION = 2
+private const val FLOW_PARAMS = 3
+private const val FLOW_DEBUG = 4
+private const val FLOW_TUTORIAL = 5
+
 /**
  * Main state management ViewModel for SolPan.
  *
@@ -197,12 +213,12 @@ public class SolPanViewModel(
             debugFakeAlignmentActive,
             showTutorial,
         ) { flows ->
-            val mode = flows[0] as TiltMode
-            val location = flows[1] as LocationData?
-            val orientation = flows[2] as OrientationData
-            val params = flows[3] as OptimalPanelParameters?
-            val debug = flows[4] as Boolean
-            val showTutorial = flows[5] as Boolean
+            val mode = flows[FLOW_MODE] as TiltMode
+            val location = flows[FLOW_LOCATION] as LocationData?
+            val orientation = flows[FLOW_ORIENTATION] as OrientationData
+            val params = flows[FLOW_PARAMS] as OptimalPanelParameters?
+            val debug = flows[FLOW_DEBUG] as Boolean
+            val showTutorial = flows[FLOW_TUTORIAL] as Boolean
 
             SolPanUiState(
                 selectedMode = mode,
@@ -300,7 +316,7 @@ public class SolPanViewModel(
         val targetTrueAzimuth: Double
         val targetTilt: Double
 
-        val fixedTrueAzimuthEquator = if (lat > 0) 180.0 else 0.0
+        val fixedTrueAzimuthEquator = if (lat > 0) SOUTH_FACING_AZIMUTH else 0.0
 
         when (mode) {
             TiltMode.REALTIME -> {
@@ -311,28 +327,31 @@ public class SolPanViewModel(
                         longitude = location.longitude,
                     )
                 targetTrueAzimuth = currentSunPos.azimuth
-                targetTilt = currentSunPos.altitude.coerceIn(0.0, 90.0)
+                targetTilt = currentSunPos.altitude.coerceIn(0.0, MAX_PANEL_TILT_DEGREES)
             }
 
             TiltMode.WINTER -> {
                 targetTrueAzimuth = fixedTrueAzimuthEquator
-                targetTilt = (abs(lat) + EARTH_AXIAL_TILT).coerceIn(0.0, 90.0)
+                targetTilt = (abs(lat) + EARTH_AXIAL_TILT).coerceIn(0.0, MAX_PANEL_TILT_DEGREES)
             }
 
             TiltMode.SUMMER -> {
                 targetTrueAzimuth = fixedTrueAzimuthEquator
-                targetTilt = (abs(lat) - EARTH_AXIAL_TILT).coerceIn(0.0, 90.0)
+                targetTilt = (abs(lat) - EARTH_AXIAL_TILT).coerceIn(0.0, MAX_PANEL_TILT_DEGREES)
             }
 
             TiltMode.SPRING_AUTUMN,
             TiltMode.YEAR_ROUND,
             -> {
                 targetTrueAzimuth = fixedTrueAzimuthEquator
-                targetTilt = abs(lat).coerceIn(0.0, 90.0)
+                targetTilt = abs(lat).coerceIn(0.0, MAX_PANEL_TILT_DEGREES)
             }
         }
 
-        val targetMagneticAzimuth = declination?.let { (targetTrueAzimuth - it + 360.0) % 360.0 }
+        val targetMagneticAzimuth =
+            declination?.let {
+                (targetTrueAzimuth - it + FULL_CIRCLE_DEGREES) % FULL_CIRCLE_DEGREES
+            }
 
         return OptimalPanelParameters(
             targetTrueAzimuth = targetTrueAzimuth,

@@ -19,7 +19,6 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.aboutlibraries)
     alias(libs.plugins.jetbrains.kotlin.serialization)
-    alias(libs.plugins.detekt)
     alias(libs.plugins.screenshot)
     alias(libs.plugins.dokka)
     alias(libs.plugins.androidx.baselineprofile)
@@ -128,16 +127,7 @@ dependencies {
     baselineProfile(project(":baselineprofile"))
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
-    detektPlugins(libs.detekt.formatting)
-    detektPlugins(libs.detekt.compose.rules)
     screenshotTestImplementation(platform(libs.androidx.compose.bom))
     screenshotTestImplementation(libs.screenshot.validation.api)
     screenshotTestImplementation(libs.androidx.ui.tooling)
-}
-
-detekt {
-    config.setFrom("../configs/detekt/detekt.yml")
-    baseline = file("../configs/detekt/detekt-baseline.xml")
-    ignoredBuildTypes = listOf("release")
-    enableCompilerPlugin.set(true)
 }

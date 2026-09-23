@@ -26,6 +26,9 @@ import org.shredzone.commons.suncalc.SunPosition as ShredzoneApiSunPosition
  *
  * **Thread-safe**: All methods are stateless and can be called concurrently.
  */
+private const val FULL_CIRCLE_DEGREES = 360.0
+private const val HALF_CIRCLE_DEGREES = 180.0
+
 public object SolarCalculator {
     /**
      * Calculate the sun's position in the sky for a given location and time.
@@ -76,9 +79,9 @@ public object SolarCalculator {
         currentAzimuth: Double,
         targetAzimuth: Double,
     ): Double {
-        val diff = (targetAzimuth - currentAzimuth + 360.0) % 360.0
-        return if (diff > 180.0) {
-            diff - 360.0
+        val diff = (targetAzimuth - currentAzimuth + FULL_CIRCLE_DEGREES) % FULL_CIRCLE_DEGREES
+        return if (diff > HALF_CIRCLE_DEGREES) {
+            diff - FULL_CIRCLE_DEGREES
         } else {
             diff
         }

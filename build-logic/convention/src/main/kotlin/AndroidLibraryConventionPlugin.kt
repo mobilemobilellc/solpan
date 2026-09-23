@@ -16,6 +16,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             }
 
             configureSpotless()
+            configureDetekt()
 
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroidLibrary(this)

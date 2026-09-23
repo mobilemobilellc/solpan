@@ -74,6 +74,9 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
+/** Column count once the window is wide enough for a third column to fit. */
+private const val WIDE_LAYOUT_COLUMNS = 3
+
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun SolPanScreen(
@@ -156,7 +159,7 @@ internal fun SolPanScreenContent(
     val columns =
         when {
             windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND) -> {
-                StaggeredGridCells.Fixed(3)
+                StaggeredGridCells.Fixed(WIDE_LAYOUT_COLUMNS)
             }
 
             windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND) -> {

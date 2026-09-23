@@ -35,7 +35,10 @@ fun rememberDeviceOrientationController(): DeviceOrientationController {
     val context = LocalContext.current
     val controller = remember { DeviceOrientationController(context) }
 
-    DisposableEffect(controller) { onDispose { controller.stopListening() } }
+    DisposableEffect(controller) {
+        controller.startListening()
+        onDispose { controller.stopListening() }
+    }
     return controller
 }
 

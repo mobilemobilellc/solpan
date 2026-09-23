@@ -80,6 +80,7 @@
   <!-- Added -->
       
   <string name="guidance_waiting_for_target">목표 매개변수가 지침을 제공할 때까지 기다리는 중…</string>
+  <string name="guidance_sun_below_horizon">해가 지평선 아래에 있습니다. 해가 뜰 때까지 기다리거나 다른 모드를 선택하세요.</string>
       
   <string name="guidance_azimuth_aligned">방위각이 정렬되었습니다!</string>
       

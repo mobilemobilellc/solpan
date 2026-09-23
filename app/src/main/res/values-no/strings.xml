@@ -80,6 +80,7 @@
   <!-- Added -->
       
   <string name="guidance_waiting_for_target">Venter på veiledning fra målparametrene …</string>
+  <string name="guidance_sun_below_horizon">Solen er under horisonten. Vent på soloppgang, eller velg en annen modus.</string>
       
   <string name="guidance_azimuth_aligned">Asimut er justert!</string>
       

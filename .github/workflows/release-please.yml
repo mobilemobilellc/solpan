@@ -14,27 +14,25 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
+      # An app token, unlike GITHUB_TOKEN, lets the release PR run CI and the tag push start release.yml.
+      - id: app-token
+        if: vars.RELEASE_APP_CLIENT_ID != ''
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+
       - id: release
         uses: googleapis/release-please-action@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          command: manifest
+          token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
           config-file: .release-please-config.json
           manifest-file: .release-please-manifest.json
 
-      - name: Checkout code
-        if: ${{ steps.release.outputs.release_created }}
-        uses: actions/checkout@v7
-
-      - name: Trigger Release Workflow
-        if: ${{ steps.release.outputs.release_created }}
-        uses: actions/github-script@v9
-        with:
-          script: |
-            github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'release.yml',
-              ref: '${{ steps.release.outputs.tag_name }}',
-              inputs: {}
-            })
+      # Without the app, the tag was pushed with GITHUB_TOKEN and starts nothing, so start the build here.
+      - name: Start the release build
+        if: steps.release.outputs.release_created && vars.RELEASE_APP_CLIENT_ID == ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release.outputs.tag_name }}
+        run: gh workflow run release.yml --repo "$GITHUB_REPOSITORY" --ref "$TAG" -f dry_run=false

@@ -16,226 +16,36 @@ limitations under the License.
 
 # Release Process
 
-SolPan uses automated semantic versioning and release management via [release-please](https://github.com/googleapis/release-please) and GitHub Actions. This ensures consistent versioning, changelog generation, and streamlined releases.
+Merging the release PR is the whole release. Everything after it is automated and ends with the build live on Google Play once Play's review passes.
 
-## Overview
+## The pipeline
 
-The release workflow operates on two levels:
+1. Commits land on `main` in [Conventional Commits](https://www.conventionalcommits.org/) form.
+2. `release-please.yml` keeps one open release PR, `chore: release main`, that bumps `.release-please-manifest.json`, `appVersionName` in `gradle.properties` and `CHANGELOG.md`.
+3. Merging that PR makes release-please tag `vX.Y.Z` and publish a GitHub Release with the changelog.
+4. The tag starts `release.yml`, which:
+   - writes the Play "What's new" text from the version's `CHANGELOG.md` section,
+   - builds the signed AAB and APK with `versionCode` set to the workflow's run number,
+   - attaches both to the GitHub Release and attests their provenance,
+   - publishes the AAB to Google Play with [Gradle Play Publisher](https://github.com/Triple-T/gradle-play-publisher) as a completed release, so it reaches all users after review with no Console step.
 
-1. **Automated Release PR Creation** — `release-please` monitors commits to `main`, detects conventional commits, and opens a Release PR with bumped version numbers and generated changelog
-2. **Automated Tag & Release Creation** — When a Release PR is merged, `release-please` creates a git tag, which triggers the `release.yml` workflow to build, sign, and upload release artifacts to GitHub Releases and Google Play
+release-please runs with a GitHub App token when `RELEASE_APP_CLIENT_ID` is set. That is what lets the release PR run CI and the tag push start `release.yml`; events made with `GITHUB_TOKEN` start no workflows. Without the app it falls back to `GITHUB_TOKEN` and starts `release.yml` on the new tag itself, and the release PR gets no CI until someone closes and reopens it.
 
-> **Version numbering is currently inconsistent.** `.release-please-manifest.json` and `gradle.properties` both say `1.0.0`, but the newest tag is `v0.1.1` and no `v1.0.0` exists. The first release PR therefore proposes 1.1.0 with a changelog covering the whole project history. See [ROADMAP.md](ROADMAP.md).
->
-> This flow depends on the organisation setting **Allow GitHub Actions to create and approve pull requests**. With it off, release-please fails with `GitHub Actions is not permitted to create or approve pull requests` and no release PR appears.
+## Commit types
 
-## Conventional Commits
+| Type | Version bump | In the changelog | In Play's "What's new" |
+|---|---|---|---|
+| `feat:` | minor | Features | yes |
+| `fix:` | patch | Bug Fixes | yes |
+| `perf:` | patch | Performance | yes |
+| `docs:`, `ci:`, `chore:` | patch | own sections | no |
+| `BREAKING CHANGE:` footer | major | | |
 
-All commits to `main` must follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
+Play's text is the `feat`, `fix` and `perf` subjects of that version, without links, deduplicated and cut at a line boundary to Play's 500-character limit (`.github/scripts/play-release-notes.sh`). A release with none of them ships "Bug fixes and improvements." Subjects are user-facing text, so write them for users.
 
-```
-<type>[optional scope]: <description>
+## Tracks
 
-[optional body]
-
-[optional footer(s)]
-```
-
-### Commit Types
-
-- **`feat:`** New feature → **MINOR** version bump (e.g., 1.0.0 → 1.1.0)
-- **`fix:`** Bug fix → **PATCH** version bump (e.g., 1.0.0 → 1.0.1)
-- **`perf:`** Performance improvement → **PATCH** version bump
-- **`docs:`** Documentation only → **PATCH** version bump
-- **`ci:`** CI/CD changes → **PATCH** version bump
-- **`chore:`** Maintenance, dependencies → **PATCH** version bump (hidden in changelog)
-- **`BREAKING CHANGE:`** footer → **MAJOR** version bump (e.g., 1.0.0 → 2.0.0)
-
-### Examples
-
-**Feature commit:**
-```
-feat: add summer tilt mode optimization
-
-- Implements seasonal latitude adjustment based on Earth's axial tilt
-- Adds preview functions for all tilt modes
-```
-
-**Bug fix:**
-```
-fix: correct magnetic declination calculation
-
-Fixes incorrect azimuth offset in high-latitude regions.
-```
-
-**Breaking change:**
-```
-feat: refactor SolarCalculator API
-
-BREAKING CHANGE: calculateSolarPosition() now requires altitude parameter
-```
-
-**Chore (hidden from changelog):**
-```
-chore: upgrade kotlin to 2.0.0
-```
-
-## Automated Workflow
-
-### Step 1: Merge Conventional Commits to `main`
-
-```bash
-git checkout main
-git pull origin main
-
-# Create feature branch
-git checkout -b feat/new-feature
-
-# Make changes...
-
-# Commit with conventional format
-git commit -m "feat: add new feature
-
-Detailed description of changes."
-
-# Push and create pull request
-git push origin feat/new-feature
-```
-
-### Step 2: Release PR Created (Automatic)
-
-When commits are merged to `main`, the `release-please` workflow (`.github/workflows/release-please.yml`) automatically:
-
-1. **Analyzes commits** since last release using conventional commits format
-2. **Determines version bump** (MAJOR/MINOR/PATCH) based on commit types
-3. **Updates version files**:
-   - `gradle.properties` (appVersionName, appVersionCode)
-   - `version.properties` (versionName, versionCode)
-4. **Generates CHANGELOG.md** with new version entries organized by type
-5. **Opens Release PR** with all changes
-
-**Example Release PR:**
-- Title: `chore(release): v1.1.0`
-- Description: Lists all changes, new version, updated files
-- Status: Ready to merge
-
-### Step 3: Merge Release PR
-
-Review the Release PR to verify:
-- ✅ Version bump is correct
-- ✅ Changelog entries are accurate
-- ✅ All changes look good
-
-Then merge the PR:
-
-```bash
-# Click "Merge pull request" on GitHub
-# or via GitHub CLI:
-gh pr merge <pr-number> --merge
-```
-
-### Step 4: Automated Release Creation (Automatic)
-
-Once the Release PR is merged, `release-please` automatically:
-
-1. **Creates git tag** (e.g., `v1.1.0`) pointing to release commit
-2. **Triggers `release.yml` workflow** which:
-   - Builds signed AAB and APK artifacts
-   - Generates release notes from changelog
-   - Creates GitHub Release with artifacts attached
-   - Uploads AAB to Google Play Store
-   - Attaches build provenance attestation
-
-**Result:**
-- ✅ New GitHub Release published at https://github.com/mobilemobilellc/solpan/releases/tag/v1.1.0
-- ✅ Artifacts available for download (AAB, APK)
-- ✅ New version uploaded to Google Play Store
-
-## Manual Release (Emergency Only)
-
-If automated workflow fails and manual intervention is needed:
-
-### Trigger Release Workflow Manually
-
-```bash
-# Via GitHub CLI
-gh workflow run release.yml --ref main
-
-# Or via GitHub UI:
-# 1. Go to Actions → Create Release
-# 2. Click "Run workflow" with ref=main
-```
-
-### Manual Tag Creation (Last Resort)
-
-Only if release-please is broken and GitHub Actions is down:
-
-```bash
-# Update version files manually
-echo "appVersionName=1.1.0" >> gradle.properties
-echo "appVersionCode=2" >> gradle.properties
-
-# Commit and tag
-git add gradle.properties
-git commit -m "chore(release): v1.1.0"
-git tag -a v1.1.0 -m "Release v1.1.0"
-git push origin main v1.1.0
-```
-
-## Version Strategy
-
-SolPan follows [Semantic Versioning](https://semver.org/):
-
-- **MAJOR** (X.0.0) — Breaking API changes, incompatible user-facing changes
-- **MINOR** (0.X.0) — New features, backward compatible
-- **PATCH** (0.0.X) — Bug fixes and maintenance
-
-### Version File Format
-
-**gradle.properties:**
-```properties
-appVersionName=1.0.0  # Semantic version string (shown to users)
-appVersionCode=1      # Integer code (incremented for each release, used by Play Store)
-```
-
-**version.properties:**
-```properties
-versionName=1.0.0
-versionCode=1
-```
-
-Both are automatically updated by `release-please` and kept in sync.
-
-## Changelog Format
-
-The `CHANGELOG.md` is automatically generated by `release-please` and includes:
-
-- **Sections** for each commit type (Features, Bug Fixes, Performance, etc.)
-- **Links** to commits and PRs on GitHub
-- **Version headers** with release dates
-- **Comparison links** (e.g., "Unreleased" → "v1.0.0")
-
-Example:
-
-```markdown
-## [1.1.0] - 2025-06-15
-
-### Features
-- feat: add summer tilt mode optimization ([#42](https://github.com/mobilemobilellc/solpan/pull/42))
-- feat: implement magnetic declination auto-detection ([#40](https://github.com/mobilemobilellc/solpan/pull/40))
-
-### Bug Fixes
-- fix: correct azimuth calculation in southern hemisphere ([#39](https://github.com/mobilemobilellc/solpan/pull/39))
-
-### Performance
-- perf: reduce magnetometer polling frequency ([#38](https://github.com/mobilemobilellc/solpan/pull/38))
-
-## [1.0.0] - 2025-06-01
-```
-
-## Pre-release Versions
-
-`release.yml` picks the Google Play track from the tag name:
+The tag name picks the Play track:
 
 | Tag contains | Track |
 |---|---|
@@ -244,54 +54,29 @@ Example:
 | `-test.` | internal |
 | anything else | production |
 
-So a pre-release is just a tag:
+## Dry run
+
+A pull request never runs `release.yml`, so test a change to it with a dry run on its branch:
 
 ```bash
-git tag -a v1.1.0-alpha.1 -m "v1.1.0-alpha.1"
-git push origin v1.1.0-alpha.1
+gh workflow run release.yml --ref <branch> -f dry_run=true
 ```
 
-The workflow then builds and signs, publishes a GitHub Release marked pre-release, and uploads to the matching track with the generated notes.
+It builds the signed artifacts and uploads to a Play edit that is never committed. No GitHub Release, attestation or Play release is created. A dispatch defaults to a dry run, and a real release only ever runs from a `v*` tag.
 
-## Troubleshooting
+## Setup
 
-### Release PR didn't open
+Secrets and variables the pipeline reads:
 
-**Cause:** No conventional commits since last release, or commits don't match format.
+| Name | Kind | Used for |
+|---|---|---|
+| `RELEASE_APP_CLIENT_ID` | variable | GitHub App that release-please acts as |
+| `RELEASE_APP_PRIVATE_KEY` | secret | that app's private key |
+| `GOOGLE_PLAY_JSON_KEY` | secret | Play service account JSON, needs release rights on production |
+| `SIGNING_KEYSTORE_BASE64`, `SIGNING_KEY_ALIAS`, `SIGNING_STORE_PASSWORD`, `SIGNING_KEY_PASSWORD` | secrets | upload key |
+| `GOOGLE_SERVICES_JSON_BASE64` | secret | Firebase config, needed by every build |
+| `GRADLE_CACHE_ENCRYPTION_KEY` | secret | Gradle configuration cache |
 
-**Solution:**
-```bash
-# Verify commits are properly formatted
-git log --oneline main~10..main
+The GitHub App needs Contents, Pull requests and Issues read and write on this repository, and must be installed on it.
 
-# Check .release-please-config.json is valid JSON
-cat .release-please-config.json | python3 -m json.tool
-```
-
-### Version mismatch between files
-
-**Cause:** Manual changes or partial updates
-
-**Solution:**
-```bash
-# Release-please will fix on next run; or manually sync:
-grep "appVersionName" gradle.properties
-grep "versionName" version.properties
-# Ensure they match
-```
-
-### GitHub Actions failed
-
-**Cause:** Missing secrets or SDK download failures
-
-**Solution:**
-- Check workflow logs at Actions tab
-- Verify secrets: GOOGLE_SERVICES_JSON_BASE64, SIGNING_KEYSTORE_BASE64, GOOGLE_PLAY_JSON_KEY
-- Check Android SDK availability in runner
-
-## References
-
-- [release-please Documentation](https://github.com/googleapis/release-please)
-- [Conventional Commits](https://www.conventionalcommits.org/)
-- [Semantic Versioning](https://semver.org/)
-- [GitHub Actions Documentation](https://docs.github.com/en/actions)
+The Play listing (title, descriptions, graphics) is edited in the Play Console, not in this repository.

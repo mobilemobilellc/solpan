@@ -24,6 +24,7 @@ plugins {
     alias(libs.plugins.androidx.baselineprofile)
     alias(libs.plugins.google.gms.google.services)
     alias(libs.plugins.google.firebase.crashlytics)
+    alias(libs.plugins.play.publisher)
 }
 
 android {
@@ -101,6 +102,9 @@ android {
 
     experimentalProperties["android.experimental.enableScreenshotTest"] = true
 }
+
+// Credentials come from ANDROID_PUBLISHER_CREDENTIALS; release.yml picks the track per tag.
+play { defaultToAppBundles.set(true) }
 
 dependencies {
     implementation(project(":feature:optimizer"))

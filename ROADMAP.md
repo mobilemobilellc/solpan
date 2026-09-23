@@ -62,10 +62,6 @@ Both rule files are still the unmodified Android Studio templates, so nothing is
 
 The only persisted value is a `tutorialSeen` boolean, so neither is exposing anything today. The decision should still be explicit: either encrypt preferences and scope backup, or keep both as they are and say so. See [SECURITY.md](SECURITY.md).
 
-### Version numbering is inconsistent
-
-`.release-please-manifest.json` and `gradle.properties` both say `1.0.0`, but the newest tag is `v0.1.1` and no `v1.0.0` exists. The first release-please run therefore proposes 1.1.0 with a changelog covering the whole project history. Resolve by accepting that as a one-off backfill, curating it, or tagging `v1.0.0` on an earlier commit.
-
 ### Smaller items
 
 - Gradle reports `Deprecated Gradle features were used in this build, making it incompatible with Gradle 10`. Run with `--warning-mode all` to find them.
@@ -89,7 +85,7 @@ A short `docs/adr/` set covering the choices already made: Navigation 3 over Nav
 
 ### Release smoke check
 
-The release train works end to end: release-please opens the PR, merging it tags, and `release.yml` builds, signs, attests provenance and uploads to the Play track implied by the tag. What is missing is any check between tagging and publishing, so a broken build reaches a track before anyone looks at it.
+The release train works end to end: release-please opens the PR, merging it tags, and `release.yml` builds, signs, attests provenance and publishes a completed release to the Play track implied by the tag. What is missing is any check between tagging and publishing, so a broken build reaches users once Play's review passes, before anyone has run it.
 
 ### Wider device coverage
 

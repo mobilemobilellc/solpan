@@ -27,6 +27,7 @@ plugins {
   alias(libs.plugins.androidx.baselineprofile) apply false
   alias(libs.plugins.android.test) apply false
   alias(libs.plugins.screenshot) apply false
+  alias(libs.plugins.play.publisher) apply false
   alias(libs.plugins.dokka)
 }
 

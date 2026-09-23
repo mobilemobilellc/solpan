@@ -94,29 +94,9 @@ class DeviceOrientationController(
         SensorManager.getRotationMatrixFromVector(rotationMatrix, event.values)
         SensorManager.getOrientation(rotationMatrix, orientationAnglesOutput)
 
-        var azimuthInDegrees =
-            (
-                orientationAnglesOutput[ORIENTATION_INDEX_AZIMUTH].toDouble() *
-                    (DEGREES_PER_HALF_TURN / PI)
-            ).toFloat()
-        if (azimuthInDegrees < 0) {
-            azimuthInDegrees += FULL_CIRCLE_DEGREES
+        orientationFromRadians(orientationAnglesOutput, _orientation.value.sensorAccuracy)?.let {
+            _orientation.value = it
         }
-
-        val pitchInDegrees =
-            (orientationAnglesOutput[ORIENTATION_INDEX_PITCH].toDouble() * (DEGREES_PER_HALF_TURN / PI))
-                .toFloat()
-        val rollInDegrees =
-            (orientationAnglesOutput[ORIENTATION_INDEX_ROLL].toDouble() * (DEGREES_PER_HALF_TURN / PI))
-                .toFloat()
-
-        _orientation.value =
-            OrientationData(
-                azimuth = azimuthInDegrees.roundTo(2),
-                pitch = pitchInDegrees.roundTo(2),
-                roll = rollInDegrees.roundTo(2),
-                sensorAccuracy = _orientation.value.sensorAccuracy,
-            )
     }
 
     override fun onAccuracyChanged(
@@ -147,5 +127,31 @@ class DeviceOrientationController(
         private const val ORIENTATION_INDEX_AZIMUTH = 0
         private const val ORIENTATION_INDEX_PITCH = 1
         private const val ORIENTATION_INDEX_ROLL = 2
+
+        internal fun orientationFromRadians(
+            angles: FloatArray,
+            sensorAccuracy: Int?,
+        ): OrientationData? {
+            // getOrientation yields NaN when asin gets a matrix element just past ±1.
+            if (!angles.all { it.isFinite() }) return null
+
+            var azimuthInDegrees =
+                (angles[ORIENTATION_INDEX_AZIMUTH].toDouble() * (DEGREES_PER_HALF_TURN / PI)).toFloat()
+            if (azimuthInDegrees < 0) {
+                azimuthInDegrees += FULL_CIRCLE_DEGREES
+            }
+
+            val pitchInDegrees =
+                (angles[ORIENTATION_INDEX_PITCH].toDouble() * (DEGREES_PER_HALF_TURN / PI)).toFloat()
+            val rollInDegrees =
+                (angles[ORIENTATION_INDEX_ROLL].toDouble() * (DEGREES_PER_HALF_TURN / PI)).toFloat()
+
+            return OrientationData(
+                azimuth = azimuthInDegrees.roundTo(2),
+                pitch = pitchInDegrees.roundTo(2),
+                roll = rollInDegrees.roundTo(2),
+                sensorAccuracy = sensorAccuracy,
+            )
+        }
     }
 }

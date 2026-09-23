@@ -80,6 +80,7 @@
   <!-- Added -->
       
   <string name="guidance_waiting_for_target">ガイダンスを提供するためのターゲット パラメータを待機しています...</string>
+  <string name="guidance_sun_below_horizon">太陽は地平線の下にあります。日の出を待つか、別のモードを選んでください。</string>
       
   <string name="guidance_azimuth_aligned">方位角が揃いました！</string>
       

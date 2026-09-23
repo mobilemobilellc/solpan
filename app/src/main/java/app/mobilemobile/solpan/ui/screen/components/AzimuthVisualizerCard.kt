@@ -43,14 +43,14 @@ fun AzimuthVisualizerCard(
     modifier: Modifier = Modifier,
     debugFakeAlignmentActive: Boolean = false,
 ) {
-    if (targetParameters == null) {
+    if (targetParameters == null || targetParameters.isSunBelowHorizon) {
         InfoCard(
             title = stringResource(id = R.string.azimuth_visualizer_card_title),
             icon = Icons.Filled.Explore,
             modifier = modifier,
         ) {
             Text(
-                text = stringResource(id = R.string.guidance_waiting_for_target),
+                text = stringResource(id = noTargetMessage(targetParameters)),
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(8.dp),

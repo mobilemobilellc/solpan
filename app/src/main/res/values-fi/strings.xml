@@ -80,6 +80,7 @@
   <!-- Added -->
       
   <string name="guidance_waiting_for_target">Odotetaan kohdeparametrien ohjeita…</string>
+  <string name="guidance_sun_below_horizon">Aurinko on horisontin alapuolella. Odota auringonnousua tai valitse toinen tila.</string>
       
   <string name="guidance_azimuth_aligned">Atsimuutti on linjassa!</string>
       

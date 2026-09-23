@@ -80,6 +80,7 @@
   <!-- Added -->
       
   <string name="guidance_waiting_for_target">กำลังรอพารามิเตอร์เป้าหมายเพื่อให้คำแนะนำ…</string>
+  <string name="guidance_sun_below_horizon">ดวงอาทิตย์อยู่ใต้ขอบฟ้า รอให้ดวงอาทิตย์ขึ้น หรือเลือกโหมดอื่น</string>
       
   <string name="guidance_azimuth_aligned">ทิศทางถูกจัดวางแล้ว!</string>
       

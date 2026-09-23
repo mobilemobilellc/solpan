@@ -80,6 +80,7 @@
   <!-- Added -->
       
   <string name="guidance_waiting_for_target">ממתין שפרמטרי היעד יספקו הנחיות...</string>
+  <string name="guidance_sun_below_horizon">השמש מתחת לאופק. המתן לזריחה, או בחר מצב אחר.</string>
       
   <string name="guidance_azimuth_aligned">האזימוט מיושר!</string>
       

@@ -80,6 +80,7 @@
   <!-- Added -->
       
   <string name="guidance_waiting_for_target">Wachten op doelparameters die richting geven…</string>
+  <string name="guidance_sun_below_horizon">De zon staat onder de horizon. Wacht op zonsopkomst of kies een andere modus.</string>
       
   <string name="guidance_azimuth_aligned">Azimuth is uitgelijnd!</string>
       

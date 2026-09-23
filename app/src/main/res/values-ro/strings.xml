@@ -80,6 +80,7 @@
   <!-- Added -->
       
   <string name="guidance_waiting_for_target">Se așteaptă ca parametrii țintă să ofere îndrumări…</string>
+  <string name="guidance_sun_below_horizon">Soarele este sub orizont. Așteaptă răsăritul sau alege alt mod.</string>
       
   <string name="guidance_azimuth_aligned">Azimutul este aliniat!</string>
       

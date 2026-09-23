@@ -80,6 +80,7 @@
   <!-- Added -->
       
   <string name="guidance_waiting_for_target">في انتظار معلمات الهدف لتوفير الإرشادات…</string>
+  <string name="guidance_sun_below_horizon">الشمس تحت الأفق. انتظر شروق الشمس، أو اختر وضعًا آخر.</string>
       
   <string name="guidance_azimuth_aligned">تم محاذاة السمت!</string>
       

@@ -80,6 +80,7 @@
   <!-- Added -->
       
   <string name="guidance_waiting_for_target">Menunggu parameter target untuk memberikan panduan…</string>
+  <string name="guidance_sun_below_horizon">Matahari berada di bawah cakrawala. Tunggu matahari terbit, atau pilih mode lain.</string>
       
   <string name="guidance_azimuth_aligned">Azimuth sejajar!</string>
       

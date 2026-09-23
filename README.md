@@ -93,7 +93,7 @@ git clone https://github.com/mobilemobilellc/solpan.git
 | Async | [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) and Flow |
 | Permissions | [Accompanist Permissions](https://google.github.io/accompanist/permissions/) |
 | Persistence | [DataStore Preferences](https://developer.android.com/topic/libraries/architecture/datastore) |
-| Analytics | Firebase Analytics, Crashlytics and Performance, behind `AnalyticsTracker` |
+| Analytics | Firebase Analytics behind `AnalyticsTracker`, and Crashlytics |
 | Solar maths | [Commons Suncalc](https://shredzone.org/maven/commons-suncalc/) |
 | Screenshot tests | [Compose Screenshot Testing](https://developer.android.com/studio/test/screenshot-testing) |
 | Code quality | [Detekt](https://detekt.dev/) 1.23.8, [Spotless](https://github.com/diffplug/spotless) 8.10.2 with [ktlint](https://ktlint.github.io/) 1.8.0 |

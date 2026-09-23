@@ -67,4 +67,4 @@ Develocity is configured for this repo, so `--scan` gives a task-level timeline.
 
 ## In production
 
-Firebase Performance Monitoring and Crashlytics are wired through `AnalyticsTracker`. They report startup time, network traces and crash-free sessions from real devices, which is the only measurement here that covers hardware the project does not own.
+Crashlytics reports crashes and crash-free sessions from real devices, which is the only signal here that covers hardware the project does not own. Performance Monitoring is not included, so there is no field data on startup time.

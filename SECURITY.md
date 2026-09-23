@@ -50,7 +50,7 @@ Both rule files are still the unmodified Android Studio templates, with their co
 
 ## Network
 
-The app makes no direct HTTP calls. Solar position comes from Commons Suncalc, computed offline. The only traffic is Firebase Analytics, Crashlytics and Performance, over Google's own transport.
+The app makes no direct HTTP calls. Solar position comes from Commons Suncalc, computed offline. The only traffic is Firebase Analytics and Crashlytics, over Google's own transport.
 
 `android:usesCleartextTraffic` is not set. On API 28 and above the platform default is false. `minSdk` is 26, so on API 26 and 27 cleartext would be permitted; nothing in the app makes such a request.
 

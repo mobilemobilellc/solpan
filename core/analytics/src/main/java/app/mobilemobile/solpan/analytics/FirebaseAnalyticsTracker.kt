@@ -14,15 +14,24 @@
  */
 package app.mobilemobile.solpan.analytics
 
+import com.google.firebase.Firebase
+import com.google.firebase.analytics.analytics
+import com.google.firebase.analytics.logEvent
+
 /**
- * Does nothing. The Firebase dependencies in this module are commented out, so this stands in for
- * the real tracker and keeps the call sites compiling. Swap it for a Firebase-backed implementation
- * when those dependencies come back.
+ * Logs to Firebase Analytics under the event names 0.1.1 shipped with, so existing reports keep
+ * working.
  */
 class FirebaseAnalyticsTracker : AnalyticsTracker {
-    override fun logTutorialStarted() = Unit
+    private val analytics = Firebase.analytics
 
-    override fun logTutorialEnded() = Unit
+    override fun logTutorialStarted() = analytics.logEvent("start_tutorial", null)
 
-    override fun logPermissionResult(granted: Boolean) = Unit
+    override fun logTutorialEnded() = analytics.logEvent("end_tutorial", null)
+
+    override fun logPermissionResult(granted: Boolean) =
+        analytics.logEvent("permission_request_response") {
+            param("permission_type", "location")
+            param("permission_granted", granted.toString())
+        }
 }

@@ -13,7 +13,7 @@ If you have any questions or suggestions about our Privacy Policy, do not hesita
 Our App is designed to help you with your solar panel needs. To provide our services, we may collect the following information:
 
 *   **Location Data:** We may collect your device's location to provide location-based services, such as calculating sun exposure and panel orientation. This data is used only while you are actively using the App and is not stored or shared with third parties.
-*   **Analytics:** We use Firebase Crashlytics to collect anonymized information about user behavior. This helps us understand how our App is being used so we can improve it. This data includes crash reports and information about which screens are used. This information is aggregated and cannot be used to identify individual users.
+*   **Analytics:** We use Firebase Analytics and Firebase Crashlytics to collect anonymized information about user behavior. This helps us understand how our App is being used so we can improve it. This data includes crash reports and information about which screens are used. This information is aggregated and cannot be used to identify individual users.
 
 **How We Use Your Information**
 
@@ -30,7 +30,7 @@ We use the information we collect to:
 We may use third-party services that have their own privacy policies. We are not responsible for the practices of these services.
 
 *   [Google Play Services](https://www.google.com/policies/privacy/)
-*   [Firebase Crashlytics](https://firebase.google.com/support/privacy/)
+*   [Firebase Analytics and Crashlytics](https://firebase.google.com/support/privacy/)
 
 **Your Consent**
 

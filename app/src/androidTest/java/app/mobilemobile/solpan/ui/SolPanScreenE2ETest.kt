@@ -20,7 +20,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import app.mobilemobile.solpan.analytics.FirebaseAnalyticsTracker
+import app.mobilemobile.solpan.analytics.AnalyticsTracker
 import app.mobilemobile.solpan.data.DataStoreUserPreferencesRepository
 import app.mobilemobile.solpan.data.DefaultLocationRepository
 import app.mobilemobile.solpan.model.TiltMode
@@ -44,7 +44,14 @@ class SolPanScreenE2ETest {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         val preferencesRepository = DataStoreUserPreferencesRepository(context)
         val locationRepository = DefaultLocationRepository()
-        val analyticsTracker = FirebaseAnalyticsTracker()
+        val analyticsTracker =
+            object : AnalyticsTracker {
+                override fun logTutorialStarted() = Unit
+
+                override fun logTutorialEnded() = Unit
+
+                override fun logPermissionResult(granted: Boolean) = Unit
+            }
         val magneticDeclinationProvider = AndroidMagneticDeclinationProvider()
 
         return SolPanViewModel(

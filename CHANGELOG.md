@@ -5,6 +5,24 @@ All notable changes to SolPan are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.3](https://github.com/mobilemobilellc/solpan/compare/v1.2.2...v1.2.3) (2026-09-23)
+
+
+### Bug Fixes
+
+* don't crash when the settings file can't be read ([#173](https://github.com/mobilemobilellc/solpan/issues/173)) ([5cf016b](https://github.com/mobilemobilellc/solpan/commit/5cf016b05b85ee81be388c9b51d225bb5f0f0963))
+* keep guidance right when the screen is in landscape ([#176](https://github.com/mobilemobilellc/solpan/issues/176)) ([c562d46](https://github.com/mobilemobilellc/solpan/commit/c562d46574d0ba79f6c3646b4fefd0ee5558bf63))
+* point realtime mode at the sun, and say when it has set ([#171](https://github.com/mobilemobilellc/solpan/issues/171)) ([3a5b167](https://github.com/mobilemobilellc/solpan/commit/3a5b167079f67a9d496573cf49f2330324e84cda))
+* point the turn and tilt instructions the right way ([#182](https://github.com/mobilemobilellc/solpan/issues/182)) ([c684c1d](https://github.com/mobilemobilellc/solpan/commit/c684c1d461b847dca69eb7146db77ffc04fbbc65))
+* stop using location and sensors while the app is in the background ([#175](https://github.com/mobilemobilellc/solpan/issues/175)) ([21b7e3f](https://github.com/mobilemobilellc/solpan/commit/21b7e3f139b074a15c3c4b2668e2c694e354d2b9))
+* work with approximate location ([#172](https://github.com/mobilemobilellc/solpan/issues/172)) ([3e3f564](https://github.com/mobilemobilellc/solpan/commit/3e3f564350118c3c3225cbd7b369427a179cae35))
+
+
+### Chores
+
+* **deps:** update androidx ([#174](https://github.com/mobilemobilellc/solpan/issues/174)) ([5d56c15](https://github.com/mobilemobilellc/solpan/commit/5d56c15ce966942fa5f3861d15910f446f9f2a35))
+* **deps:** update androidx.compose:compose-bom-alpha to v2026.09.01 ([#179](https://github.com/mobilemobilellc/solpan/issues/179)) ([0ff420d](https://github.com/mobilemobilellc/solpan/commit/0ff420d50b5959b3d34e3b1d09762b9a6e302d71))
+
 ## [1.2.2](https://github.com/mobilemobilellc/solpan/compare/v1.2.1...v1.2.2) (2026-09-23)
 
 

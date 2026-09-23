@@ -62,14 +62,17 @@ git clone https://github.com/mobilemobilellc/solpan.git
 # Format every module
 ./gradlew spotlessApply
 
-# Static analysis (:app only, see ROADMAP.md)
-./gradlew app:detekt
+# Static analysis, every module
+./gradlew detekt
 
-# Unit tests (31 tests)
-./gradlew :app:testDebugUnitTest
+# Unit tests, every module (30 tests)
+./gradlew testDebugUnitTest
 
 # Coverage report, written to app/build/reports/jacoco/
 ./gradlew app:jacocoTestReport
+
+# Fail if coverage drops below the floor
+./gradlew app:jacocoCoverageVerification
 
 # Regenerate screenshot reference images after an intentional UI change
 ./gradlew :app:updateDebugScreenshotTest

@@ -96,4 +96,4 @@ Versions are pinned in `gradle/libs.versions.toml` and moved by Renovate, so the
 
 There are currently **18 open alerts**, 1 critical and 7 high, in netty, bouncycastle, jackson and wire. These appear to come from the Gradle build classpath surfaced by dependency submission rather than from anything shipped in the APK, but which configuration they sit on has not been verified. Treat that as unconfirmed until it is.
 
-Static analysis runs on every build: detekt uploads SARIF to the Security tab, and spotless enforces formatting across every module.
+Static analysis runs on every build. detekt and spotless both cover all seven modules, and every module's detekt findings are uploaded as SARIF to the Security tab. There is no detekt baseline: a finding is fixed, or the rule is disabled in `detekt.yml` with a stated reason.

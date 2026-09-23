@@ -20,6 +20,10 @@ internal fun Project.configureKotlinAndroidApp(
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
 
+        // Without this a library module emits no .exec, so its tests count for nothing in the
+        // aggregate coverage report.
+        buildTypes { getByName("debug") { enableUnitTestCoverage = true } }
+
         compileOptions {
             sourceCompatibility = org.gradle.api.JavaVersion.VERSION_21
             targetCompatibility = org.gradle.api.JavaVersion.VERSION_21
@@ -45,6 +49,10 @@ internal fun Project.configureKotlinAndroidLibrary(
             minSdk = 26
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
+
+        // Without this a library module emits no .exec, so its tests count for nothing in the
+        // aggregate coverage report.
+        buildTypes { getByName("debug") { enableUnitTestCoverage = true } }
 
         compileOptions {
             sourceCompatibility = org.gradle.api.JavaVersion.VERSION_21

@@ -46,6 +46,7 @@
     <string name="guidance_card_title">Panel Alignment Instructions</string> <!-- Modified -->
     <string name="azimuth_visualizer_card_title">Device Alignment Visualizer</string> <!-- Added -->
     <string name="guidance_waiting_for_target">Waiting for target parameters to provide guidance…</string>
+    <string name="guidance_sun_below_horizon">The sun is below the horizon. Wait for sunrise, or choose another mode.</string>
     <string name="guidance_azimuth_aligned">Azimuth is aligned!</string>
     <string name="guidance_azimuth_rotate_right">Rotate device RIGHT (Clockwise to %1$s°)</string>
     <string name="guidance_azimuth_rotate_left">Rotate device LEFT (Counter-Clockwise to %1$s°)</string>

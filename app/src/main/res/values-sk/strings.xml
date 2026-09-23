@@ -80,6 +80,7 @@
   <!-- Added -->
       
   <string name="guidance_waiting_for_target">Čaká sa na cieľové parametre, ktoré poskytnú usmernenie…</string>
+  <string name="guidance_sun_below_horizon">Slnko je pod obzorom. Počkajte na východ slnka alebo zvoľte iný režim.</string>
       
   <string name="guidance_azimuth_aligned">Azimut je zarovnaný!</string>
       

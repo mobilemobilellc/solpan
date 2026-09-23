@@ -14,6 +14,7 @@
  */
 package app.mobilemobile.solpan.ui.screen.components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -71,14 +72,14 @@ fun GuidanceCard(
     modifier: Modifier = Modifier,
     debugFakeAlignmentActive: Boolean = false,
 ) {
-    if (targetParameters == null) {
+    if (targetParameters == null || targetParameters.isSunBelowHorizon) {
         InfoCard(
             title = stringResource(id = R.string.guidance_card_title),
             icon = Icons.Filled.Tune,
             modifier = modifier,
         ) {
             Text(
-                text = stringResource(id = R.string.guidance_waiting_for_target),
+                text = stringResource(id = noTargetMessage(targetParameters)),
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(8.dp),
@@ -386,3 +387,12 @@ private fun rollGuidance(alignment: AlignmentState): AxisGuidance {
         }
     }
 }
+
+/** Why a card has no target to guide towards: no fix yet, or the sun is down in REALTIME. */
+@StringRes
+internal fun noTargetMessage(targetParameters: OptimalPanelParameters?): Int =
+    if (targetParameters == null) {
+        R.string.guidance_waiting_for_target
+    } else {
+        R.string.guidance_sun_below_horizon
+    }

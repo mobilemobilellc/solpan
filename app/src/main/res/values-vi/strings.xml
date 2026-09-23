@@ -80,6 +80,7 @@
   <!-- Added -->
       
   <string name="guidance_waiting_for_target">Đang chờ các thông số mục tiêu để cung cấp hướng dẫn…</string>
+  <string name="guidance_sun_below_horizon">Mặt trời đang ở dưới đường chân trời. Hãy chờ mặt trời mọc hoặc chọn chế độ khác.</string>
       
   <string name="guidance_azimuth_aligned">Phương vị đã được căn chỉnh!</string>
       

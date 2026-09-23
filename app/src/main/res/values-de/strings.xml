@@ -80,6 +80,7 @@
   <!-- Added -->
       
   <string name="guidance_waiting_for_target">Warten auf Zielparameter zur Orientierung …</string>
+  <string name="guidance_sun_below_horizon">Die Sonne steht unter dem Horizont. Warte auf den Sonnenaufgang oder wähle einen anderen Modus.</string>
       
   <string name="guidance_azimuth_aligned">Azimut ist ausgerichtet!</string>
       

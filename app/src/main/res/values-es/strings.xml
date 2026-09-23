@@ -80,6 +80,7 @@
   <!-- Added -->
       
   <string name="guidance_waiting_for_target">Esperando que los parámetros objetivo proporcionen orientación…</string>
+  <string name="guidance_sun_below_horizon">El sol está bajo el horizonte. Espera al amanecer o elige otro modo.</string>
       
   <string name="guidance_azimuth_aligned">¡Azimut está alineado!</string>
       

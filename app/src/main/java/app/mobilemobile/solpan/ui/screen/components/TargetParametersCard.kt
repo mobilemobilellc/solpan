@@ -16,6 +16,8 @@ package app.mobilemobile.solpan.ui.screen.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -44,6 +46,11 @@ fun TargetParametersCard(
             InfoRow(
                 label = stringResource(id = R.string.calculating_text),
                 value = stringResource(id = R.string.target_param_waiting_location_text),
+            )
+        } else if (params.isSunBelowHorizon) {
+            Text(
+                text = stringResource(id = noTargetMessage(params)),
+                style = MaterialTheme.typography.bodyMedium,
             )
         } else {
             InfoRow(

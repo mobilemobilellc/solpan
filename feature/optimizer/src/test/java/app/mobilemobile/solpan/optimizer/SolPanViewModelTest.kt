@@ -28,10 +28,13 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SolPanViewModelTest {
@@ -113,4 +116,29 @@ class SolPanViewModelTest {
                 winter.targetTilt > yearRound.targetTilt,
             )
         }
+
+    @Test
+    fun `realtime at equinox solar noon matches year-round tilt`() {
+        val vm = createViewModel(TiltMode.REALTIME)
+        val location = LocationData(latitude = 40.0, longitude = 0.0)
+        val solarNoon = ZonedDateTime.of(2026, 3, 20, 12, 7, 0, 0, ZoneOffset.UTC)
+
+        val realtime = vm.calculateOptimalParameters(location, null, TiltMode.REALTIME, solarNoon)!!
+        val yearRound = vm.calculateOptimalParameters(location, null, TiltMode.YEAR_ROUND, solarNoon)!!
+
+        assertEquals(yearRound.targetTilt, realtime.targetTilt, 1.0)
+        assertEquals(180.0, realtime.targetTrueAzimuth, 2.0)
+        assertFalse(realtime.isSunBelowHorizon)
+    }
+
+    @Test
+    fun `realtime at midnight reports the sun below the horizon`() {
+        val vm = createViewModel(TiltMode.REALTIME)
+        val location = LocationData(latitude = 40.0, longitude = 0.0)
+        val midnight = ZonedDateTime.of(2026, 3, 20, 0, 0, 0, 0, ZoneOffset.UTC)
+
+        val params = vm.calculateOptimalParameters(location, null, TiltMode.REALTIME, midnight)!!
+
+        assertTrue(params.isSunBelowHorizon)
+    }
 }

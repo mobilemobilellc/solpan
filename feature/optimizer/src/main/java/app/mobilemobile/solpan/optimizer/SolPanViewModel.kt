@@ -293,7 +293,7 @@ public class SolPanViewModel(
      * Calculates optimal solar panel parameters for a given mode and location.
      *
      * Computation varies by tilt mode:
-     * - **REALTIME**: Uses current sun position from ephemeris
+     * - **REALTIME**: Points the panel at the current sun position
      * - **SUMMER**: Uses summer solstice approximation (lat ± 23.5°)
      * - **WINTER**: Uses winter solstice approximation (lat ± 23.5°)
      * - **SPRING_AUTUMN/YEAR_ROUND**: Uses latitude directly (average annual)
@@ -303,18 +303,21 @@ public class SolPanViewModel(
      * @param location The current location, or null to return null
      * @param declination Magnetic declination in degrees, or null to omit magnetic azimuth
      * @param mode The tilt mode determining calculation strategy
+     * @param now The instant [TiltMode.REALTIME] takes the sun position for
      * @return [OptimalPanelParameters] with target azimuth and tilt, or null if location unavailable
      */
-    private fun calculateOptimalParameters(
+    internal fun calculateOptimalParameters(
         location: LocationData?,
         declination: Float?,
         mode: TiltMode,
+        now: ZonedDateTime = ZonedDateTime.now(),
     ): OptimalPanelParameters? {
         if (location == null) return null
 
         val lat = location.latitude
         val targetTrueAzimuth: Double
         val targetTilt: Double
+        var isSunBelowHorizon = false
 
         val fixedTrueAzimuthEquator = if (lat > 0) SOUTH_FACING_AZIMUTH else 0.0
 
@@ -322,12 +325,18 @@ public class SolPanViewModel(
             TiltMode.REALTIME -> {
                 val currentSunPos =
                     SolarCalculator.calculateSunPosition(
-                        dateTime = ZonedDateTime.now(),
+                        dateTime = now,
                         latitude = lat,
                         longitude = location.longitude,
                     )
                 targetTrueAzimuth = currentSunPos.azimuth
-                targetTilt = currentSunPos.altitude.coerceIn(0.0, MAX_PANEL_TILT_DEGREES)
+                // A panel faces the sun when its tilt from horizontal is the sun's zenith angle.
+                targetTilt =
+                    (MAX_PANEL_TILT_DEGREES - currentSunPos.altitude).coerceIn(
+                        0.0,
+                        MAX_PANEL_TILT_DEGREES,
+                    )
+                isSunBelowHorizon = currentSunPos.altitude < 0.0
             }
 
             TiltMode.WINTER -> {
@@ -359,6 +368,7 @@ public class SolPanViewModel(
             targetTilt = targetTilt,
             mode = mode,
             magneticDeclination = declination,
+            isSunBelowHorizon = isSunBelowHorizon,
         )
     }
 }

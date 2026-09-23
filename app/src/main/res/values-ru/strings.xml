@@ -80,6 +80,7 @@
   <!-- Added -->
       
   <string name="guidance_waiting_for_target">Ожидание целевых параметров для руководства…</string>
+  <string name="guidance_sun_below_horizon">Солнце за горизонтом. Дождитесь восхода или выберите другой режим.</string>
       
   <string name="guidance_azimuth_aligned">Азимут выровнен!</string>
       

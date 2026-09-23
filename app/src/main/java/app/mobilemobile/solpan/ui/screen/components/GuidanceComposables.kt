@@ -14,6 +14,7 @@
  */
 package app.mobilemobile.solpan.ui.screen.components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -71,14 +72,14 @@ fun GuidanceCard(
     modifier: Modifier = Modifier,
     debugFakeAlignmentActive: Boolean = false,
 ) {
-    if (targetParameters == null) {
+    if (targetParameters == null || targetParameters.isSunBelowHorizon) {
         InfoCard(
             title = stringResource(id = R.string.guidance_card_title),
             icon = Icons.Filled.Tune,
             modifier = modifier,
         ) {
             Text(
-                text = stringResource(id = R.string.guidance_waiting_for_target),
+                text = stringResource(id = noTargetMessage(targetParameters)),
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(8.dp),
@@ -289,18 +290,19 @@ private fun azimuthGuidance(alignment: AlignmentState): AzimuthGuidance {
             AzimuthGuidance(stringResource(id = R.string.guidance_azimuth_aligned), 0f, 1.0f)
         }
 
+        // Azimuth grows clockwise, so a positive difference means turning right.
         alignment.azimuthDifference > 0 -> {
             AzimuthGuidance(
-                stringResource(id = R.string.guidance_azimuth_rotate_left, target),
-                -AZIMUTH_ICON_ROTATION_DEGREES,
+                stringResource(id = R.string.guidance_azimuth_rotate_right, target),
+                AZIMUTH_ICON_ROTATION_DEGREES,
                 axisProgress(alignment.azimuthDifference, false, MAX_RELEVANT_AZIMUTH_DIFF_DEGREES),
             )
         }
 
         else -> {
             AzimuthGuidance(
-                stringResource(id = R.string.guidance_azimuth_rotate_right, target),
-                AZIMUTH_ICON_ROTATION_DEGREES,
+                stringResource(id = R.string.guidance_azimuth_rotate_left, target),
+                -AZIMUTH_ICON_ROTATION_DEGREES,
                 axisProgress(alignment.azimuthDifference, false, MAX_RELEVANT_AZIMUTH_DIFF_DEGREES),
             )
         }
@@ -325,18 +327,19 @@ private fun tiltGuidance(alignment: AlignmentState): AxisGuidance {
             )
         }
 
+        // Tilt is how far the top edge is raised, so below target means raise it.
         alignment.tiltDifference > 0 -> {
             AxisGuidance(
-                stringResource(id = R.string.guidance_tilt_down, target),
-                Icons.Filled.ArrowDownward,
+                stringResource(id = R.string.guidance_tilt_up, target),
+                Icons.Filled.ArrowUpward,
                 progress,
             )
         }
 
         else -> {
             AxisGuidance(
-                stringResource(id = R.string.guidance_tilt_up, target),
-                Icons.Filled.ArrowUpward,
+                stringResource(id = R.string.guidance_tilt_down, target),
+                Icons.Filled.ArrowDownward,
                 progress,
             )
         }
@@ -386,3 +389,12 @@ private fun rollGuidance(alignment: AlignmentState): AxisGuidance {
         }
     }
 }
+
+/** Why a card has no target to guide towards: no fix yet, or the sun is down in REALTIME. */
+@StringRes
+internal fun noTargetMessage(targetParameters: OptimalPanelParameters?): Int =
+    if (targetParameters == null) {
+        R.string.guidance_waiting_for_target
+    } else {
+        R.string.guidance_sun_below_horizon
+    }

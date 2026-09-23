@@ -4,22 +4,26 @@ How SolPan is tested, what that currently covers, and where the holes are. For t
 
 ## What exists
 
-| Source set | Files | Runs | What it does |
-|---|---|---|---|
-| `app/src/test` | 9 | CI, every push and PR | 31 JVM unit tests plus three fakes |
-| `app/src/androidTest` | 2 | never in CI | instrumented tests, need a device |
-| `app/src/screenshotTest` | 2 | CI, every push and PR | 2 previews, compared against committed references |
-| `baselineprofile/` | 2 | never in CI | macrobenchmarks, need a physical device |
+| Source set | Runs | What it does |
+|---|---|---|
+| `core/solar/src/test` | CI, every push and PR | 12 tests: solar position and alignment |
+| `feature/optimizer/src/test` | CI, every push and PR | 8 tests: ViewModel and tutorial flow, plus three fakes |
+| `app/src/test` | CI, every push and PR | 10 tests: locale-aware formatting |
+| `app/src/screenshotTest` | CI, every push and PR | 2 previews, compared against committed references |
+| `app/src/androidTest` | never in CI | instrumented tests, need a device |
+| `baselineprofile/` | never in CI | macrobenchmarks, need a physical device |
+
+30 unit tests in total.
 
 ## Unit tests
 
 Plain JUnit with `kotlinx-coroutines-test`. No mocking framework: collaborators are hand-written fakes (`FakeAnalyticsTracker`, `FakeUserPreferencesRepository`, `FakeMagneticDeclinationProvider`), which is why the `AnalyticsTracker` and repository interfaces exist.
 
 ```bash
-./gradlew :app:testDebugUnitTest
+./gradlew testDebugUnitTest
 ```
 
-The tests live in `:app` but exercise code in `core` and `feature`. That is a known wrinkle, not a design: see [ROADMAP.md](ROADMAP.md).
+Each test lives in the module it covers, so a module's tests run when that module changes.
 
 What is covered:
 
@@ -41,9 +45,9 @@ JaCoCo, via the `solpan.jacoco.report` convention plugin. The report spans every
 
 CI runs the same task and comments the total on every pull request.
 
-Current: **12.8% line coverage**, 192 of 1500 lines. `solpan.model` is at 100%, `solpan.optimizer` at 68%, and every `solpan.ui.*` package at 0%.
+Current: **12.61% line coverage**, 194 of 1538 lines. `solpan.model` is at 100%, `solpan.optimizer` at 68%, and every `solpan.ui.*` package at 0%.
 
-Nothing enforces a minimum. A drop will be visible in the PR comment and will not fail the build.
+`app:jacocoCoverageVerification` fails the build below **12%**, which CI runs on every pull request. It is a ratchet against regression rather than a target, and the headroom is currently thin: see [ROADMAP.md](ROADMAP.md).
 
 ## Screenshot tests
 
@@ -76,10 +80,10 @@ Two reference images are committed under `app/src/screenshotTestDebug/reference/
 `Build and Test` on every push to `main` and every pull request:
 
 ```bash
-./gradlew app:detekt spotlessCheck :app:testDebugUnitTest :app:assembleDebug app:jacocoTestReport
+./gradlew detekt spotlessCheck testDebugUnitTest :app:assembleDebug app:jacocoTestReport app:jacocoCoverageVerification
 ./gradlew :app:validateDebugScreenshotTest
 ```
 
-`Merge Queue Checks` runs the same set minus coverage when a pull request is queued. Note that `detekt` is `app:`-scoped in both while `spotlessCheck` is repo-wide; that asymmetry is deliberate and explained in [ROADMAP.md](ROADMAP.md).
+`Merge Queue Checks` runs the same set minus coverage when a pull request is queued. Everything except the screenshot and APK tasks is unscoped, so it covers all seven modules.
 
 Test results are published through `mikepenz/action-junit-report`, and detekt findings are uploaded as SARIF so they appear in the Security tab.

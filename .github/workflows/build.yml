@@ -58,11 +58,22 @@ jobs:
           path: app/build/outputs/screenshotTest/debug/preview/diffs/
           if-no-files-found: ignore
 
+      - name: Collect detekt SARIF from every module
+        if: success() || failure()
+        run: |
+          mkdir -p build/sarif
+          find . -path '*/build/reports/detekt/detekt.sarif' -print0 |
+            while IFS= read -r -d '' f; do
+              module=$(printf '%s' "$f" | sed 's#^\./##; s#/build/reports/detekt/detekt.sarif$##; s#/#-#g')
+              cp "$f" "build/sarif/detekt-${module}.sarif"
+            done
+          ls -1 build/sarif
+
       - name: Upload SARIF to GitHub using the upload-sarif action
         uses: github/codeql-action/upload-sarif@v4
         if: success() || failure()
         with:
-          sarif_file: app/build/reports/detekt/detekt.sarif
+          sarif_file: build/sarif
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v6

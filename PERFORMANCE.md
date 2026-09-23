@@ -16,11 +16,13 @@ Wiring it means applying `androidx.baselineprofile` to both `:app` and `:baselin
 
 ### Startup and frame timing
 
-The macrobenchmarks in `baselineprofile/` are the intended path, on a physical device. Until the baseline profile plugin is applied there is no benchmark variant, so the module runs as an ordinary instrumented test:
+The macrobenchmarks in `baselineprofile/` are the intended path, on a physical device:
 
 ```bash
-./gradlew :baselineprofile:connectedDebugAndroidTest
+./gradlew :baselineprofile:connectedBenchmarkReleaseAndroidTest
 ```
+
+They do not yet yield a profile: the run stops at macrobenchmark's device-state checks. See [ROADMAP.md](ROADMAP.md).
 
 For a quick read without the harness:
 

@@ -13,19 +13,21 @@ That leaves the real gap, which was always the UI:
 | Package | Lines | Coverage |
 |---|---|---|
 | `solpan.model` | 78 | 100% |
-| `solpan.optimizer` | 137 | 68% |
-| `solpan.ui.screen.components` | 384 | 0% |
-| `solpan.ui.components` | 364 | 0% |
+| `solpan.optimizer` | 139 | 68% |
+| `solpan.ui.screen.components` | 404 | 0% |
+| `solpan.ui.components` | 380 | 0% |
 | `solpan.ui.screen` | 158 | 0% |
-| `solpan.orientation` | 66 | 0% |
+| `solpan.orientation` | 70 | 0% |
 
-Overall 12.9%, 192 of 1493 lines. Roughly 900 of the uncovered lines are composables, where screenshot tests are a better fit than unit tests. `solpan.orientation` holds the sensor fusion and is the clearest unit-testable gap left.
+Overall 12.61%, 194 of 1538 lines. Roughly 940 of the uncovered lines are composables, where screenshot tests are a better fit than unit tests. `solpan.orientation` holds the sensor fusion and is the clearest unit-testable gap left: 70 lines of maths behind an interface, with no Android types in the way.
 
-### The coverage floor is low
+### The coverage floor has thin headroom
 
-`app:jacocoCoverageVerification` runs in CI and fails the build if line coverage drops below **12%**, against a current 12.86%. That is a ratchet against regression, not a target: it stops a change quietly removing tests or landing a large untested surface, and nothing more.
+`app:jacocoCoverageVerification` runs in CI and fails the build below **12%** line coverage. Current is **12.61%**, so there is about half a point of room.
 
-Raise `MINIMUM_LINE_COVERAGE` in `JacocoReportConventionPlugin` as coverage rises. The gate was checked both ways, passing at 12% and failing at 50%, so it does bite.
+That is tighter than it was. The detekt refactor added 45 lines of extracted helpers, all uncovered, and the figure fell from 12.86% to 12.61% without a single test being removed. Any further extraction does the same. Either add tests for `solpan.orientation`, which is the cheapest real coverage available, or accept that the floor will need lowering once, deliberately, rather than being tripped by accident.
+
+The gate was checked both ways, passing at 12% and failing at 50%, so it does bite. `MINIMUM_LINE_COVERAGE` lives in `JacocoReportConventionPlugin`.
 
 ### detekt now covers every module
 

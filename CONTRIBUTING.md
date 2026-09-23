@@ -18,7 +18,7 @@ Open an issue describing the feature and why it is worth having. Mockups help.
 4. Run what CI runs:
 
 ```bash
-./gradlew app:detekt spotlessCheck :app:testDebugUnitTest :app:assembleDebug --parallel
+./gradlew detekt spotlessCheck testDebugUnitTest :app:assembleDebug --parallel
 ```
 
 5. If you changed UI on purpose, regenerate the references and commit them:
@@ -67,14 +67,15 @@ Dependency versions are pinned in `gradle/libs.versions.toml`. Renovate raises t
 ./gradlew :app:assembleRelease
 
 # tests
-./gradlew :app:testDebugUnitTest
-./gradlew :app:testDebugUnitTest --tests "app.mobilemobile.solpan.SolPanViewModelTest"
+./gradlew testDebugUnitTest
+./gradlew :feature:optimizer:testDebugUnitTest --tests "*SolPanViewModelTest"
 ./gradlew app:jacocoTestReport
+./gradlew app:jacocoCoverageVerification
 
 # quality
 ./gradlew spotlessApply          # every module
 ./gradlew spotlessCheck          # every module
-./gradlew app:detekt             # :app only, see ROADMAP.md
+./gradlew detekt                 # every module
 
 # docs
 ./gradlew :dokkaGenerate         # build/dokka/html
@@ -82,7 +83,9 @@ Dependency versions are pinned in `gradle/libs.versions.toml`. Renovate raises t
 
 ## Code style
 
-Spotless runs ktfmt then ktlint 1.8.0 with the Compose rule set, configured once in `build-logic` and applied to every module. Detekt uses `configs/detekt/detekt.yml` with a baseline.
+Spotless runs ktfmt then ktlint 1.8.0 with the Compose rule set, configured once in `build-logic` and applied to every module. Detekt uses `configs/detekt/detekt.yml` and runs on every module too.
+
+There is no detekt baseline. A finding gets fixed, or the rule gets turned off in `detekt.yml` with a comment saying why. Two are currently off: the `formatting` ruleset, because spotless owns formatting and detekt's bundled ktlint is older and disagrees with it, and `LongMethod` for `@Composable`, because a long composable is usually a large UI tree rather than a complex function. `CyclomaticComplexMethod` still applies to composables.
 
 - Apache 2.0 licence headers are required on Kotlin files and are added by `spotlessApply`.
 - No star imports.

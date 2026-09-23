@@ -35,13 +35,13 @@ Commit messages follow [Conventional Commits](https://www.conventionalcommits.or
 
 | Module | Holds |
 |---|---|
-| `:app` | UI, entry point, and for now every test |
+| `:app` | UI, entry point, sensor and location access |
 | `:feature:optimizer` | `SolPanViewModel` and the optimisation logic |
-| `:core:model` | `TiltMode`, `LocationData`, `OptimalPanelParameters`, alignment state |
+| `:core:model` | `TiltMode`, `LocationData`, `OptimalPanelParameters` |
 | `:core:data` | repository implementations, DataStore access |
 | `:core:analytics` | the `AnalyticsTracker` seam and its Firebase implementation |
 | `:core:designsystem` | shared composables, theme, design tokens |
-| `:core:solar` | `SolarCalculator` |
+| `:core:solar` | `SolarCalculator`, `AlignmentState` |
 | `:baselineprofile` | macrobenchmarks and the profile generator |
 | `build-logic/` | Gradle convention plugins |
 

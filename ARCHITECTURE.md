@@ -222,18 +222,19 @@ Screen shows updated panel orientation
 ```kotlin
 // Production
 val viewModel = SolPanViewModel(
-    mode = TiltMode.REALTIME,
-    userPreferencesRepository = preferencesRepo,
-    locationRepository = locationRepo,
-    analyticsTracker = FirebaseAnalyticsTracker(),
+    initialMode = TiltMode.REALTIME,
+    preferencesRepository = DataStoreUserPreferencesRepository(context),
+    locationRepository = DefaultLocationRepository(),
+    analytics = FirebaseAnalyticsTracker(),
 )
 
 // Testing
 val viewModel = SolPanViewModel(
-    mode = TiltMode.REALTIME,
-    userPreferencesRepository = FakeUserPreferencesRepository(),
-    locationRepository = FakeLocationRepository(),
-    analyticsTracker = FakeAnalyticsTracker(),
+    initialMode = TiltMode.REALTIME,
+    preferencesRepository = FakeUserPreferencesRepository(),
+    locationRepository = DefaultLocationRepository(),
+    analytics = FakeAnalyticsTracker(),
+    magneticDeclinationProvider = FakeMagneticDeclinationProvider(),
 )
 ```
 

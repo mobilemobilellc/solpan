@@ -117,16 +117,8 @@ fun SolPanScreen(
             ),
         )
 
-    val deviceLocationController =
-        rememberDeviceLocationController { newLocation ->
-            viewModel.updateLocation(newLocation)
-        }
-
-    val hasLocationPermission = locationPermissionsState.anyPermissionGranted
-    LaunchedEffect(hasLocationPermission) {
-        if (hasLocationPermission) {
-            deviceLocationController.startLocationUpdates()
-        }
+    rememberDeviceLocationController(enabled = locationPermissionsState.anyPermissionGranted) { newLocation ->
+        viewModel.updateLocation(newLocation)
     }
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())

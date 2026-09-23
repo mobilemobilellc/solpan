@@ -43,7 +43,8 @@ fun AboutLibrariesScreen(
     modifier: Modifier = Modifier,
     onNavigateBack: () -> Unit = {},
 ) {
-    val libraries by produceLibraries()
+    // Referenced by id so resource shrinking keeps the generated file.
+    val libraries by produceLibraries(R.raw.aboutlibraries)
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),

@@ -69,7 +69,7 @@ jobs:
           echo "$SIGNING_KEYSTORE_BASE64" | base64 --decode > "$GITHUB_WORKSPACE/release.keystore"
 
       - name: Build Release Artifacts (AAB and APK)
-        run: ./gradlew :app:bundleRelease :app:assembleRelease -PappVersionName="$APP_VERSION_NAME" -PappVersionCode=${{ github.run_number }} --parallel --scan --no-configuration-cache
+        run: ./gradlew :app:bundleRelease :app:assembleRelease -PappVersionName="$APP_VERSION_NAME" -PappVersionCode=${{ github.run_number }} --parallel --no-configuration-cache
         env:
           ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release.keystore
           ANDROID_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}

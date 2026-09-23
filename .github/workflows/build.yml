@@ -45,10 +45,10 @@ jobs:
           cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
 
       - name: Run checks and build debug APK
-        run: ./gradlew detekt spotlessCheck testDebugUnitTest :app:assembleDebug app:jacocoTestReport app:jacocoCoverageVerification --parallel --continue --scan
+        run: ./gradlew detekt spotlessCheck testDebugUnitTest :app:assembleDebug app:jacocoTestReport app:jacocoCoverageVerification --parallel --continue
 
       - name: Validate Screenshot Tests
-        run: ./gradlew :app:validateDebugScreenshotTest --parallel --continue --no-configuration-cache
+        run: ./gradlew :app:validateDebugScreenshotTest --parallel --continue
 
       - name: Upload Screenshot Diffs
         uses: actions/upload-artifact@v7
@@ -137,12 +137,19 @@ jobs:
             }
             const total = covered + missed;
             const coverage = total > 0 ? ((covered / total) * 100).toFixed(2) : '0.00';
-            await github.rest.issues.createComment({
+            const marker = '<!-- coverage-report -->';
+            const body = `${marker}\n## Code Coverage Report\n\n📊 **Line Coverage: ${coverage}%**\n\n- Lines Covered: ${covered}\n- Lines Missed: ${missed}\n- Total Lines: ${total}`;
+            const target = { owner: context.repo.owner, repo: context.repo.repo };
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              ...target,
               issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `## Code Coverage Report\n\n📊 **Line Coverage: ${coverage}%**\n\n- Lines Covered: ${covered}\n- Lines Missed: ${missed}\n- Total Lines: ${total}`
             });
+            const existing = comments.find((c) => c.body?.startsWith(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({ ...target, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ ...target, issue_number: context.issue.number, body });
+            }
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v7

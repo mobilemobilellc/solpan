@@ -37,10 +37,10 @@ jobs:
           cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
 
       - name: Run checks and build debug APK
-        run: ./gradlew detekt spotlessCheck testDebugUnitTest :app:assembleDebug --parallel --continue --scan
+        run: ./gradlew detekt spotlessCheck testDebugUnitTest :app:assembleDebug --parallel --continue
 
       - name: Validate Screenshot Tests
-        run: ./gradlew :app:validateDebugScreenshotTest --parallel --continue --no-configuration-cache
+        run: ./gradlew :app:validateDebugScreenshotTest --parallel --continue
 
       - name: Upload Screenshot Diffs
         uses: actions/upload-artifact@v7

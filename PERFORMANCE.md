@@ -4,11 +4,9 @@ What the build does for performance, and how to measure whether it works. There 
 
 ## What is in place
 
-**R8 on release.** `isMinifyEnabled = true` with `proguard-android-optimize.txt` plus `app/proguard-rules.pro`, which is otherwise the default template. Debug builds are unminified and are not a size or startup reference.
+**R8 on release.** `isMinifyEnabled = true` and `isShrinkResources = true`, with `proguard-android-optimize.txt` plus `app/proguard-rules.pro`, which is otherwise the default template. A resource the code looks up by name rather than by `R` id is invisible to the shrinker and gets removed, so reference resources by id. Debug builds are unminified and are not a size or startup reference.
 
-**Baseline Profile, coded but not wired.** `baselineprofile/` holds `BaselineProfileGenerator` and two macrobenchmarks, and `app/src/main/baseline-prof.txt` is three comment lines with no rules in it. The `androidx.baselineprofile` plugin is declared in `gradle/libs.versions.toml` and listed in the root build with `apply false`, but it is applied in no module. So `generateBaselineProfile` does not exist as a task, and `:app` would not consume a profile even if one were produced. Startup gets no benefit today.
-
-Wiring it means applying `androidx.baselineprofile` to both `:app` and `:baselineprofile`, then generating on a physical device. See [ROADMAP.md](ROADMAP.md).
+**Baseline Profile, wired but not generated.** `androidx.baselineprofile` is applied to `:app` and `:baselineprofile`, and `:app` consumes whatever `:baselineprofile` produces. Generation has not produced rules yet, so `app/src/main/baseline-prof.txt` is three comment lines and startup gets no benefit. The device-state gates that stop it are in [ROADMAP.md](ROADMAP.md).
 
 **Compose defaults.** State is hoisted into one `StateFlow` per screen and collected with `collectAsStateWithLifecycle`, so recomposition stops when the app is backgrounded. The staggered grid keys its items, which is what keeps scrolling from recomposing the whole list.
 

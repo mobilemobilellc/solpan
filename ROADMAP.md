@@ -6,26 +6,25 @@ What is unfinished, and what is planned. Everything here has been checked agains
 
 ### UI code has no tests
 
-Tests now live in the module they cover: `core:solar` holds the solar and alignment tests, `feature:optimizer` the ViewModel and tutorial tests with their fakes, and `:app` keeps only the formatting test. Library modules emit coverage data, and the aggregate report spans all of them.
+Tests now live in the module they cover: `core:solar` holds the solar and alignment tests, `core:data` the preferences tests, `feature:optimizer` the ViewModel and tutorial tests with their fakes, and `:app` the formatting and orientation-reading tests. Library modules emit coverage data, and the aggregate report spans all of them.
 
 That leaves the real gap, which was always the UI:
 
 | Package | Lines | Coverage |
 |---|---|---|
-| `solpan.model` | 78 | 100% |
-| `solpan.optimizer` | 139 | 68% |
-| `solpan.ui.screen.components` | 404 | 0% |
+| `solpan.model` | 80 | 100% |
+| `solpan.optimizer` | 150 | 71% |
+| `solpan.data` | 22 | 86% |
+| `solpan.ui.screen.components` | 406 | 0% |
 | `solpan.ui.components` | 380 | 0% |
-| `solpan.ui.screen` | 158 | 0% |
-| `solpan.orientation` | 70 | 0% |
+| `solpan.ui.screen` | 153 | 0% |
+| `solpan.orientation` | 80 | 18% |
 
-Overall 12.61%, 194 of 1538 lines. Roughly 940 of the uncovered lines are composables, where screenshot tests are a better fit than unit tests. `solpan.orientation` holds the sensor fusion and is the clearest unit-testable gap left: 70 lines of maths behind an interface, with no Android types in the way.
+Overall 15.02%, 235 of 1565 lines. Roughly 940 of the uncovered lines are composables, where screenshot tests are a better fit than unit tests. The rest of `solpan.orientation` is the sensor listener itself, which needs a `SensorManager` fake to reach.
 
-### The coverage floor has thin headroom
+### The coverage floor
 
-`app:jacocoCoverageVerification` runs in CI and fails the build below **12%** line coverage. Current is **12.61%**, so there is about half a point of room.
-
-That is tighter than it was. The detekt refactor added 45 lines of extracted helpers, all uncovered, and the figure fell from 12.86% to 12.61% without a single test being removed. Any further extraction does the same. Either add tests for `solpan.orientation`, which is the cheapest real coverage available, or accept that the floor will need lowering once, deliberately, rather than being tripped by accident.
+`app:jacocoCoverageVerification` runs in CI and fails the build below **12%** line coverage. Current is **15.02%**. Extracting uncovered helpers lowers the figure without removing a test, so raise the floor when coverage rises rather than leaving the headroom for the next extraction to spend.
 
 The gate was checked both ways, passing at 12% and failing at 50%, so it does bite. `MINIMUM_LINE_COVERAGE` lives in `JacocoReportConventionPlugin`.
 
@@ -40,7 +39,7 @@ All 37 findings were fixed in code rather than baselined, and `configs/detekt/de
 
 Two rules were turned off rather than obeyed, both with a reason in `detekt.yml`:
 
-- The whole `formatting` ruleset, 108 ktlint rules bundled from detekt's much older ktlint. Spotless already owns formatting, the two disagreed about ktfmt's continuation indents, and detekt's copy crashed outright on the Kotlin context parameters in `core:analytics`.
+- The whole `formatting` ruleset, 108 ktlint rules bundled from detekt's much older ktlint. Spotless already owns formatting, and the two disagree about ktfmt's continuation indents.
 - `LongMethod` for `@Composable` functions. Five composables are still over 60 lines, at 72 to 127. `CyclomaticComplexMethod` stays on for composables and is what caught the two genuinely tangled ones, so the meaningful signal is still enforced. Verified: a deliberately complex composable still fails the build.
 
 ### The Baseline Profile does not generate yet

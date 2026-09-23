@@ -1,12 +1,12 @@
 # Privacy Policy for SolPan
 
-**Last Updated:** 2025-07-17
+**Last Updated:** 2026-09-23
 
 This Privacy Policy describes how SolPan ("we," "us," or "our") collects, uses, and shares information when you use our mobile application (the "App").
 
 **Contact Us**
 
-If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at [Your Contact Email or Website].
+If you have any questions or suggestions about our Privacy Policy, open an issue at <https://github.com/mobilemobilellc/solpan/issues>.
 
 **Information We Collect**
 

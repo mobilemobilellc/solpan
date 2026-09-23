@@ -7,13 +7,14 @@ How SolPan is tested, what that currently covers, and where the holes are. For t
 | Source set | Runs | What it does |
 |---|---|---|
 | `core/solar/src/test` | CI, every push and PR | 12 tests: solar position and alignment |
-| `feature/optimizer/src/test` | CI, every push and PR | 8 tests: ViewModel and tutorial flow, plus three fakes |
-| `app/src/test` | CI, every push and PR | 10 tests: locale-aware formatting |
+| `core/data/src/test` | CI, every push and PR | 2 tests: preferences, including an unreadable file |
+| `feature/optimizer/src/test` | CI, every push and PR | 10 tests: ViewModel and tutorial flow, plus three fakes |
+| `app/src/test` | CI, every push and PR | 14 tests: locale-aware formatting and orientation readings |
 | `app/src/screenshotTest` | CI, every push and PR | 2 previews, compared against committed references |
 | `app/src/androidTest` | never in CI | instrumented tests, need a device |
 | `baselineprofile/` | never in CI | macrobenchmarks, need a physical device |
 
-30 unit tests in total.
+38 unit tests in total.
 
 ## Unit tests
 
@@ -29,7 +30,9 @@ What is covered:
 
 - `SolarCalculatorTest` - sun position maths, the part most worth having tests for
 - `AlignmentStateTest` - alignment thresholds
-- `SolPanViewModelTest` - state emission across tilt modes
+- `SolPanViewModelTest` - state emission across tilt modes, and REALTIME against a known sun position
+- `DataStoreUserPreferencesRepositoryTest` - the tutorial flag round trip, and defaults from a corrupt file
+- `DeviceOrientationControllerTest` - converting sensor angles, and dropping readings that are not finite
 - `TutorialFlowTest` - first-run overlay and its persistence
 - `FormattingExtensionsTest` - locale-aware number and angle formatting
 
@@ -45,13 +48,13 @@ JaCoCo, via the `solpan.jacoco.report` convention plugin. The report spans every
 
 CI runs the same task and comments the total on every pull request.
 
-Current: **12.61% line coverage**, 194 of 1538 lines. `solpan.model` is at 100%, `solpan.optimizer` at 68%, and every `solpan.ui.*` package at 0%.
+Current: **15.02% line coverage**, 235 of 1565 lines. `solpan.model` and `solpan.solar` are at 100%, `solpan.data` at 86%, `solpan.optimizer` at 71%, and every `solpan.ui.*` package at 0%.
 
-`app:jacocoCoverageVerification` fails the build below **12%**, which CI runs on every pull request. It is a ratchet against regression rather than a target, and the headroom is currently thin: see [ROADMAP.md](ROADMAP.md).
+`app:jacocoCoverageVerification` fails the build below **12%**, which CI runs on every pull request. It is a ratchet against regression rather than a target: see [ROADMAP.md](ROADMAP.md).
 
 ## Screenshot tests
 
-Compose screenshot testing, four `@Preview` composables across `CardScreenshotTests` and `SolPanScreenshotTests`.
+Compose screenshot testing, two `@Preview` composables across `CardScreenshotTests` and `SolPanScreenshotTests`.
 
 ```bash
 # compare against committed references

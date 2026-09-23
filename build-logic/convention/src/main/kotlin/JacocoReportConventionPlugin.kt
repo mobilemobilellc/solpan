@@ -15,18 +15,21 @@
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.file.FileCollection
 import org.gradle.kotlin.dsl.register
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
+import org.gradle.testing.jacoco.tasks.JacocoCoverageVerification
 import org.gradle.testing.jacoco.tasks.JacocoReport
+
+/** Line coverage floor. A ratchet against regression, not a target. See ROADMAP.md. */
+private const val MINIMUM_LINE_COVERAGE = "0.12"
 
 class JacocoReportConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             pluginManager.apply("jacoco")
 
-            extensions.configure(JacocoPluginExtension::class.java) {
-                toolVersion = "0.8.12"
-            }
+            extensions.configure(JacocoPluginExtension::class.java) { toolVersion = "0.8.12" }
 
             tasks.register<JacocoReport>("jacocoTestReport") {
                 // Every module's tests feed this report, so every module's test task has to have
@@ -42,48 +45,27 @@ class JacocoReportConventionPlugin : Plugin<Project> {
                     xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/jacoco.xml"))
                 }
 
-                val excludes =
-                    setOf(
-                        "**/R.class",
-                        "**/R${'$'}*.class",
-                        "**/BuildConfig.*",
-                        "**/Manifest*.*",
-                        "**/*Test*.*",
-                        "**/databinding/**",
-                        "**/generated/**",
-                    )
+                classDirectories.setFrom(coverageClassDirectories())
+                sourceDirectories.setFrom(coverageSourceDirectories())
+                executionData.setFrom(coverageExecutionData())
+            }
 
-                // The unit tests live in :app but exercise code that #95 moved out into the
-                // core and feature modules, so the report has to span every module or it
-                // measures the wrong classes.
-                val modules = coveredModules()
+            tasks.register<JacocoCoverageVerification>("jacocoCoverageVerification") {
+                dependsOn("jacocoTestReport")
 
-                classDirectories.setFrom(
-                    modules.flatMap { module ->
-                        listOf(
-                            "intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes",
-                            "intermediates/javac/debug/compileDebugJavaWithJavac/classes",
-                        ).map { path ->
-                            module.layout.buildDirectory.dir(path).map {
-                                fileTree(it) { setExcludes(excludes) }
-                            }
+                classDirectories.setFrom(coverageClassDirectories())
+                sourceDirectories.setFrom(coverageSourceDirectories())
+                executionData.setFrom(coverageExecutionData())
+
+                violationRules {
+                    rule {
+                        limit {
+                            counter = "LINE"
+                            value = "COVEREDRATIO"
+                            minimum = MINIMUM_LINE_COVERAGE.toBigDecimal()
                         }
-                    },
-                )
-
-                sourceDirectories.setFrom(
-                    modules.flatMap { module ->
-                        listOf("src/main/java", "src/main/kotlin").map { module.file(it) }
-                    },
-                )
-
-                executionData.setFrom(
-                    modules.map { module ->
-                        module.layout.buildDirectory
-                            .dir("outputs/unit_test_code_coverage/debugUnitTest")
-                            .map { fileTree(it) { setIncludes(setOf("*.exec")) } }
-                    },
-                )
+                    }
+                }
             }
         }
     }
@@ -95,3 +77,49 @@ class JacocoReportConventionPlugin : Plugin<Project> {
  */
 private fun Project.coveredModules() =
     rootProject.subprojects.filter { it.buildFile.exists() && it.name != "baselineprofile" }
+
+private val coverageExcludes =
+    setOf(
+        "**/R.class",
+        "**/R$*.class",
+        "**/BuildConfig.*",
+        "**/Manifest*.*",
+        "**/*Test*.*",
+        "**/databinding/**",
+        "**/generated/**",
+    )
+
+/**
+ * The tests in one module cover code in others, so both tasks read every module. AGP 9 emits
+ * compiled classes under `intermediates`, not the `tmp/kotlin-classes` path older setups used.
+ */
+private fun Project.coverageClassDirectories(): FileCollection =
+    files(
+        coveredModules().flatMap { module ->
+            listOf(
+                    "intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes",
+                    "intermediates/javac/debug/compileDebugJavaWithJavac/classes",
+                )
+                .map { path ->
+                    module.layout.buildDirectory.dir(path).map {
+                        fileTree(it) { setExcludes(coverageExcludes) }
+                    }
+                }
+        },
+    )
+
+private fun Project.coverageSourceDirectories(): FileCollection =
+    files(
+        coveredModules().flatMap { module ->
+            listOf("src/main/java", "src/main/kotlin").map { module.file(it) }
+        },
+    )
+
+private fun Project.coverageExecutionData(): FileCollection =
+    files(
+        coveredModules().map { module ->
+            module.layout.buildDirectory
+                .dir("outputs/unit_test_code_coverage/debugUnitTest")
+                .map { fileTree(it) { setIncludes(setOf("*.exec")) } }
+        },
+    )

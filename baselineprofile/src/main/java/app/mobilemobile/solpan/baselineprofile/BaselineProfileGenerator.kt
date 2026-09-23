@@ -1,59 +1,47 @@
 package app.mobilemobile.solpan.baselineprofile
 
+import androidx.benchmark.macro.MacrobenchmarkScope
 import androidx.benchmark.macro.junit4.BaselineProfileRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.uiautomator.UiSelector
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.Until
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+/**
+ * Walks every tilt mode so the generated profile covers the solar maths, sensor fusion, location
+ * updates, state management and the composables each mode renders.
+ */
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class BaselineProfileGenerator {
     @get:Rule val rule = BaselineProfileRule()
 
     @Test
-    fun generate() = rule.collect("app.mobilemobile.solpan") {
-        pressHome()
-        startActivityAndWait()
+    fun generate() =
+        rule.collect("app.mobilemobile.solpan") {
+            pressHome()
+            startActivityAndWait()
+            dismissTutorialIfPresent()
 
-        // Navigate through all major tilt modes to warm up Compose rendering and business logic
-        // This ensures the compiled baseline profile covers:
-        // - Solar calculations (SolarCalculator)
-        // - Sensor fusion (DeviceOrientationController)
-        // - Location updates (DeviceLocationManager)
-        // - State management (SolPanViewModel)
-        // - UI composables (all SolPanScreen variants)
+            // The labels are the bottom bar tabs as the app renders them.
+            listOf("Realtime", "Summer", "Winter", "Spring", "Year Round", "Realtime").forEach {
+                selectTiltMode(it)
+            }
+        }
+}
 
-        device.waitForIdle()
+private const val UI_TIMEOUT_MS = 5_000L
 
-        // REALTIME mode - current sun position tracking
-        clickTab("Realtime")
-        device.waitForIdle()
+/** The first run shows a tutorial overlay that covers the tab bar. */
+private fun MacrobenchmarkScope.dismissTutorialIfPresent() {
+    device.wait(Until.findObject(By.textContains("Got it")), UI_TIMEOUT_MS)?.click()
+    device.waitForIdle()
+}
 
-        // SUMMER mode - summer solstice optimization
-        clickTab("Summer")
-        device.waitForIdle()
-
-        // WINTER mode - winter solstice optimization
-        clickTab("Winter")
-        device.waitForIdle()
-
-        // SPRING_AUTUMN mode - equinox optimization
-        clickTab("Spring Autumn")
-        device.waitForIdle()
-
-        // YEAR_ROUND mode - averaged annual optimization
-        clickTab("Year Round")
-        device.waitForIdle()
-
-        // Return to REALTIME
-        clickTab("Realtime")
-        device.waitForIdle()
-    }
-
-    private fun clickTab(contentDescription: String) {
-        device.findObject(UiSelector().descriptionContains(contentDescription)).clickAndWaitForNewWindow()
-    }
+private fun MacrobenchmarkScope.selectTiltMode(label: String) {
+    device.wait(Until.findObject(By.textContains(label)), UI_TIMEOUT_MS)?.click()
+    device.waitForIdle()
 }

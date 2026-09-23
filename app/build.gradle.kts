@@ -22,6 +22,7 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.screenshot)
     alias(libs.plugins.dokka)
+    alias(libs.plugins.androidx.baselineprofile)
 }
 
 android {
@@ -41,6 +42,16 @@ android {
                 this.keyAlias = keyAliasFromEnv
                 this.storePassword = storePasswordFromEnv
                 this.keyPassword = keyPasswordFromEnv
+            } else if (System.getenv("CI") == null) {
+                // Off CI, fall back to the debug key so release-derived variants can be built
+                // locally. androidx.baselineprofile needs nonMinifiedRelease to be signable, and
+                // that variant inherits this config. On CI the fallback is skipped, so a missing
+                // keystore secret still fails loudly rather than shipping a debug-signed build.
+                val debugConfig = signingConfigs.getByName("debug")
+                storeFile = debugConfig.storeFile
+                this.keyAlias = debugConfig.keyAlias
+                this.storePassword = debugConfig.storePassword
+                this.keyPassword = debugConfig.keyPassword
             }
         }
     }
@@ -114,6 +125,7 @@ dependencies {
     implementation(libs.play.services.location)
     implementation(libs.androidx.profileinstaller)
     implementation(platform(libs.androidx.compose.bom))
+    baselineProfile(project(":baselineprofile"))
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     detektPlugins(libs.detekt.formatting)

@@ -32,17 +32,16 @@ Spotless runs on every module. detekt does not, because enabling it across the s
 
 What it does not cover is most of the app. There is one preview in `CardScreenshotTests` and one in `SolPanScreenshotTests`, against roughly 900 lines of UI code sitting at 0% test coverage. The About screen, the tutorial overlay and the alignment visualiser all render unchecked. Add previews and run `:app:updateDebugScreenshotTest` to widen it.
 
-### The Baseline Profile is not wired up
+### The Baseline Profile does not generate yet
 
-The feature is coded but never wired up. `baselineprofile/` holds `BaselineProfileGenerator`, `SolPanStartupBenchmark` and `SolPanCriticalFlowBenchmark`, and `app/src/main/baseline-prof.txt` is three comment lines with no rules.
+`androidx.baselineprofile` is applied to `:app` and `:baselineprofile`, the benchmark sources compile, and `:app:generateBaselineProfile` builds, installs and runs all 7 benchmarks on a device. What it does not do yet is produce a profile, so `app/src/main/baseline-prof.txt` is still three comment lines and startup gets no benefit.
 
-The `androidx.baselineprofile` plugin is declared in the catalog and sits in the root build as `apply false`, but no module applies it. `baselineprofile/build.gradle.kts` applies only `com.android.test`. Consequences:
+Measured on a Pixel 6a running Android 17:
 
-- `generateBaselineProfile` is not a real task, though `baseline-prof.txt` tells you to run it.
-- `:app` would not consume a profile even if one existed.
-- Neither benchmark runs in CI.
+- `BaselineProfileGenerator.generate` throws `Unable to confirm activity launch completion` from `MacrobenchmarkScope.amStartAndWait`.
+- The six `MacrobenchmarkRule` tests are skipped by `AssumptionViolatedException` from the rule's own device-state checks.
 
-To finish it: apply `androidx.baselineprofile` in both `:app` and `:baselineprofile`, generate on a physical device, and commit the result.
+Both are device-state gates rather than code faults. Clearing them means either a dedicated benchmark device, or setting `androidx.benchmark.suppressErrors` for the states that apply, which trades measurement accuracy for a result. Neither should be decided by whoever is nearest a phone.
 
 ### Preferences are not encrypted, and backup is on
 

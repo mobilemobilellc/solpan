@@ -16,11 +16,13 @@
 package app.mobilemobile.solpan.baselineprofile
 
 import androidx.benchmark.macro.CompilationMode
+import androidx.benchmark.macro.MacrobenchmarkScope
 import androidx.benchmark.macro.FrameTimingMetric
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.uiautomator.UiSelector
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.Until
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -115,12 +117,11 @@ class SolPanCriticalFlowBenchmark {
             device.waitForIdle()
 
             // Scroll info cards up and down to measure list performance
-            val scrollableContainer = device.findObject(UiSelector().scrollable(true))
-            if (scrollableContainer != null) {
-                repeat(3) {
-                    scrollableContainer.swipe(0, 100, 0, -100, 10)
-                    device.waitForIdle()
-                }
+            val width = device.displayWidth
+            val height = device.displayHeight
+            repeat(3) {
+                device.swipe(width / 2, height * 3 / 4, width / 2, height / 4, 10)
+                device.waitForIdle()
             }
         }
     }
@@ -161,8 +162,11 @@ class SolPanCriticalFlowBenchmark {
         }
     }
 
-    private fun clickTab(contentDescription: String) {
-        device.findObject(UiSelector().descriptionContains(contentDescription))
-            .clickAndWaitForNewWindow()
-    }
+}
+
+private const val UI_TIMEOUT_MS = 5_000L
+
+private fun MacrobenchmarkScope.clickTab(label: String) {
+    device.wait(Until.findObject(By.textContains(label)), UI_TIMEOUT_MS)?.click()
+    device.waitForIdle()
 }

@@ -2,10 +2,15 @@
 name: Create Release
 
 on:
-  workflow_dispatch: # Allows manual triggering
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Build and validate the upload against Google Play without committing it, creating a GitHub release or attesting
+        type: boolean
+        default: true
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -13,31 +18,32 @@ concurrency:
 
 permissions:
   contents: write
-  pull-requests: read
   id-token: write
   attestations: write
 
 jobs:
   release:
     runs-on: ubuntu-latest
-    outputs:
-      RELEASE_UPLOAD_URL: ${{ steps.create_release.outputs.upload_url }}
-      CHANGELOG: ${{ steps.generate_changelog.outputs.changelog }}
+    env:
+      DRY_RUN: ${{ inputs.dry_run == true }}
+      APP_VERSION_NAME: ${{ github.ref_type == 'tag' && github.ref_name || 'dry-run' }}
+      PLAY_TRACK: ${{ (contains(github.ref_name, '-alpha') && 'alpha') || (contains(github.ref_name, '-beta') && 'beta') || (contains(github.ref_name, '-test.') && 'internal') || 'production' }}
 
     steps:
+      - name: Refuse a real release from a branch
+        if: github.ref_type != 'tag' && inputs.dry_run != true
+        run: |
+          echo "::error::Real releases run from a v* tag; dispatch on a branch with dry_run."
+          exit 1
+
       - name: Checkout code
         uses: actions/checkout@v7
-        with:
-          fetch-depth: 0 # Fetch all history for changelog generation
 
       - name: Decode google-services.json
         env:
           GOOGLE_SERVICES_JSON_BASE64: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
         run: |
           echo "$GOOGLE_SERVICES_JSON_BASE64" | base64 --decode > app/google-services.json
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
 
       - uses: actions/setup-java@v6
         with:
@@ -49,70 +55,51 @@ jobs:
         with:
           cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
 
-      - name: Generate Changelog
-        id: generate_changelog
-        uses: mikepenz/release-changelog-builder-action@v6
-        with:
-          configuration: ".github/changelog-config.json"
-          owner: mobilemobilellc
-          repo: solpan
-          ignorePreReleases: true
-          failOnError: true
-          fetchViaCommits: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Prepare Play Store Release Notes
+      - name: Write Play release notes
         run: |
-          mkdir -p play_store_release_notes/en-US
-          echo "${{ steps.generate_changelog.outputs.changelog }}" > play_store_release_notes/en-US/default.txt
+          APP_VERSION_NAME="${APP_VERSION_NAME#v}"
+          echo "APP_VERSION_NAME=$APP_VERSION_NAME" >> "$GITHUB_ENV"
+          mkdir -p app/src/main/play/release-notes/en-US
+          .github/scripts/play-release-notes.sh "$APP_VERSION_NAME" | tee app/src/main/play/release-notes/en-US/default.txt
 
       - name: Decode Keystore
-        id: decode_keystore
+        env:
+          SIGNING_KEYSTORE_BASE64: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
         run: |
-          echo "${{ secrets.SIGNING_KEYSTORE_BASE64 }}" | base64 --decode > ${{ github.workspace }}/release.keystore
-        # Ensure secrets are set in GitHub: SIGNING_KEYSTORE_BASE64
-
-      - name: Determine Version Name from Tag
-        id: get_version
-        run: echo "APP_VERSION_NAME=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV # Removes 'v' prefix from tag for version name
+          echo "$SIGNING_KEYSTORE_BASE64" | base64 --decode > "$GITHUB_WORKSPACE/release.keystore"
 
       - name: Build Release Artifacts (AAB and APK)
-        run: ./gradlew :app:bundleRelease :app:assembleRelease -PappVersionName=${{ env.APP_VERSION_NAME }} -PappVersionCode=${{ github.run_number }} --parallel --continue --scan --no-configuration-cache
+        run: ./gradlew :app:bundleRelease :app:assembleRelease -PappVersionName="$APP_VERSION_NAME" -PappVersionCode=${{ github.run_number }} --parallel --scan --no-configuration-cache
         env:
           ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release.keystore
           ANDROID_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           ANDROID_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
           ANDROID_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
-          # Ensure secrets are set in GitHub: SIGNING_KEY_ALIAS, SIGNING_STORE_PASSWORD, SIGNING_KEY_PASSWORD
 
-      - name: Create GitHub Release
-        id: create_release
+      - name: Attach artifacts to the GitHub Release
+        if: env.DRY_RUN != 'true'
         uses: softprops/action-gh-release@v3
         with:
-          tag_name: ${{ github.ref_name }} # Use the tag that triggered the workflow
-          name: Release ${{ env.APP_VERSION_NAME }}
-          body: ${{ steps.generate_changelog.outputs.changelog }}
+          tag_name: ${{ github.ref_name }}
           files: |
             app/build/outputs/bundle/release/app-release.aab
             app/build/outputs/apk/release/app-release.apk
-          draft: true
-          prerelease: ${{ contains(github.ref_name, '-alpha') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-test.') }} # Mark as pre-release if tag contains -alpha, -beta or -test.
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: ${{ contains(github.ref_name, '-alpha') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-test.') }}
 
       - name: Attest Build Provenance
+        if: env.DRY_RUN != 'true'
         uses: actions/attest-build-provenance@v4
         with:
           subject-path: 'app/build/outputs/*/release/app-release.*'
 
-      - name: Upload AAB to Google Play
-        if: success() && github.ref_type == 'tag'
-        uses: r0adkll/upload-google-play@v1
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
-          packageName: app.mobilemobile.solpan
-          releaseFiles: app/build/outputs/bundle/release/app-release.aab
-          track: ${{ (contains(github.ref_name, '-alpha') && 'alpha') || (contains(github.ref_name, '-beta') && 'beta') || (contains(github.ref_name, '-test.') && 'internal') || 'production' }}
-          status: 'draft'
-          whatsNewDirectory: ./play_store_release_notes/ # Use the generated release notes
+      - name: Publish to Google Play
+        run: >-
+          ./gradlew :app:publishReleaseBundle
+          --artifact-dir app/build/outputs/bundle/release
+          --track "$PLAY_TRACK"
+          --release-status completed
+          --release-name "$APP_VERSION_NAME"
+          ${{ env.DRY_RUN == 'true' && '--no-commit' || '' }}
+          --no-configuration-cache
+        env:
+          ANDROID_PUBLISHER_CREDENTIALS: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}

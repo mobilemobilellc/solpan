@@ -6,35 +6,21 @@ on:
       - main
 
 permissions:
-  actions: write
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - id: release
-        uses: googleapis/release-please-action@v5
+      # An app token, unlike GITHUB_TOKEN, lets the release PR run CI and the tag push start release.yml.
+      - id: app-token
+        uses: actions/create-github-app-token@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          command: manifest
+          client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+
+      - uses: googleapis/release-please-action@v5
+        with:
+          token: ${{ steps.app-token.outputs.token }}
           config-file: .release-please-config.json
           manifest-file: .release-please-manifest.json
-
-      - name: Checkout code
-        if: ${{ steps.release.outputs.release_created }}
-        uses: actions/checkout@v7
-
-      - name: Trigger Release Workflow
-        if: ${{ steps.release.outputs.release_created }}
-        uses: actions/github-script@v9
-        with:
-          script: |
-            github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'release.yml',
-              ref: '${{ steps.release.outputs.tag_name }}',
-              inputs: {}
-            })

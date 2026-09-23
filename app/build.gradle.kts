@@ -22,6 +22,8 @@ plugins {
     alias(libs.plugins.screenshot)
     alias(libs.plugins.dokka)
     alias(libs.plugins.androidx.baselineprofile)
+    alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.firebase.crashlytics)
 }
 
 android {
@@ -122,6 +124,8 @@ dependencies {
     implementation(libs.bundles.androidxNavigation)
     implementation(libs.bundles.androidxUi)
     implementation(libs.play.services.location)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
     implementation(libs.androidx.profileinstaller)
     implementation(platform(libs.androidx.compose.bom))
     baselineProfile(project(":baselineprofile"))

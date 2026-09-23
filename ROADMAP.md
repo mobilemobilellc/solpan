@@ -36,7 +36,7 @@ All 37 findings were fixed in code rather than baselined, and `configs/detekt/de
 - 25 magic numbers became named constants, which is where most of the value was: `QUARTER_TURN_DEGREES` and `AZIMUTH_TO_SCREEN_ANGLE` say what `90.0` meant in compass geometry, `LOCATION_UPDATE_INTERVAL_MS` what `10000L` meant.
 - `GuidanceCard` dropped from complexity 25 to under 15 by extracting the azimuth, tilt and roll guidance into three composable helpers.
 - `AzimuthAwareBubbleLevel` dropped from 21 to under 15, and from 166 lines to 127, by moving its accessibility string and three canvas phases into functions.
-- The no-op `FirebaseAnalyticsTracker` uses `= Unit` bodies instead of empty blocks, `DeviceLocationManager` catches `IllegalStateException` rather than `Exception`, and `LinkInfo` moved to its own file.
+- `DeviceLocationManager` catches `IllegalStateException` rather than `Exception`, and `LinkInfo` moved to its own file.
 
 Two rules were turned off rather than obeyed, both with a reason in `detekt.yml`:
 

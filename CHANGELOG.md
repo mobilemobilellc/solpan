@@ -5,6 +5,24 @@ All notable changes to SolPan are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.2](https://github.com/mobilemobilellc/solpan/compare/v1.2.1...v1.2.2) (2026-09-23)
+
+
+### Bug Fixes
+
+* drop orientation readings that are not finite ([#170](https://github.com/mobilemobilellc/solpan/issues/170)) ([3ddfb3a](https://github.com/mobilemobilellc/solpan/commit/3ddfb3a4ffb9f7923f0058319885d5203577c71e))
+
+
+### CI/CD
+
+* let [@claude](https://github.com/claude) respond on issues and pull requests ([#167](https://github.com/mobilemobilellc/solpan/issues/167)) ([58bd48c](https://github.com/mobilemobilellc/solpan/commit/58bd48c82f823ea0815c394703a08e4a9a0b3b9f))
+
+
+### Chores
+
+* **deps:** update androidx.compose.material3:material3 to v1.5.0-alpha29 ([#110](https://github.com/mobilemobilellc/solpan/issues/110)) ([663e30e](https://github.com/mobilemobilellc/solpan/commit/663e30edff094bffeaa308e82fe6910343e56bbe))
+* **deps:** update androidx.compose.material3:material3-adaptive-navigation-suite to v1.5.0-alpha29 ([#169](https://github.com/mobilemobilellc/solpan/issues/169)) ([9d57d89](https://github.com/mobilemobilellc/solpan/commit/9d57d89c11ee0a42200a5c6091fdb00e0099fb20))
+
 ## [1.2.1](https://github.com/mobilemobilellc/solpan/compare/v1.2.0...v1.2.1) (2026-09-23)
 
 

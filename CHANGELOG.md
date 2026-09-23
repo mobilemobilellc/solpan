@@ -5,6 +5,15 @@ All notable changes to SolPan are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1](https://github.com/mobilemobilellc/solpan/compare/v1.1.0...v1.1.1) (2026-09-23)
+
+
+### CI/CD
+
+* drop the release-please component so merged release PRs get tagged ([#156](https://github.com/mobilemobilellc/solpan/issues/156)) ([24ea6b8](https://github.com/mobilemobilellc/solpan/commit/24ea6b89261281632e78132f1f144089a536bc06))
+* keep the release versionCode above what Play already holds ([#159](https://github.com/mobilemobilellc/solpan/issues/159)) ([41f305c](https://github.com/mobilemobilellc/solpan/commit/41f305cf8fa39459675cda85da90d22784c1b1a4))
+* let release-please dispatch the release build ([#158](https://github.com/mobilemobilellc/solpan/issues/158)) ([4530eb6](https://github.com/mobilemobilellc/solpan/commit/4530eb6ac95a81d3f2574a099ef40d1adfdd3b4a))
+
 ## [1.1.0](https://github.com/mobilemobilellc/solpan/compare/v1.0.0...v1.1.0) (2026-09-23)
 
 

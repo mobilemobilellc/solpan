@@ -5,6 +5,13 @@ All notable changes to SolPan are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2](https://github.com/mobilemobilellc/solpan/compare/v1.1.1...v1.1.2) (2026-09-23)
+
+
+### CI/CD
+
+* pass the release versionCode as a separate argument again ([#160](https://github.com/mobilemobilellc/solpan/issues/160)) ([54ba5aa](https://github.com/mobilemobilellc/solpan/commit/54ba5aaa4d8e938cf61a2c91353d06062e392c82))
+
 ## [1.1.1](https://github.com/mobilemobilellc/solpan/compare/v1.1.0...v1.1.1) (2026-09-23)
 
 

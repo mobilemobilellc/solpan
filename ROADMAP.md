@@ -26,9 +26,11 @@ Moving each test next to the code it covers is the prerequisite for per-module c
 
 Spotless runs on every module. detekt does not, because enabling it across the six library modules reports **273 violations**. Either baseline them per module and gate new code from there, or work the list down. `baseline` currently points at a single shared `configs/detekt/detekt-baseline.xml`; whether one file can serve every module or each needs its own is untested.
 
-### The screenshot suite validates nothing
+### The screenshot suite covers two previews
 
-`:app:validateDebugScreenshotTest` passes, but there are **zero reference images committed**. Run `:app:updateDebugScreenshotTest` and commit the output to make it a real gate. Neither of the two existing test files covers the About screen.
+`:app:validateDebugScreenshotTest` is a real gate: two reference images are committed under `app/src/screenshotTestDebug/reference/`, and re-rendering them on a different machine reproduces them byte for byte.
+
+What it does not cover is most of the app. There is one preview in `CardScreenshotTests` and one in `SolPanScreenshotTests`, against roughly 900 lines of UI code sitting at 0% test coverage. The About screen, the tutorial overlay and the alignment visualiser all render unchecked. Add previews and run `:app:updateDebugScreenshotTest` to widen it.
 
 ### The Baseline Profile is not wired up
 
@@ -56,7 +58,6 @@ The only persisted value is a `tutorialSeen` boolean, so neither is exposing any
 
 ### Smaller items
 
-- `ktlint-compose-rules` is declared in `gradle/libs.versions.toml` and referenced nowhere.
 - Gradle reports `Deprecated Gradle features were used in this build, making it incompatible with Gradle 10`. Run with `--warning-mode all` to find them.
 - 18 open Dependabot alerts, 1 critical and 7 high, in netty, bouncycastle, jackson and wire. These read as build classpath surfaced by dependency submission rather than anything shipped in the APK, but which configuration they sit on has not been verified.
 

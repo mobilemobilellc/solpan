@@ -72,10 +72,16 @@ import app.mobilemobile.solpan.ui.screen.components.TargetParametersCard
 import app.mobilemobile.solpan.util.displayName
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
+import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
 /** Column count once the window is wide enough for a third column to fit. */
 private const val WIDE_LAYOUT_COLUMNS = 3
+
+/** Android 12+ lets the user grant only approximate location, which is plenty for the sun. */
+@OptIn(ExperimentalPermissionsApi::class)
+private val MultiplePermissionsState.anyPermissionGranted: Boolean
+    get() = permissions.any { it.status.isGranted }
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -116,8 +122,9 @@ fun SolPanScreen(
             viewModel.updateLocation(newLocation)
         }
 
-    LaunchedEffect(locationPermissionsState.allPermissionsGranted) {
-        if (locationPermissionsState.allPermissionsGranted) {
+    val hasLocationPermission = locationPermissionsState.anyPermissionGranted
+    LaunchedEffect(hasLocationPermission) {
+        if (hasLocationPermission) {
             deviceLocationController.startLocationUpdates()
         }
     }
@@ -152,7 +159,7 @@ internal fun SolPanScreenContent(
     modifier: Modifier = Modifier,
     onPermissionRequest: () -> Unit = {},
 ) {
-    val hasLocationPermission = locationPermissionsState?.allPermissionsGranted != false
+    val hasLocationPermission = locationPermissionsState?.anyPermissionGranted != false
 
     @Suppress("DEPRECATION")
     val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass

@@ -26,6 +26,9 @@ import app.mobilemobile.solpan.model.LocationData
 import app.mobilemobile.solpan.model.OptimalPanelParameters
 import app.mobilemobile.solpan.util.format
 
+/** Roughly 11 m at the equator, which is finer than consumer GPS resolves. */
+private const val COORDINATE_DECIMAL_PLACES = 4
+
 @Composable
 fun TargetParametersCard(
     params: OptimalPanelParameters?,
@@ -66,11 +69,11 @@ fun TargetParametersCard(
         location?.let { loc ->
             InfoRow(
                 label = stringResource(id = R.string.target_param_latitude_label),
-                value = loc.latitude.format(4),
+                value = loc.latitude.format(COORDINATE_DECIMAL_PLACES),
             )
             InfoRow(
                 label = stringResource(id = R.string.target_param_longitude_label),
-                value = loc.longitude.format(4),
+                value = loc.longitude.format(COORDINATE_DECIMAL_PLACES),
             )
             loc.accuracy?.let { acc ->
                 InfoRow(

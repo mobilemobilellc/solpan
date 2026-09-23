@@ -92,15 +92,20 @@ class DeviceOrientationController(
         SensorManager.getOrientation(rotationMatrix, orientationAnglesOutput)
 
         var azimuthInDegrees =
-            (orientationAnglesOutput[ORIENTATION_INDEX_AZIMUTH].toDouble() * (180.0 / PI)).toFloat()
+            (
+                orientationAnglesOutput[ORIENTATION_INDEX_AZIMUTH].toDouble() *
+                    (DEGREES_PER_HALF_TURN / PI)
+            ).toFloat()
         if (azimuthInDegrees < 0) {
-            azimuthInDegrees += 360f
+            azimuthInDegrees += FULL_CIRCLE_DEGREES
         }
 
         val pitchInDegrees =
-            (orientationAnglesOutput[ORIENTATION_INDEX_PITCH].toDouble() * (180.0 / PI)).toFloat()
+            (orientationAnglesOutput[ORIENTATION_INDEX_PITCH].toDouble() * (DEGREES_PER_HALF_TURN / PI))
+                .toFloat()
         val rollInDegrees =
-            (orientationAnglesOutput[ORIENTATION_INDEX_ROLL].toDouble() * (180.0 / PI)).toFloat()
+            (orientationAnglesOutput[ORIENTATION_INDEX_ROLL].toDouble() * (DEGREES_PER_HALF_TURN / PI))
+                .toFloat()
 
         _orientation.value =
             OrientationData(
@@ -132,6 +137,10 @@ class DeviceOrientationController(
     }
 
     companion object {
+        /** SensorManager reports orientation in radians. */
+        private const val DEGREES_PER_HALF_TURN = 180.0
+        private const val FULL_CIRCLE_DEGREES = 360f
+
         private const val ORIENTATION_INDEX_AZIMUTH = 0
         private const val ORIENTATION_INDEX_PITCH = 1
         private const val ORIENTATION_INDEX_ROLL = 2

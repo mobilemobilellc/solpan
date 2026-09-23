@@ -39,6 +39,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
+private const val LABEL_WEIGHT = 0.6f
+private const val VALUE_WEIGHT = 0.4f
+
 @Composable
 fun InfoCard(
     title: String,
@@ -86,12 +89,16 @@ fun InfoRow(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Top,
     ) {
-        Text(text = label, style = labelStyle, modifier = Modifier.weight(0.6f).padding(end = 4.dp))
+        Text(
+            text = label,
+            style = labelStyle,
+            modifier = Modifier.weight(LABEL_WEIGHT).padding(end = 4.dp),
+        )
         Text(
             text = value,
             style = valueStyle,
             textAlign = TextAlign.End,
-            modifier = Modifier.weight(0.4f),
+            modifier = Modifier.weight(VALUE_WEIGHT),
         )
     }
 }

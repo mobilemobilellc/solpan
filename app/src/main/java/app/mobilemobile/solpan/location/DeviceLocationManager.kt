@@ -29,6 +29,9 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 
+private const val LOCATION_UPDATE_INTERVAL_MS = 10_000L
+private const val LOCATION_MIN_UPDATE_INTERVAL_MS = 5_000L
+
 interface DeviceLocationController {
     fun startLocationUpdates()
 
@@ -83,8 +86,8 @@ class DeviceLocationManager(
 
         val locationRequest =
             LocationRequest
-                .Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000L)
-                .setMinUpdateIntervalMillis(5000L)
+                .Builder(Priority.PRIORITY_HIGH_ACCURACY, LOCATION_UPDATE_INTERVAL_MS)
+                .setMinUpdateIntervalMillis(LOCATION_MIN_UPDATE_INTERVAL_MS)
                 .build()
 
         try {
@@ -102,7 +105,7 @@ class DeviceLocationManager(
             )
             onLocationUpdate(null)
             isRequestingLocationUpdates = false
-        } catch (e: Exception) {
+        } catch (e: IllegalStateException) {
             Log.e("DeviceLocationManager", "Failed to request location updates", e)
             onLocationUpdate(null)
             isRequestingLocationUpdates = false

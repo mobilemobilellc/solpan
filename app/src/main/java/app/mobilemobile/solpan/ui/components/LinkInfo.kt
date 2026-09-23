@@ -12,17 +12,9 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package app.mobilemobile.solpan.analytics
+package app.mobilemobile.solpan.ui.components
 
-/**
- * Does nothing. The Firebase dependencies in this module are commented out, so this stands in for
- * the real tracker and keeps the call sites compiling. Swap it for a Firebase-backed implementation
- * when those dependencies come back.
- */
-class FirebaseAnalyticsTracker : AnalyticsTracker {
-    override fun logTutorialStarted() = Unit
-
-    override fun logTutorialEnded() = Unit
-
-    override fun logPermissionResult(granted: Boolean) = Unit
-}
+data class LinkInfo(
+    val text: String,
+    val url: String,
+)

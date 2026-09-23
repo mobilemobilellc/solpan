@@ -43,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
@@ -66,6 +67,25 @@ import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
 import kotlin.random.Random
+
+/** Keep this many waves of particles alive before the oldest are dropped. */
+private const val PARTICLE_WAVES_RETAINED = 10
+
+/** Stagger within a wave, as a fraction of each particle's own duration. */
+private const val PARTICLE_STAGGER_DIVISOR = 3
+
+/** Below this a particle is invisible, so stop drawing and retaining it. */
+private const val MIN_VISIBLE_ALPHA = 0.01f
+
+/** Compass geometry. Azimuth is clockwise from north; canvas angles start at three o'clock. */
+private const val QUARTER_TURN_DEGREES = 90.0
+private const val HALF_TURN_DEGREES = 180.0
+private const val THREE_QUARTER_TURN_DEGREES = 270.0
+
+/** The target marker dims rather than disappears once the phone is pointing the right way. */
+private const val IN_TARGET_INDICATOR_ALPHA = 0.5f
+private const val TARGET_INDICATOR_SIZE_DIVISOR = 1.5f
+private const val NEEDLE_STROKE_MULTIPLIER = 1.5f
 
 private val PARTICLE_CHARACTERS = listOf("☀️", "🌞", "⚡️", "😎️", "🌟")
 
@@ -108,7 +128,7 @@ private fun ShootingSunsEffect(
                             ).toLong(),
                     )
                 }
-            particles = (particles + newWave).takeLast(particleCountPerWave * 10)
+            particles = (particles + newWave).takeLast(particleCountPerWave * PARTICLE_WAVES_RETAINED)
 
             newWave.forEach { particle ->
                 launch {
@@ -124,7 +144,7 @@ private fun ShootingSunsEffect(
                 }
                 launch {
                     particle.animatableAlpha.snapTo(1f)
-                    delay(particle.particleAnimationDurationMillis / 3)
+                    delay(particle.particleAnimationDurationMillis / PARTICLE_STAGGER_DIVISOR)
                     particle.animatableAlpha.animateTo(
                         targetValue = 0f,
                         animationSpec =
@@ -142,7 +162,7 @@ private fun ShootingSunsEffect(
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         val activeParticles =
             particles.filter {
-                it.animatableAlpha.value > 0.01f && it.animatableProgress.value < 1f
+                it.animatableAlpha.value > MIN_VISIBLE_ALPHA && it.animatableProgress.value < 1f
             }
 
         activeParticles.forEach { particle ->
@@ -150,7 +170,7 @@ private fun ShootingSunsEffect(
             val alpha = particle.animatableAlpha.value
             val currentDistancePx = progress * shootDistance
 
-            if (alpha > 0.01f) {
+            if (alpha > MIN_VISIBLE_ALPHA) {
                 Text(
                     text = particle.character,
                     fontSize = particle.size,
@@ -255,23 +275,16 @@ fun AzimuthAwareBubbleLevel(
         val rotateCounterClockwiseDesc = stringResource(R.string.bubble_level_rotate_counter_clockwise)
         val adjustTiltDesc = stringResource(R.string.bubble_level_adjust_tilt)
         val semanticContentDescription =
-            buildString {
-                if (isPerfectlyAligned) {
-                    append(alignedDesc)
-                } else {
-                    if (!isAzimuthInTarget) {
-                        if (azimuthDiff > 0) {
-                            append(rotateCounterClockwiseDesc)
-                        } else {
-                            append(rotateClockwiseDesc)
-                        }
-                    }
-                    if (!isPitchRollInTarget) {
-                        if (isNotEmpty()) append(". ")
-                        append(adjustTiltDesc)
-                    }
-                }
-            }
+            bubbleLevelDescription(
+                isPerfectlyAligned = isPerfectlyAligned,
+                isAzimuthInTarget = isAzimuthInTarget,
+                isPitchRollInTarget = isPitchRollInTarget,
+                azimuthDiff = azimuthDiff,
+                alignedDesc = alignedDesc,
+                rotateClockwiseDesc = rotateClockwiseDesc,
+                rotateCounterClockwiseDesc = rotateCounterClockwiseDesc,
+                adjustTiltDesc = adjustTiltDesc,
+            )
 
         val textPaint =
             remember {
@@ -299,56 +312,23 @@ fun AzimuthAwareBubbleLevel(
                     style = Stroke(width = azimuthRingWidthPx),
                 )
 
-                val cardinalDirections = listOf("N", "E", "S", "W")
-                val cardinalAzimuths = listOf(0.0, 90.0, 180.0, 270.0)
-                val textRadius = fullRadiusPx - azimuthRingWidthPx / 2f
+                drawCardinalLabels(textPaint, fullRadiusPx, azimuthRingWidthPx)
 
-                cardinalDirections.zip(cardinalAzimuths).forEach { (direction, azimuth) ->
-                    val drawingAngleRad = Math.toRadians(azimuth - 90.0).toFloat()
-                    val textX = center.x + textRadius * cos(drawingAngleRad)
-                    val textY = center.y + textRadius * sin(drawingAngleRad)
-
-                    val fontMetrics = textPaint.fontMetrics
-                    val adjustedTextY = textY - (fontMetrics.ascent + fontMetrics.descent) / 2f
-
-                    drawContext.canvas.nativeCanvas.drawText(direction, textX, adjustedTextY, textPaint)
-                }
-
-                val targetAzimuthAngleRad = Math.toRadians((targetAzimuth - 90.0)).toFloat()
-                val targetIndicatorRadius = fullRadiusPx - azimuthRingWidthPx / 2f
-                val targetIndicatorCenter =
-                    Offset(
-                        center.x + targetIndicatorRadius * cos(targetAzimuthAngleRad),
-                        center.y + targetIndicatorRadius * sin(targetAzimuthAngleRad),
-                    )
-                drawCircle(
-                    color =
-                        if (isAzimuthInTarget) {
-                            targetAzimuthIndicatorColor.copy(alpha = 0.5f)
-                        } else {
-                            targetAzimuthIndicatorColor
-                        },
-                    radius = azimuthIndicatorSizePx / 1.5f,
-                    center = targetIndicatorCenter,
+                drawTargetAzimuthIndicator(
+                    targetAzimuth = targetAzimuth,
+                    isInTarget = isAzimuthInTarget,
+                    color = targetAzimuthIndicatorColor,
+                    fullRadiusPx = fullRadiusPx,
+                    azimuthRingWidthPx = azimuthRingWidthPx,
+                    indicatorSizePx = azimuthIndicatorSizePx,
                 )
 
-                val currentAzimuthAngleRad = Math.toRadians((currentAzimuth - 90.0)).toFloat()
-                val lineStartRadius = pitchRollHousingRadiusPx + housingStrokeWidthPx
-                val lineEndRadius = fullRadiusPx - housingStrokeWidthPx / 2
-                drawLine(
+                drawCurrentAzimuthNeedle(
+                    currentAzimuth = currentAzimuth,
                     color = currentAzimuthIndicatorColor,
-                    start =
-                        Offset(
-                            center.x + lineStartRadius * cos(currentAzimuthAngleRad),
-                            center.y + lineStartRadius * sin(currentAzimuthAngleRad),
-                        ),
-                    end =
-                        Offset(
-                            center.x + lineEndRadius * cos(currentAzimuthAngleRad),
-                            center.y + lineEndRadius * sin(currentAzimuthAngleRad),
-                        ),
-                    strokeWidth = housingStrokeWidthPx * 1.5f,
-                    cap = StrokeCap.Round,
+                    fullRadiusPx = fullRadiusPx,
+                    housingRadiusPx = pitchRollHousingRadiusPx,
+                    strokeWidthPx = housingStrokeWidthPx,
                 )
 
                 drawCircle(
@@ -473,4 +453,94 @@ private fun ShootingSunsEffectPreview() {
             ShootingSunsEffect(modifier = Modifier.fillMaxSize(), shootDistance = 100f)
         }
     }
+}
+
+/**
+ * What TalkBack reads out. Azimuth first because the user has to turn the whole panel before the
+ * tilt reading means anything.
+ */
+@Suppress("LongParameterList")
+private fun bubbleLevelDescription(
+    isPerfectlyAligned: Boolean,
+    isAzimuthInTarget: Boolean,
+    isPitchRollInTarget: Boolean,
+    azimuthDiff: Double,
+    alignedDesc: String,
+    rotateClockwiseDesc: String,
+    rotateCounterClockwiseDesc: String,
+    adjustTiltDesc: String,
+): String {
+    if (isPerfectlyAligned) return alignedDesc
+    return buildString {
+        if (!isAzimuthInTarget) {
+            append(if (azimuthDiff > 0) rotateCounterClockwiseDesc else rotateClockwiseDesc)
+        }
+        if (!isPitchRollInTarget) {
+            if (isNotEmpty()) append(". ")
+            append(adjustTiltDesc)
+        }
+    }
+}
+
+/** N/E/S/W around the outer ring, each centred on its bearing. */
+private fun DrawScope.drawCardinalLabels(
+    textPaint: Paint,
+    fullRadiusPx: Float,
+    azimuthRingWidthPx: Float,
+) {
+    val cardinals =
+        listOf("N", "E", "S", "W")
+            .zip(listOf(0.0, QUARTER_TURN_DEGREES, HALF_TURN_DEGREES, THREE_QUARTER_TURN_DEGREES))
+    val textRadius = fullRadiusPx - azimuthRingWidthPx / 2f
+    val fontMetrics = textPaint.fontMetrics
+
+    cardinals.forEach { (direction, azimuth) ->
+        val angleRad = Math.toRadians(azimuth - QUARTER_TURN_DEGREES).toFloat()
+        val textX = center.x + textRadius * cos(angleRad)
+        val textY = center.y + textRadius * sin(angleRad)
+        val baseline = textY - (fontMetrics.ascent + fontMetrics.descent) / 2f
+        drawContext.canvas.nativeCanvas.drawText(direction, textX, baseline, textPaint)
+    }
+}
+
+/** Where the panel should point. Fades once the phone is already there. */
+private fun DrawScope.drawTargetAzimuthIndicator(
+    targetAzimuth: Double,
+    isInTarget: Boolean,
+    color: Color,
+    fullRadiusPx: Float,
+    azimuthRingWidthPx: Float,
+    indicatorSizePx: Float,
+) {
+    val angleRad = Math.toRadians(targetAzimuth - QUARTER_TURN_DEGREES).toFloat()
+    val radius = fullRadiusPx - azimuthRingWidthPx / 2f
+    drawCircle(
+        color = if (isInTarget) color.copy(alpha = IN_TARGET_INDICATOR_ALPHA) else color,
+        radius = indicatorSizePx / TARGET_INDICATOR_SIZE_DIVISOR,
+        center = Offset(center.x + radius * cos(angleRad), center.y + radius * sin(angleRad)),
+    )
+}
+
+/** Where the phone currently points, drawn from the housing out to the ring. */
+private fun DrawScope.drawCurrentAzimuthNeedle(
+    currentAzimuth: Double,
+    color: Color,
+    fullRadiusPx: Float,
+    housingRadiusPx: Float,
+    strokeWidthPx: Float,
+) {
+    val angleRad = Math.toRadians(currentAzimuth - QUARTER_TURN_DEGREES).toFloat()
+    val startRadius = housingRadiusPx + strokeWidthPx
+    val endRadius = fullRadiusPx - strokeWidthPx / 2
+    drawLine(
+        color = color,
+        start =
+            Offset(
+                center.x + startRadius * cos(angleRad),
+                center.y + startRadius * sin(angleRad),
+            ),
+        end = Offset(center.x + endRadius * cos(angleRad), center.y + endRadius * sin(angleRad)),
+        strokeWidth = strokeWidthPx * NEEDLE_STROKE_MULTIPLIER,
+        cap = StrokeCap.Round,
+    )
 }

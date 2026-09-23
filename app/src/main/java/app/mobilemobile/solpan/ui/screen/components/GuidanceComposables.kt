@@ -53,6 +53,17 @@ import app.mobilemobile.solpan.solar.SolarCalculator
 import app.mobilemobile.solpan.util.format
 import kotlin.math.abs
 
+/** How far the turn arrow tips left or right. */
+private const val AZIMUTH_ICON_ROTATION_DEGREES = 45f
+
+/** Differences beyond these stop scaling the guidance bar; it just reads "way off". */
+private const val MAX_RELEVANT_AZIMUTH_DIFF_DEGREES = 45.0
+private const val MAX_RELEVANT_TILT_DIFF_DEGREES = 30.0
+private const val MAX_RELEVANT_ROLL_DIFF_DEGREES = 30.0
+
+/** Below this the phone is flat enough that roll guidance would be noise. */
+private const val ROLL_THRESHOLD_DEGREES = 3.0
+
 @Composable
 fun GuidanceCard(
     currentOrientation: OrientationData,
@@ -84,109 +95,19 @@ fun GuidanceCard(
             SolarCalculator::calculateAzimuthDifference,
         )
 
-    val azimuthInstruction: String
-    var azimuthIconRotation: Float
+    val azimuth = azimuthGuidance(alignment)
+    val tilt = tiltGuidance(alignment)
+    val roll = rollGuidance(alignment)
 
-    if (alignment.isAzimuthCorrect) {
-        azimuthInstruction = stringResource(id = R.string.guidance_azimuth_aligned)
-        azimuthIconRotation = 0f
-    } else if (alignment.azimuthDifference > 0) {
-        azimuthInstruction =
-            stringResource(
-                id = R.string.guidance_azimuth_rotate_left,
-                alignment.phoneTargetAzimuth.format(0),
-            )
-        azimuthIconRotation = -45f
-    } else {
-        azimuthInstruction =
-            stringResource(
-                id = R.string.guidance_azimuth_rotate_right,
-                alignment.phoneTargetAzimuth.format(0),
-            )
-        azimuthIconRotation = 45f
-    }
-
-    val maxRelevantAzimuthDiff = 45.0
-    val azimuthProgress =
-        if (alignment.isAzimuthCorrect) {
-            1.0f
-        } else {
-            (1.0f - (abs(alignment.azimuthDifference) / maxRelevantAzimuthDiff).toFloat()).coerceIn(
-                0.0f,
-                1.0f,
-            )
-        }
-
-    val maxRelevantTiltDiff = 30.0
-    val tiltInstruction =
-        when {
-            alignment.isTiltCorrect -> {
-                stringResource(id = R.string.guidance_tilt_optimal)
-            }
-
-            alignment.tiltDifference > 0 -> {
-                stringResource(id = R.string.guidance_tilt_down, alignment.targetTilt.format(0))
-            }
-
-            else -> {
-                stringResource(id = R.string.guidance_tilt_up, alignment.targetTilt.format(0))
-            }
-        }
-    val tiltIcon =
-        when {
-            alignment.isTiltCorrect -> Icons.Filled.CheckCircle
-            alignment.tiltDifference > 0 -> Icons.Filled.ArrowDownward
-            else -> Icons.Filled.ArrowUpward
-        }
-    val tiltProgress =
-        if (alignment.isTiltCorrect) {
-            1.0f
-        } else {
-            (1.0f - (abs(alignment.tiltDifference) / maxRelevantTiltDiff).toFloat()).coerceIn(
-                0.0f,
-                1.0f,
-            )
-        }
-
-    val rollThreshold = 3.0
-    val maxRelevantRollDiff = 30.0
-    val rollInstruction =
-        when {
-            alignment.isRollCorrect -> {
-                stringResource(id = R.string.guidance_roll_level)
-            }
-
-            alignment.currentRoll > rollThreshold -> {
-                stringResource(id = R.string.guidance_roll_tilt_left_down, alignment.targetRoll.format(0))
-            }
-
-            alignment.currentRoll < -rollThreshold -> {
-                stringResource(
-                    id = R.string.guidance_roll_tilt_right_down,
-                    alignment.targetRoll.format(0),
-                )
-            }
-
-            else -> {
-                stringResource(id = R.string.guidance_roll_adjust_level)
-            }
-        }
-    val rollIcon =
-        when {
-            alignment.isRollCorrect -> Icons.Filled.CheckCircle
-            alignment.currentRoll > rollThreshold -> Icons.AutoMirrored.Filled.RotateLeft
-            alignment.currentRoll < -rollThreshold -> Icons.AutoMirrored.Filled.RotateRight
-            else -> Icons.Filled.Tune
-        }
-    val rollProgress =
-        if (alignment.isRollCorrect) {
-            1.0f
-        } else {
-            (1.0f - (abs(alignment.rollDifference) / maxRelevantRollDiff).toFloat()).coerceIn(
-                0.0f,
-                1.0f,
-            )
-        }
+    val azimuthInstruction = azimuth.instruction
+    val azimuthIconRotation = azimuth.iconRotation
+    val azimuthProgress = azimuth.progress
+    val tiltInstruction = tilt.instruction
+    val tiltIcon = tilt.icon
+    val tiltProgress = tilt.progress
+    val rollInstruction = roll.instruction
+    val rollIcon = roll.icon
+    val rollProgress = roll.progress
 
     InfoCard(
         title = stringResource(id = R.string.guidance_card_title),
@@ -333,5 +254,135 @@ fun GuidanceRow(
             color = MaterialTheme.colorScheme.primary,
             trackColor = MaterialTheme.colorScheme.surfaceVariant,
         )
+    }
+}
+
+private class AzimuthGuidance(
+    val instruction: String,
+    val iconRotation: Float,
+    val progress: Float,
+)
+
+private class AxisGuidance(
+    val instruction: String,
+    val icon: ImageVector,
+    val progress: Float,
+)
+
+/** Full bar when aligned, otherwise how close the axis is as a fraction of what still matters. */
+private fun axisProgress(
+    difference: Double,
+    isCorrect: Boolean,
+    maxRelevant: Double,
+): Float =
+    if (isCorrect) {
+        1.0f
+    } else {
+        (1.0f - (abs(difference) / maxRelevant).toFloat()).coerceIn(0.0f, 1.0f)
+    }
+
+@Composable
+private fun azimuthGuidance(alignment: AlignmentState): AzimuthGuidance {
+    val target = alignment.phoneTargetAzimuth.format(0)
+    return when {
+        alignment.isAzimuthCorrect -> {
+            AzimuthGuidance(stringResource(id = R.string.guidance_azimuth_aligned), 0f, 1.0f)
+        }
+
+        alignment.azimuthDifference > 0 -> {
+            AzimuthGuidance(
+                stringResource(id = R.string.guidance_azimuth_rotate_left, target),
+                -AZIMUTH_ICON_ROTATION_DEGREES,
+                axisProgress(alignment.azimuthDifference, false, MAX_RELEVANT_AZIMUTH_DIFF_DEGREES),
+            )
+        }
+
+        else -> {
+            AzimuthGuidance(
+                stringResource(id = R.string.guidance_azimuth_rotate_right, target),
+                AZIMUTH_ICON_ROTATION_DEGREES,
+                axisProgress(alignment.azimuthDifference, false, MAX_RELEVANT_AZIMUTH_DIFF_DEGREES),
+            )
+        }
+    }
+}
+
+@Composable
+private fun tiltGuidance(alignment: AlignmentState): AxisGuidance {
+    val target = alignment.targetTilt.format(0)
+    val progress =
+        axisProgress(
+            alignment.tiltDifference,
+            alignment.isTiltCorrect,
+            MAX_RELEVANT_TILT_DIFF_DEGREES,
+        )
+    return when {
+        alignment.isTiltCorrect -> {
+            AxisGuidance(
+                stringResource(id = R.string.guidance_tilt_optimal),
+                Icons.Filled.CheckCircle,
+                progress,
+            )
+        }
+
+        alignment.tiltDifference > 0 -> {
+            AxisGuidance(
+                stringResource(id = R.string.guidance_tilt_down, target),
+                Icons.Filled.ArrowDownward,
+                progress,
+            )
+        }
+
+        else -> {
+            AxisGuidance(
+                stringResource(id = R.string.guidance_tilt_up, target),
+                Icons.Filled.ArrowUpward,
+                progress,
+            )
+        }
+    }
+}
+
+@Composable
+private fun rollGuidance(alignment: AlignmentState): AxisGuidance {
+    val target = alignment.targetRoll.format(0)
+    val progress =
+        axisProgress(
+            alignment.rollDifference,
+            alignment.isRollCorrect,
+            MAX_RELEVANT_ROLL_DIFF_DEGREES,
+        )
+    return when {
+        alignment.isRollCorrect -> {
+            AxisGuidance(
+                stringResource(id = R.string.guidance_roll_level),
+                Icons.Filled.CheckCircle,
+                progress,
+            )
+        }
+
+        alignment.currentRoll > ROLL_THRESHOLD_DEGREES -> {
+            AxisGuidance(
+                stringResource(id = R.string.guidance_roll_tilt_left_down, target),
+                Icons.AutoMirrored.Filled.RotateLeft,
+                progress,
+            )
+        }
+
+        alignment.currentRoll < -ROLL_THRESHOLD_DEGREES -> {
+            AxisGuidance(
+                stringResource(id = R.string.guidance_roll_tilt_right_down, target),
+                Icons.AutoMirrored.Filled.RotateRight,
+                progress,
+            )
+        }
+
+        else -> {
+            AxisGuidance(
+                stringResource(id = R.string.guidance_roll_adjust_level),
+                Icons.Filled.Tune,
+                progress,
+            )
+        }
     }
 }

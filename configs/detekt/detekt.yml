@@ -127,9 +127,13 @@ complexity:
   LargeClass:
     active: true
     threshold: 600
+  # Length is not complexity in a declarative layout: a composable is long because the UI tree
+  # is. CyclomaticComplexMethod stays on for @Composable and is what caught the two functions
+  # worth splitting, so the meaningful signal is still enforced.
   LongMethod:
     active: true
     threshold: 60
+    ignoreAnnotated: ['Composable']
   LongParameterList:
     active: true
     functionThreshold: 10
@@ -377,7 +381,8 @@ naming:
     packagePattern: '[a-z]+(\.[a-z][A-Za-z0-9]*)*'
   TopLevelPropertyNaming:
     active: true
-    constantPattern: '[A-Z][A-Za-z0-9]*'
+    # Kotlin's convention for constants is screaming snake case, which needs the underscore.
+    constantPattern: '[A-Z][_A-Z0-9]*'
     propertyPattern: '[A-Za-z][_A-Za-z0-9]*'
     privatePropertyPattern: '_?[A-Za-z][_A-Za-z0-9]*'
   VariableMaxLength:
@@ -797,8 +802,12 @@ style:
     excludeImports:
       - 'java.util.*'
 
+# Off entirely: spotless runs ktfmt then ktlint 1.8.0 over every module and owns formatting.
+# This ruleset is 108 ktlint rules bundled from detekt 1.23.8's much older ktlint, so it both
+# duplicates spotless and disagrees with it, and its WrappingRule crashes outright on Kotlin
+# context parameters (core:analytics). One formatter, one config.
 formatting:
-  active: true
+  active: false
   android: false
   autoCorrect: true
   AnnotationOnSeparateLine:
@@ -884,10 +893,11 @@ formatting:
     active: true
     autoCorrect: true
     layout: '*,java.**,javax.**,kotlin.**,^'
+  # Off: spotless runs ktfmt then ktlint over every module and owns formatting. This rule
+  # disagrees with ktfmt's continuation indents, so enabling both means spotlessApply and
+  # detekt undo each other's work.
   Indentation:
-    active: true
-    autoCorrect: true
-    indentSize: 4
+    active: false
   KdocWrapping:
     active: true
     autoCorrect: true

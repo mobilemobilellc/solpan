@@ -57,8 +57,9 @@ public class AndroidMagneticDeclinationProvider : MagneticDeclinationProvider {
     ): Float? =
         try {
             android.hardware.GeomagneticField(latitude, longitude, altitude, timeMillis).declination
-        } catch (e: RuntimeException) {
-            // GeomagneticField throws RuntimeException on invalid input or missing geomagnetic model
+        } catch (_: IllegalArgumentException) {
+            // GeomagneticField rejects out-of-range coordinates. No declination is a valid answer
+            // here: the caller falls back to true north.
             null
         }
 }

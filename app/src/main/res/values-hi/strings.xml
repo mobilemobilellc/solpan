@@ -80,6 +80,7 @@
   <!-- Added -->
       
   <string name="guidance_waiting_for_target">मार्गदर्शन प्रदान करने के लिए लक्ष्य मापदंडों की प्रतीक्षा की जा रही है...</string>
+  <string name="guidance_sun_below_horizon">सूर्य क्षितिज के नीचे है। सूर्योदय की प्रतीक्षा करें, या कोई अन्य मोड चुनें।</string>
       
   <string name="guidance_azimuth_aligned">अजीमुथ संरेखित है!</string>
       

@@ -30,6 +30,8 @@ import androidx.compose.runtime.Immutable
  * @property mode The [TiltMode] strategy used to calculate these parameters
  * @property magneticDeclination Local magnetic declination from true north in degrees (optional,
  *   -180 to +180)
+ * @property isSunBelowHorizon True when [TiltMode.REALTIME] has no sun to point at, so the angles
+ *   are not a target
  */
 @Immutable
 public data class OptimalPanelParameters(
@@ -38,4 +40,5 @@ public data class OptimalPanelParameters(
     val targetTilt: Double,
     val mode: TiltMode,
     val magneticDeclination: Float? = null,
+    val isSunBelowHorizon: Boolean = false,
 )

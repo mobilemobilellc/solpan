@@ -80,6 +80,7 @@
   <!-- Added -->
       
   <string name="guidance_waiting_for_target">等待目标参数提供指导……</string>
+  <string name="guidance_sun_below_horizon">太阳在地平线以下。请等待日出，或选择其他模式。</string>
       
   <string name="guidance_azimuth_aligned">方位已对准！</string>
       

@@ -80,6 +80,7 @@
   <!-- Added -->
       
   <string name="guidance_waiting_for_target">Hedef parametrelerin rehberlik sağlaması bekleniyor…</string>
+  <string name="guidance_sun_below_horizon">Güneş ufkun altında. Gün doğumunu bekleyin veya başka bir mod seçin.</string>
       
   <string name="guidance_azimuth_aligned">Azimut hizalandı!</string>
       

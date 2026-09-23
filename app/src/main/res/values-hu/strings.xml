@@ -80,6 +80,7 @@
   <!-- Added -->
       
   <string name="guidance_waiting_for_target">Várakozás a célparaméterek útmutatására…</string>
+  <string name="guidance_sun_below_horizon">A nap a horizont alatt van. Várd meg a napkeltét, vagy válassz másik módot.</string>
       
   <string name="guidance_azimuth_aligned">Azimut igazítva!</string>
       

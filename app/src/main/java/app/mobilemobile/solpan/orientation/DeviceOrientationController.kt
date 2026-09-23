@@ -20,11 +20,13 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
+import android.view.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LifecycleStartEffect
 import app.mobilemobile.solpan.model.OrientationData
 import app.mobilemobile.solpan.util.roundTo
@@ -50,7 +52,10 @@ class DeviceOrientationController(
         sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
             ?: sensorManager.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR)
 
+    private val display = ContextCompat.getDisplayOrDefault(context)
+
     private val rotationMatrix = FloatArray(9)
+    private val screenRotationMatrix = FloatArray(9)
     private val orientationAnglesOutput = FloatArray(3)
 
     private val _orientation = mutableStateOf(OrientationData())
@@ -92,7 +97,16 @@ class DeviceOrientationController(
         if (event == null || !sensorsAvailable) return
 
         SensorManager.getRotationMatrixFromVector(rotationMatrix, event.values)
-        SensorManager.getOrientation(rotationMatrix, orientationAnglesOutput)
+        // Sensor axes are fixed to the device; the guidance is drawn relative to the screen.
+        val (axisX, axisY) =
+            when (display.rotation) {
+                Surface.ROTATION_90 -> SensorManager.AXIS_Y to SensorManager.AXIS_MINUS_X
+                Surface.ROTATION_180 -> SensorManager.AXIS_MINUS_X to SensorManager.AXIS_MINUS_Y
+                Surface.ROTATION_270 -> SensorManager.AXIS_MINUS_Y to SensorManager.AXIS_X
+                else -> SensorManager.AXIS_X to SensorManager.AXIS_Y
+            }
+        SensorManager.remapCoordinateSystem(rotationMatrix, axisX, axisY, screenRotationMatrix)
+        SensorManager.getOrientation(screenRotationMatrix, orientationAnglesOutput)
 
         orientationFromRadians(orientationAnglesOutput, _orientation.value.sensorAccuracy)?.let {
             _orientation.value = it

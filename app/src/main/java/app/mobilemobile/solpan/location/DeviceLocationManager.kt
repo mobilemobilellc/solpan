@@ -18,9 +18,9 @@ import android.content.Context
 import android.os.Looper
 import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.LifecycleStartEffect
 import app.mobilemobile.solpan.model.LocationData
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -39,10 +39,17 @@ interface DeviceLocationController {
 }
 
 @Composable
-fun rememberDeviceLocationController(onLocationUpdate: (LocationData?) -> Unit): DeviceLocationController {
+fun rememberDeviceLocationController(
+    enabled: Boolean,
+    onLocationUpdate: (LocationData?) -> Unit,
+): DeviceLocationController {
     val context = LocalContext.current
     val controller = remember { DeviceLocationManager(context, onLocationUpdate) }
-    DisposableEffect(Unit) { onDispose { controller.stopLocationUpdates() } }
+    // Only while started, so a backgrounded app holds no location request.
+    LifecycleStartEffect(controller, enabled) {
+        if (enabled) controller.startLocationUpdates()
+        onStopOrDispose { controller.stopLocationUpdates() }
+    }
     return controller
 }
 
@@ -77,7 +84,7 @@ class DeviceLocationManager(
                                 },
                         )
                     onLocationUpdate(newDeviceLocation)
-                } ?: onLocationUpdate(null)
+                }
             }
         }
 

@@ -21,11 +21,11 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.LifecycleStartEffect
 import app.mobilemobile.solpan.model.OrientationData
 import app.mobilemobile.solpan.util.roundTo
 import kotlin.math.PI
@@ -35,9 +35,9 @@ fun rememberDeviceOrientationController(): DeviceOrientationController {
     val context = LocalContext.current
     val controller = remember { DeviceOrientationController(context) }
 
-    DisposableEffect(controller) {
+    LifecycleStartEffect(controller) {
         controller.startListening()
-        onDispose { controller.stopListening() }
+        onStopOrDispose { controller.stopListening() }
     }
     return controller
 }

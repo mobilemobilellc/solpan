@@ -5,6 +5,36 @@ All notable changes to SolPan are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.4](https://github.com/mobilemobilellc/solpan/compare/v1.2.3...v1.2.4) (2026-11-06)
+
+
+### Documentation
+
+* bring the docs in line with the code ([#181](https://github.com/mobilemobilellc/solpan/issues/181)) ([d917d80](https://github.com/mobilemobilellc/solpan/commit/d917d80c6f4114c2a55db461eba2ad4d83797fd1))
+
+
+### Chores
+
+* **deps:** update aboutlibraries to v15.3.0 ([#189](https://github.com/mobilemobilellc/solpan/issues/189)) ([39af236](https://github.com/mobilemobilellc/solpan/commit/39af23613169187febf7add2e29e7c19d23bf128))
+* **deps:** update agp to v9.5.0 ([#194](https://github.com/mobilemobilellc/solpan/issues/194)) ([7319964](https://github.com/mobilemobilellc/solpan/commit/73199645d33031c249344e4b16d499c95c58f738))
+* **deps:** update agp to v9.5.1 ([#199](https://github.com/mobilemobilellc/solpan/issues/199)) ([beef3bd](https://github.com/mobilemobilellc/solpan/commit/beef3bd413cbf337fef9ecb8039aeb38150e1aeb))
+* **deps:** update androidx ([#184](https://github.com/mobilemobilellc/solpan/issues/184)) ([abdba89](https://github.com/mobilemobilellc/solpan/commit/abdba89a8ead6e6417d7f9d6769e2af537bbc3a9))
+* **deps:** update androidx ([#192](https://github.com/mobilemobilellc/solpan/issues/192)) ([292d5f1](https://github.com/mobilemobilellc/solpan/commit/292d5f166d18cece02b75862e8c8ef29b99bcbb3))
+* **deps:** update androidx ([#198](https://github.com/mobilemobilellc/solpan/issues/198)) ([c048663](https://github.com/mobilemobilellc/solpan/commit/c0486632a89f82497a3f35568c64ff97622c233b))
+* **deps:** update androidx.compose.material3:material3-adaptive-navigation-suite to v1.5.0-beta02 ([#193](https://github.com/mobilemobilellc/solpan/issues/193)) ([9e08d05](https://github.com/mobilemobilellc/solpan/commit/9e08d05b82bb92293ba2de4736d4322e8f6adf61))
+* **deps:** update com.android.tools.build:gradle to v9.5.0 ([#195](https://github.com/mobilemobilellc/solpan/issues/195)) ([ced3bd9](https://github.com/mobilemobilellc/solpan/commit/ced3bd925aee34be920e3c8cf2e66af3b1a43f73))
+* **deps:** update gradle to v9.8.0 ([#112](https://github.com/mobilemobilellc/solpan/issues/112)) ([7ced21d](https://github.com/mobilemobilellc/solpan/commit/7ced21da7f14cd8e15b3a1d1d465e533d9f73665))
+* **deps:** update gradle to v9.8.2 ([#185](https://github.com/mobilemobilellc/solpan/issues/185)) ([6cbf318](https://github.com/mobilemobilellc/solpan/commit/6cbf318b38f9ca946b8f1abda963d0b62dcf6a37))
+* **deps:** update gradle to v9.9.0 ([#202](https://github.com/mobilemobilellc/solpan/issues/202)) ([dea3491](https://github.com/mobilemobilellc/solpan/commit/dea3491968c99ce818caecbc7fb83cd7250fb668))
+* **deps:** update kotlin & agp to v2.4.21 ([#187](https://github.com/mobilemobilellc/solpan/issues/187)) ([5fc4ca1](https://github.com/mobilemobilellc/solpan/commit/5fc4ca131640fb33fc0cf6a6b09e780983305d61))
+* **deps:** update org.jetbrains.dokka to v2.3.0 ([#201](https://github.com/mobilemobilellc/solpan/issues/201)) ([cb0ff03](https://github.com/mobilemobilellc/solpan/commit/cb0ff03b230a90ba1c24f724bc1aa2770f9c2ed5))
+* **deps:** update org.jetbrains.kotlinx:kotlinx-serialization-core to v1.12.0 ([#191](https://github.com/mobilemobilellc/solpan/issues/191)) ([4527827](https://github.com/mobilemobilellc/solpan/commit/45278274e7557a13013e91592d95205f28483dc0))
+* **deps:** update plugin com.gradle.develocity to v4.6.0 ([#128](https://github.com/mobilemobilellc/solpan/issues/128)) ([054e865](https://github.com/mobilemobilellc/solpan/commit/054e865ad380904ef719424379a4f9519c5ebd35))
+* **deps:** update plugin com.gradle.develocity to v4.6.1 ([#190](https://github.com/mobilemobilellc/solpan/issues/190)) ([c48dbf9](https://github.com/mobilemobilellc/solpan/commit/c48dbf967844fa19ce4bdfa92c818a045e922b3a))
+* **deps:** update spotless to v8.10.3 ([#129](https://github.com/mobilemobilellc/solpan/issues/129)) ([0c42d0d](https://github.com/mobilemobilellc/solpan/commit/0c42d0de95c5f0881ad25851a3d46fd0596d4017))
+* **deps:** update spotless to v8.10.4 ([#188](https://github.com/mobilemobilellc/solpan/issues/188)) ([ce036bc](https://github.com/mobilemobilellc/solpan/commit/ce036bc8a6eecad686f4e71df323d67974ab1d10))
+* **deps:** update spotless to v8.11.0 ([#197](https://github.com/mobilemobilellc/solpan/issues/197)) ([e55ec05](https://github.com/mobilemobilellc/solpan/commit/e55ec0564aa9a6a3c1da515a3b79bad44f38f946))
+
 ## [1.2.3](https://github.com/mobilemobilellc/solpan/compare/v1.2.2...v1.2.3) (2026-09-23)
 
 

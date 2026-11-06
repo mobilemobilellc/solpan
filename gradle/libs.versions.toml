@@ -37,7 +37,7 @@ uiautomator = "2.4.1"
 benchmarkMacroJunit4 = "1.5.0"
 baselineprofile = "1.5.0"
 profileinstaller = "1.4.1"
-dokka = "2.2.0"
+dokka = "2.3.0"
 jacoco = "0.8.12"
 
 [libraries]
